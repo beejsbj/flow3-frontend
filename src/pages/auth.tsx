@@ -13,10 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
-import router from "next/router";
+import { useRouter } from "next/router";
+import { useUserStore } from "@/stores/user";
 
 const formSchema = z
   .object({
+    name: z.string().min(2, "Name must be at least 2 characters").optional(),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().optional(),
@@ -36,10 +38,13 @@ const formSchema = z
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
+  const router = useRouter();
+  const login = useUserStore((state) => state.login);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -47,16 +52,34 @@ export default function AuthPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // #todo: Implement proper form validation and authentication
-    router.push("/dashboard");
-
     if (isSignUp) {
-      // signup
       console.log("signup", values);
+      // For testing, use dummy data on signup
+      login(
+        {
+          id: "dummy-id-123",
+          email: values.email,
+          name: values.name || "John Doe",
+          avatarUrl: null,
+        },
+        "dummy-token-123"
+      );
     } else {
-      // signin
       console.log("signin", values);
+      // For testing, use fixed dummy data on signin
+      login(
+        {
+          id: "dummy-id-123",
+          email: "john.doe@example.com",
+          name: "John Doe",
+          avatarUrl: null,
+        },
+        "dummy-token-123"
+      );
     }
+
+    // Navigate after login
+    router.push("/dashboard");
   }
 
   return (
@@ -78,6 +101,21 @@ export default function AuthPage() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 border-black rounded-md"
           >
+            {isSignUp && (
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="email"
@@ -125,12 +163,7 @@ export default function AuthPage() {
               />
             )}
 
-            <Button
-              type="submit"
-              className="w-full"
-              // #todo: Implement proper form validation and authentication
-              onClick={() => router.push("/dashboard")}
-            >
+            <Button type="submit" className="w-full">
               {isSignUp ? "Sign up" : "Sign in"}
             </Button>
           </form>

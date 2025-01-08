@@ -4,14 +4,6 @@
 /* S etup */
 @import "setup.css";
 
-/* C omponents */
-@import "components.css";
-
-/* S tuff (modules) */
-
-/* S ections and more stuff */
-@import "utilities.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
