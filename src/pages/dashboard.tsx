@@ -1,4 +1,3 @@
-import * as React from "react";
 import { SidebarLayout } from "@/components/layouts/sidebars";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DashboardMain from "@/components/dashboard/DashboardMain";

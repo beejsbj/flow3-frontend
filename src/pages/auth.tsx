@@ -12,27 +12,38 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/stores/user";
 
 const formSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters").optional(),
+    name: z.string().optional(),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().optional(),
+    isSignUp: z.boolean(),
   })
   .refine(
     (data) => {
-      if (data.confirmPassword !== undefined) {
+      if (data.isSignUp && data.name !== undefined) {
+        return data.name.length >= 2;
+      }
+      if (data.isSignUp && data.confirmPassword !== undefined) {
         return data.password === data.confirmPassword;
       }
       return true;
     },
     {
-      message: "Passwords don't match",
-      path: ["confirmPassword"],
+      message: (ctx) => {
+        if (ctx.path.includes("name"))
+          return "Name must be at least 2 characters";
+        return "Passwords don't match";
+      },
+      path: (ctx) => {
+        if (ctx.path.includes("name")) return ["name"];
+        return ["confirmPassword"];
+      },
     }
   );
 
@@ -48,34 +59,32 @@ export default function AuthPage() {
       email: "",
       password: "",
       confirmPassword: "",
+      isSignUp: false,
     },
   });
 
+  useEffect(() => {
+    form.setValue("isSignUp", isSignUp);
+  }, [isSignUp, form]);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("onSubmit", values);
+
+    // For testing, use dummy data on signup
+
+    const dummy = {
+      id: "dummy-id-123",
+      email: values.email,
+      name: values.name || "John Doe",
+      avatarUrl: null,
+    };
+
     if (isSignUp) {
       console.log("signup", values);
-      // For testing, use dummy data on signup
-      login(
-        {
-          id: "dummy-id-123",
-          email: values.email,
-          name: values.name || "John Doe",
-          avatarUrl: null,
-        },
-        "dummy-token-123"
-      );
+      login(dummy, "dummy-token-123");
     } else {
       console.log("signin", values);
-      // For testing, use fixed dummy data on signin
-      login(
-        {
-          id: "dummy-id-123",
-          email: "john.doe@example.com",
-          name: "John Doe",
-          avatarUrl: null,
-        },
-        "dummy-token-123"
-      );
+      login(dummy, "dummy-token-123");
     }
 
     // Navigate after login
