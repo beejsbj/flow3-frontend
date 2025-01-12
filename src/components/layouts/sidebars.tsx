@@ -10,9 +10,7 @@ export function SidebarLayout({ left, right, children }: SidebarLayoutProps) {
   return (
     <SidebarProvider>
       {left}
-      <main className="flex min-h-full flex-1">
-        <SidebarInset>{children}</SidebarInset>
-      </main>
+      <SidebarInset>{children}</SidebarInset>
       {right}
     </SidebarProvider>
   );

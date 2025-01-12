@@ -19,6 +19,7 @@ interface UserState {
   setAccessToken: (token: string | null) => void;
   login: (user: User, token: string) => void;
   logout: () => void;
+  updateDisplayName: (name: string) => void;
 }
 
 // #TODO: Remove persist middleware when implementing proper auth flow
@@ -26,7 +27,7 @@ interface UserState {
 // #TODO: Add refresh token logic
 export const useUserStore = create<UserState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       isAuthenticated: false,
       isLoading: false,
@@ -49,6 +50,13 @@ export const useUserStore = create<UserState>()(
           accessToken: null,
           isAuthenticated: false,
         }),
+
+      updateDisplayName: (name) => {
+        const currentUser = get().user;
+        if (currentUser) {
+          set({ user: { ...currentUser, name } });
+        }
+      },
     }),
     {
       name: "user-storage", // #TODO: Remove when implementing proper auth

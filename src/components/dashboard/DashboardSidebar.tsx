@@ -9,11 +9,15 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Home, Settings, Users, FileText, Wallet, Hash } from "lucide-react";
-import UserNav from "@/components/UserNav";
+import UserNav from "@/components/user/UserNav";
 import useCounterStore from "@/stores/counter";
 
 export default function DashboardSidebar() {
   const { count, increment } = useCounterStore();
+
+  const clickHandler = () => {
+    increment();
+  };
 
   return (
     <Sidebar side="left">
@@ -45,7 +49,7 @@ export default function DashboardSidebar() {
           </SidebarMenuItem>
 
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Counter" onClick={increment}>
+            <SidebarMenuButton tooltip="Counter" onClick={clickHandler}>
               <Hash />
               <span>Count: {count}</span>
             </SidebarMenuButton>

@@ -7,14 +7,10 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-
-// Types for our components
-type Workspace = {
-  id: string;
-  name: string;
-  description: string;
-  lastModified: Date;
-};
+import { useWorkspacesStore } from "@/stores/workspaces";
+import { useEffect } from "react";
+import { Workspace } from "@/types/types";
+import Link from "next/link";
 
 interface WorkspaceCardProps {
   workspace: Workspace;
@@ -33,35 +29,25 @@ function WorkspaceCard({ workspace }: WorkspaceCardProps) {
         <span className="whisper-voice">
           Last modified: {workspace.lastModified.toLocaleDateString()}
         </span>
-        <Button variant="link">Open workspace →</Button>
+        <Button asChild variant="link">
+          <Link href={`/workspace`}>Open workspace →</Link>
+        </Button>
       </CardFooter>
     </Card>
   );
 }
 
 export default function WorkspacesList() {
-  // Example data - replace with real data source
-  const workspaces: Workspace[] = [
-    {
-      id: "1",
-      name: "Marketing Campaign",
-      description: "Q4 marketing initiatives and planning",
-      lastModified: new Date(),
-    },
-    {
-      id: "2",
-      name: "2Marketing Campaign",
-      description: "Q4 marketing initiatives and planning",
-      lastModified: new Date(),
-    },
-    {
-      id: "3",
-      name: "3Marketing Campaign",
-      description: "Q4 marketing initiatives and planning",
-      lastModified: new Date(),
-    },
-    // Add more example workspaces as needed
-  ];
+  const { workspaces, isLoading, fetchWorkspaces } = useWorkspacesStore();
+
+  useEffect(() => {
+    // For now, we'll just pass a dummy user ID
+    fetchWorkspaces("dummy-user-id");
+  }, [fetchWorkspaces]);
+
+  if (isLoading && workspaces.length === 0) {
+    return <div>Loading workspaces...</div>;
+  }
 
   return (
     <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

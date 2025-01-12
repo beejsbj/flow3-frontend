@@ -37,8 +37,8 @@ img {
 }
 
 svg {
-  display: block;
-  width: 100%;
+  /* display: block; */
+  /* width: 100%; */
 }
 
 /*// selects for custom elements*/
@@ -50,4 +50,3 @@ button,
 label {
   cursor: pointer;
 }
-

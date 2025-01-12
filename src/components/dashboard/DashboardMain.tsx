@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import WorkspacesList from "@/components/dashboard/WorkspaceList";
+import { useUser } from "@/stores/user";
+import { useWorkspacesStore } from "@/stores/workspaces";
 
 interface DashboardHeaderProps {
   userName: string;
+  onNewWorkspace: () => void;
 }
 
-// Individual Components
-function DashboardHeader({ userName }: DashboardHeaderProps) {
+function DashboardHeader({ userName, onNewWorkspace }: DashboardHeaderProps) {
   return (
     <header className="border-b">
       <div className="flex items-center justify-between">
@@ -16,17 +18,30 @@ function DashboardHeader({ userName }: DashboardHeaderProps) {
             Manage your workspaces and projects
           </p>
         </div>
-        <Button>New Workspace</Button>
+        <Button onClick={onNewWorkspace}>New Workspace</Button>
       </div>
     </header>
   );
 }
 
-// Main Dashboard Component
 function DashboardMain() {
+  const { name } = useUser();
+  const { createWorkspace } = useWorkspacesStore();
+
+  const handleNewWorkspace = () => {
+    createWorkspace({
+      name: "New Workspace",
+      description: "Description",
+      lastModified: new Date(),
+    });
+  };
+
   return (
     <section className="p-6">
-      <DashboardHeader userName="John" />
+      <DashboardHeader
+        userName={name || ""}
+        onNewWorkspace={handleNewWorkspace}
+      />
       <WorkspacesList />
     </section>
   );
