@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Workspace } from "@/components/workspace/types";
+import { Workspace, Node } from "@/components/workspace/types";
 import { nodeRegistry } from "@/components/workspace/nodes/registry";
 
 // Dummy data
@@ -50,16 +50,37 @@ const dummyWorkspaces: Workspace[] = [
       },
     },
     nodes: [
-      nodeRegistry.createNodeFromDefinition("position-logger", {
-        x: 100,
-        y: 100,
-      }),
-      nodeRegistry.createNodeFromDefinition("multi-port-node", {
-        x: 0,
-        y: 200,
-      }),
+      {
+        id: "a",
+        position: { x: 0, y: 0 },
+        type: "default",
+        data: { label: "wire" },
+      },
+      {
+        id: "b",
+        type: "position-logger",
+        position: { x: -100, y: 100 },
+        data: { label: "drag me!" },
+      },
+      {
+        id: "c",
+        type: "default",
+
+        position: { x: 100, y: 100 },
+        data: { label: "your ideas" },
+      },
+      {
+        id: "d",
+        type: "default",
+
+        position: { x: 0, y: 200 },
+        data: { label: "with React Flow" },
+      },
     ], // Add empty initial state
-    edges: [],
+    edges: [
+      { id: "a->c", source: "a", target: "c", animated: true },
+      { id: "c->d", source: "c", target: "d" },
+    ],
   },
   {
     id: "3",
@@ -80,7 +101,7 @@ const dummyWorkspaces: Workspace[] = [
         x: 0,
         y: 200,
       }),
-    ], // Add empty initial state
+    ].filter((node): node is Node => node !== undefined), // Add empty initial state
     edges: [],
   },
 ];

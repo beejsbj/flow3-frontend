@@ -14,7 +14,7 @@ function calculatePortPositions(
   ports: Port[],
   direction: "horizontal" | "vertical"
 ) {
-  if (ports.length === 0) return [];
+  if (!ports || ports.length === 0) return [];
   const sourcePorts = ports.filter((p) => p.type === "source");
   const targetPorts = ports.filter((p) => p.type === "target");
 
