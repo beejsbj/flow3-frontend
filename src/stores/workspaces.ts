@@ -121,6 +121,7 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
   error: null,
 
   fetchWorkspaces: (userId: string) => {
+    console.log("fetchWorkspaces", userId);
     set({ isLoading: true });
     // Simulate API delay
     setTimeout(() => {

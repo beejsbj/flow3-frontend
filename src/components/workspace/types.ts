@@ -7,6 +7,7 @@ import type {
   OnEdgesChange,
   OnConnect,
   NodeTypes,
+  EdgeTypes,
 } from "@xyflow/react";
 import { LucideIcon } from "lucide-react";
 
@@ -46,13 +47,19 @@ export interface Edge extends RFEdge {}
 
 // workspace
 
+export interface WorkspaceConfig extends Record<string, any> {
+  layout: {
+    direction: "vertical" | "horizontal";
+  };
+}
+
 export interface Workspace {
   // Metadata
   id: string;
   name: string;
   description: string;
   lastModified: Date;
-  config?: Record<string, any>;
+  config?: WorkspaceConfig;
 
   // Content
   nodes: Node[];
@@ -61,7 +68,7 @@ export interface Workspace {
 
 export interface WorkspaceState extends Workspace {
   // Workspace operations
-  updateConfig: (updater: (config: any) => any) => void;
+  updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => void;
   loadWorkspace: (workspace: Workspace) => void;
 
   // React Flow operations
@@ -82,7 +89,7 @@ export interface WorkspaceState extends Workspace {
 ///
 
 // Re-export common types
-export type { EdgeProps, NodeTypes };
+export type { EdgeProps, NodeTypes, EdgeTypes };
 
 // Add these new types
 export interface Port {

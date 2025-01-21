@@ -5,6 +5,7 @@ import {
   type WorkspaceState,
   type Node,
   type Workspace,
+  type WorkspaceConfig,
 } from "@/components/workspace/types";
 
 const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
@@ -39,9 +40,9 @@ const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   // Operations
 
   // Workspace operations
-  updateConfig: (updater: (config: any) => any) => {
+  updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => {
     set({
-      config: updater(get().config),
+      config: updater(get().config!),
       lastModified: new Date(),
     });
   },

@@ -1,4 +1,4 @@
-import type { Edge, EdgeTypes } from "@xyflow/react";
+import type { EdgeTypes } from "@/components/workspace/types";
 
 const defaultEdgeOptions = {};
 
