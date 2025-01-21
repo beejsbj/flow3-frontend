@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { Workspace } from "@/types/types";
+import { Workspace } from "@/components/workspace/types";
+import { nodeRegistry } from "@/components/workspace/nodes/registry";
 
 // Dummy data
 const dummyWorkspaces: Workspace[] = [
@@ -8,18 +9,79 @@ const dummyWorkspaces: Workspace[] = [
     name: "Marketing Campaign",
     description: "Q4 marketing initiatives and planning",
     lastModified: new Date(),
+    config: {
+      layout: {
+        direction: "horizontal",
+      },
+    },
+    nodes: [
+      {
+        id: "1",
+        type: "input",
+        data: { label: "Input" },
+        position: { x: 250, y: 25 },
+      },
+
+      {
+        id: "2",
+        data: { label: "Default" },
+        position: { x: 100, y: 125 },
+      },
+      {
+        id: "3",
+        type: "output",
+        data: { label: "Output" },
+        position: { x: 250, y: 250 },
+      },
+    ], // Add empty initial state
+    edges: [
+      { id: "e1-2", source: "1", target: "2" },
+      { id: "e2-3", source: "2", target: "3" },
+    ],
   },
   {
     id: "2",
     name: "Product Launch",
     description: "New feature launch preparation",
     lastModified: new Date(),
+    config: {
+      layout: {
+        direction: "horizontal",
+      },
+    },
+    nodes: [
+      nodeRegistry.createNodeFromDefinition("position-logger", {
+        x: 100,
+        y: 100,
+      }),
+      nodeRegistry.createNodeFromDefinition("multi-port-node", {
+        x: 0,
+        y: 200,
+      }),
+    ], // Add empty initial state
+    edges: [],
   },
   {
     id: "3",
     name: "Team Resources",
     description: "Team documentation and resources",
     lastModified: new Date(),
+    config: {
+      layout: {
+        direction: "horizontal",
+      },
+    },
+    nodes: [
+      nodeRegistry.createNodeFromDefinition("position-logger", {
+        x: 100,
+        y: 100,
+      }),
+      nodeRegistry.createNodeFromDefinition("delay", {
+        x: 0,
+        y: 200,
+      }),
+    ], // Add empty initial state
+    edges: [],
   },
 ];
 
