@@ -7,9 +7,6 @@ import {
   type Workspace,
 } from "@/components/workspace/types";
 
-import { initialNodes } from "@/components/workspace/nodes";
-import { initialEdges } from "@/components/workspace/edges";
-
 const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   // Metadata
   id: "", // Will be set when loading a workspace

@@ -12,16 +12,23 @@ import { LucideIcon } from "lucide-react";
 
 // node
 
-interface NodeData extends Record<string, unknown> {
+export interface FieldConfig {
+  type: "string" | "number" | "boolean" | "select";
   label: string;
-  icon: LucideIcon;
-  description: string;
-  category: string;
+  required?: boolean;
+  options?: Array<{ value: string; label: string }>;
+}
+
+interface NodeData extends Record<string, unknown> {
+  label?: string;
+  icon?: LucideIcon;
+  description?: string;
+  category?: string;
   config?: {
-    schema?: Record<string, any>; // The form schema definition
-    values?: Record<string, any>; // The actual config values
+    fields?: Record<string, FieldConfig>; // Updated to use FieldConfig
+    values?: Record<string, any>;
   };
-  ports: Port[];
+  ports?: Port[];
 }
 
 export interface Node extends RFNode {
@@ -55,6 +62,7 @@ export interface Workspace {
 export interface WorkspaceState extends Workspace {
   // Workspace operations
   updateConfig: (updater: (config: any) => any) => void;
+  loadWorkspace: (workspace: Workspace) => void;
 
   // React Flow operations
   onNodesChange: OnNodesChange;

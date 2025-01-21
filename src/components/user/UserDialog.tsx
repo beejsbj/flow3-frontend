@@ -23,7 +23,7 @@ export function UserDialog({ open, onOpenChange }: UserDialogProps) {
   const user = useUser();
   const updateDisplayName = useUserStore((state) => state.updateDisplayName);
   const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState(user.name);
+  const [newName, setNewName] = useState(user.name ?? "");
 
   const handleUpdateName = () => {
     if (newName.trim()) {

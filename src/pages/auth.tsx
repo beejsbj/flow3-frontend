@@ -24,26 +24,18 @@ const formSchema = z
     confirmPassword: z.string().optional(),
     isSignUp: z.boolean(),
   })
+  .refine((data) => !data.isSignUp || !data.name || data.name.length >= 2, {
+    message: "Name must be at least 2 characters",
+    path: ["name"],
+  })
   .refine(
-    (data) => {
-      if (data.isSignUp && data.name !== undefined) {
-        return data.name.length >= 2;
-      }
-      if (data.isSignUp && data.confirmPassword !== undefined) {
-        return data.password === data.confirmPassword;
-      }
-      return true;
-    },
+    (data) =>
+      !data.isSignUp ||
+      !data.confirmPassword ||
+      data.password === data.confirmPassword,
     {
-      message: (ctx) => {
-        if (ctx.path.includes("name"))
-          return "Name must be at least 2 characters";
-        return "Passwords don't match";
-      },
-      path: (ctx) => {
-        if (ctx.path.includes("name")) return ["name"];
-        return ["confirmPassword"];
-      },
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
     }
   );
 

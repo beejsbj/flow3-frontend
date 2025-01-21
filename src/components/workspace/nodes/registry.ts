@@ -39,12 +39,6 @@ export class NodeRegistry {
       id: `${nodeId}-${port.type}-${port.id || crypto.randomUUID()}`,
     }));
 
-    // Initialize config values from schema defaults
-    const configValues = definition.config?.schema.reduce((acc, field) => {
-      acc[field.name] = field.defaultValue;
-      return acc;
-    }, {} as Record<string, any>);
-
     return {
       id: nodeId,
       type: definition.type,
@@ -54,12 +48,7 @@ export class NodeRegistry {
         icon: definition.icon,
         description: definition.description,
         category: definition.category,
-        config: definition.config
-          ? {
-              schema: definition.config.schema,
-              values: configValues,
-            }
-          : undefined,
+        config: definition.config,
         ports: ports || [],
       },
     };

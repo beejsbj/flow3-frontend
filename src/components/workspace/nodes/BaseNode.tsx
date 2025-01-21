@@ -11,7 +11,7 @@ interface BaseNodeProps extends NodeProps {
 }
 
 function calculatePortPositions(
-  ports: Port[],
+  ports: Port[] | undefined,
   direction: "horizontal" | "vertical"
 ) {
   if (!ports || ports.length === 0) return [];
@@ -73,7 +73,7 @@ export function BaseNode({
 
   const handleClick = () => {
     // Only open config modal if node has config schema
-    if (data.config?.schema) {
+    if (data.config?.fields) {
       setConfigModalOpen(true);
     }
     // Still call the original onClick if provided

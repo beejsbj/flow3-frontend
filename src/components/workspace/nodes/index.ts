@@ -1,6 +1,5 @@
 import { PositionLoggerNode } from "./PositionLoggerNode";
 import { nodeRegistry } from "./registry";
-import type { Node } from "@/components/workspace/types";
 import { Crosshair, Clock } from "lucide-react";
 
 // Register the position logger node first
@@ -21,15 +20,16 @@ nodeRegistry.register({
   category: "Flow Control",
   icon: Clock,
   config: {
-    schema: [
-      {
-        name: "delay",
+    fields: {
+      delay: {
         type: "number",
         label: "Delay (ms)",
-        defaultValue: 1000,
         required: true,
       },
-    ],
+    },
+    values: {
+      delay: 1000, // Default value only defined here
+    },
   },
   ports: [
     { type: "target", label: "Input" },
@@ -42,7 +42,7 @@ nodeRegistry.register({
   type: "multi-port-node",
   label: "Multi Port Node",
   description: "A node with multiple ports",
-  category: "Flow Control",
+  category: "Examples",
   icon: Clock,
   ports: [
     { type: "target", label: "Input 1" },
@@ -51,11 +51,53 @@ nodeRegistry.register({
   ],
 });
 
-// Create initial nodes using the registry
-export const initialNodes: Node[] = [
-  nodeRegistry.createNodeFromDefinition("position-logger", { x: 100, y: 100 }),
-  nodeRegistry.createNodeFromDefinition("multi-port-node", { x: 0, y: 200 }),
-].filter((node): node is Node => node !== undefined);
+// Example nodes demonstrating different form fields
+nodeRegistry.register({
+  type: "form-examples",
+  label: "Form Fields Example",
+  description: "Demonstrates different types of form fields",
+  category: "Examples",
+  icon: Clock,
+  config: {
+    fields: {
+      textField: {
+        type: "string",
+        label: "Text Input",
+        required: true,
+      },
+      numberField: {
+        type: "number",
+        label: "Number Input",
+        required: false,
+      },
+      booleanField: {
+        type: "boolean",
+        label: "Toggle Switch",
+        required: true,
+      },
+      dropdownField: {
+        type: "select",
+        label: "Dropdown Menu",
+        required: true,
+        options: [
+          { value: "option1", label: "Option 1" },
+          { value: "option2", label: "Option 2" },
+          { value: "option3", label: "Option 3" },
+        ],
+      },
+    },
+    values: {
+      textField: "Default text",
+      numberField: 42,
+      booleanField: false,
+      dropdownField: "option1",
+    },
+  },
+  ports: [
+    { type: "target", label: "Input" },
+    { type: "source", label: "Output" },
+  ],
+});
 
 // Now nodeTypes comes from the registry
 export const nodeTypes = nodeRegistry.getNodeTypes();

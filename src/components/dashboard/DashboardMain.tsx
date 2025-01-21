@@ -33,6 +33,8 @@ function DashboardMain() {
       name: "New Workspace",
       description: "Description",
       lastModified: new Date(),
+      edges: [],
+      nodes: [],
     });
   };
 
