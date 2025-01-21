@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import { useEffect } from "react";
-import { Workspace } from "@/types/types";
+import { Workspace } from "@/components/workspace/types";
 import Link from "next/link";
 
 interface WorkspaceCardProps {
@@ -30,7 +30,7 @@ function WorkspaceCard({ workspace }: WorkspaceCardProps) {
           Last modified: {workspace.lastModified.toLocaleDateString()}
         </span>
         <Button asChild variant="link">
-          <Link href={`/workspace`}>Open workspace →</Link>
+          <Link href={`/workspace/${workspace.id}`}>Open workspace →</Link>
         </Button>
       </CardFooter>
     </Card>

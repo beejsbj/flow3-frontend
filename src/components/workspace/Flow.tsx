@@ -4,15 +4,12 @@ import {
   BackgroundVariant,
   Controls,
   MiniMap,
-  useNodes,
-  useEdges,
   ReactFlowProvider,
 } from "@xyflow/react";
 
-import "@xyflow/react/dist/style.css";
 import { useShallow } from "zustand/react/shallow";
 
-import useWorkflowStore from "@/stores/workflow";
+import useWorkspaceStore from "@/stores/workspace";
 
 import { nodeTypes } from "./nodes";
 import { edgeTypes } from "./edges";
@@ -35,7 +32,7 @@ function FlowContent() {
 
 export default function Flow() {
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
-    useWorkflowStore(
+    useWorkspaceStore(
       useShallow((state) => ({
         nodes: state.nodes,
         edges: state.edges,

@@ -1,20 +1,16 @@
-import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { NodeProps } from "@/components/workspace/types";
+import { BaseNode } from "./BaseNode";
 
-export function PositionLoggerNode({
-  positionAbsoluteX,
-  positionAbsoluteY,
-  data,
-}: NodeProps) {
+export function PositionLoggerNode(props: NodeProps) {
+  const { positionAbsoluteX, positionAbsoluteY } = props;
   const x = `${Math.round(positionAbsoluteX)}px`;
   const y = `${Math.round(positionAbsoluteY)}px`;
 
   return (
-    <div className="react-flow__node-default">
-      {data.label && <div>{data.label}</div>}
-      <div>
+    <BaseNode {...props}>
+      <p className="text-xs text-foreground">
         {x} {y}
-      </div>
-      <Handle type="source" position={Position.Bottom} />
-    </div>
+      </p>
+    </BaseNode>
   );
 }
