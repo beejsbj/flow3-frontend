@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Plus } from "lucide-react";
 import { nodeRegistry, type CategoryData } from "./nodes/registry";
-import { useAddNode } from "@/stores/workflow";
+import { useAddNode } from "@/stores/workspace";
 
 export function NodesSheetList() {
   const [selectedCategory, setSelectedCategory] =
