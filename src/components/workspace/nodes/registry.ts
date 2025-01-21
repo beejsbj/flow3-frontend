@@ -1,7 +1,8 @@
-import { Node, NodeProps, NodeTypes } from "@xyflow/react";
+import { Node, NodeProps, NodeTypes } from "@/components/workspace/types";
 import { ComponentType } from "react";
 import { LucideIcon } from "lucide-react";
-
+import { BaseNode } from "./BaseNode";
+import { Port } from "@/components/workspace/types";
 // Registry type to store node definitions
 export interface NodeDefinition {
   type: string;
@@ -9,7 +10,9 @@ export interface NodeDefinition {
   description: string;
   category: string;
   icon: LucideIcon;
-  component: ComponentType<NodeProps>;
+  component?: ComponentType<NodeProps>;
+  config?: Record<string, any>;
+  ports?: Port[];
 }
 
 // Add this interface
@@ -30,12 +33,34 @@ export class NodeRegistry {
     const definition = this.get(type);
     if (!definition) return undefined;
 
+    const nodeId = crypto.randomUUID();
+    const ports = definition.ports?.map((port) => ({
+      ...port,
+      id: `${nodeId}-${port.type}-${port.id || crypto.randomUUID()}`,
+    }));
+
+    // Initialize config values from schema defaults
+    const configValues = definition.config?.schema.reduce((acc, field) => {
+      acc[field.name] = field.defaultValue;
+      return acc;
+    }, {} as Record<string, any>);
+
     return {
-      id: crypto.randomUUID(),
+      id: nodeId,
       type: definition.type,
       position,
       data: {
         label: definition.label,
+        icon: definition.icon,
+        description: definition.description,
+        category: definition.category,
+        config: definition.config
+          ? {
+              schema: definition.config.schema,
+              values: configValues,
+            }
+          : undefined,
+        ports: ports || [],
       },
     };
   }
@@ -69,7 +94,9 @@ export class NodeRegistry {
   getNodeTypes(): NodeTypes {
     const nodeTypes: NodeTypes = {};
     this.nodes.forEach((definition) => {
-      nodeTypes[definition.type] = definition.component;
+      nodeTypes[definition.type] = definition.component
+        ? definition.component
+        : BaseNode;
     });
     return nodeTypes;
   }
