@@ -1,6 +1,13 @@
 import { PositionLoggerNode } from "./PositionLoggerNode";
 import { nodeRegistry } from "./registry";
-import { Crosshair, Clock } from "lucide-react";
+import {
+  Crosshair,
+  Clock,
+  Square,
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  Folder,
+} from "lucide-react";
 
 // Register the position logger node first
 nodeRegistry.register({
@@ -87,7 +94,7 @@ nodeRegistry.register({
       },
     },
     values: {
-      textField: "Default text",
+      textField: "",
       numberField: 42,
       booleanField: false,
       dropdownField: "option1",
@@ -97,6 +104,37 @@ nodeRegistry.register({
     { type: "target", label: "Input" },
     { type: "source", label: "Output" },
   ],
+});
+
+// Register default React Flow node types
+nodeRegistry.register({
+  type: "default",
+  label: "Default Node",
+  description: "A default node with input and output ports",
+  category: "Examples",
+  icon: Square,
+  ports: [
+    { type: "target", label: "Input" },
+    { type: "source", label: "Output" },
+  ],
+});
+
+nodeRegistry.register({
+  type: "input",
+  label: "Input Node",
+  description: "A node with only output ports",
+  category: "Examples",
+  icon: ArrowRightCircle,
+  ports: [{ type: "source", label: "Output" }],
+});
+
+nodeRegistry.register({
+  type: "output",
+  label: "Output Node",
+  description: "A node with only input ports",
+  category: "Examples",
+  icon: ArrowLeftCircle,
+  ports: [{ type: "target", label: "Input" }],
 });
 
 // Now nodeTypes comes from the registry

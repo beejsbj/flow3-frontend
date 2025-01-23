@@ -1,8 +1,16 @@
-import { Node, NodeProps, NodeTypes } from "@/components/workspace/types";
+import {
+  Node,
+  NodeProps,
+  NodeTypes,
+  NodeData,
+} from "@/components/workspace/types";
 import { ComponentType } from "react";
 import { LucideIcon } from "lucide-react";
 import { BaseNode } from "./BaseNode";
 import { Port } from "@/components/workspace/types";
+import useWorkspaceStore from "@/stores/workspace";
+import { Square, ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
+
 // Registry type to store node definitions
 export interface NodeDefinition {
   type: string;
@@ -26,6 +34,32 @@ export interface CategoryData {
 export class NodeRegistry {
   private nodes: Map<string, NodeDefinition> = new Map();
 
+  private createPorts(nodeId: string, definition: NodeDefinition): Port[] {
+    if (!definition.ports) return [];
+    return definition.ports.map((port) => ({
+      ...port,
+      id: `${nodeId}-${port.type}-${port.id || crypto.randomUUID()}`,
+    }));
+  }
+
+  private createNodeData(nodeId: string, definition: NodeDefinition): NodeData {
+    const ports = this.createPorts(nodeId, definition);
+
+    const data: NodeData = {
+      label: definition.label,
+      icon: definition.icon,
+      description: definition.description,
+      category: definition.category,
+      config: definition.config,
+      ports,
+      state: {
+        validation: { isValid: true, errors: [] },
+      },
+    };
+
+    return data;
+  }
+
   createNodeFromDefinition(
     type: string,
     position: { x: number; y: number }
@@ -34,23 +68,12 @@ export class NodeRegistry {
     if (!definition) return undefined;
 
     const nodeId = crypto.randomUUID();
-    const ports = definition.ports?.map((port) => ({
-      ...port,
-      id: `${nodeId}-${port.type}-${port.id || crypto.randomUUID()}`,
-    }));
 
     return {
       id: nodeId,
       type: definition.type,
       position,
-      data: {
-        label: definition.label,
-        icon: definition.icon,
-        description: definition.description,
-        category: definition.category,
-        config: definition.config,
-        ports: ports || [],
-      },
+      data: this.createNodeData(nodeId, definition),
     };
   }
 
@@ -103,3 +126,34 @@ export class NodeRegistry {
 
 // Create and export a single instance
 export const nodeRegistry = new NodeRegistry();
+
+// Register default React Flow node types
+nodeRegistry.register({
+  type: "default",
+  label: "Default Node",
+  description: "A default node with input and output ports",
+  category: "default",
+  icon: Square,
+  ports: [
+    { type: "target", label: "Input" },
+    { type: "source", label: "Output" },
+  ],
+});
+
+nodeRegistry.register({
+  type: "input",
+  label: "Input Node",
+  description: "A node with only output ports",
+  category: "default",
+  icon: ArrowRightCircle,
+  ports: [{ type: "source", label: "Output" }],
+});
+
+nodeRegistry.register({
+  type: "output",
+  label: "Output Node",
+  description: "A node with only input ports",
+  category: "default",
+  icon: ArrowLeftCircle,
+  ports: [{ type: "target", label: "Input" }],
+});

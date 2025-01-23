@@ -12,20 +12,21 @@ import { useShallow } from "zustand/react/shallow";
 import useWorkspaceStore from "@/stores/workspace";
 
 import { nodeTypes } from "./nodes";
-import { edgeTypes } from "./edges";
+import { edgeTypes, defaultEdgeOptions } from "./edges";
+import { DevTools } from "@/components/devtools";
 
 function FlowContent() {
-  //   const innerNodes = useNodes();
-  //   const innerEdges = useEdges();
+  const validation = useWorkspaceStore((state) => state.validation);
 
-  //   console.log("Inner nodes:", innerNodes);
-  //   console.log("Inner edges:", innerEdges);
+  // Determine background color based on validation state
+  const bgColor = validation.isValid ? "#ccc" : "rgba(239, 68, 68, 0.2)"; // red-500 with opacity
 
   return (
     <>
-      <Background color="#ccc" variant={BackgroundVariant.Dots} />
+      <Background color={bgColor} variant={BackgroundVariant.Dots} />
       <MiniMap />
       <Controls />
+      <DevTools />
     </>
   );
 }
@@ -49,6 +50,7 @@ export default function Flow() {
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        defaultEdgeOptions={defaultEdgeOptions}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}

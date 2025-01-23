@@ -20,21 +20,29 @@ export interface FieldConfig {
   options?: Array<{ value: string; label: string }>;
 }
 
-interface NodeData extends Record<string, unknown> {
+export interface NodeValidation {
+  isValid: boolean;
+  errors: string[];
+}
+
+export interface NodeData extends Record<string, any> {
   label?: string;
-  icon?: LucideIcon;
-  description?: string;
-  category?: string;
+  icon: LucideIcon;
+  description: string;
+  category: string;
+  ports: Port[];
+  state: NodeState;
   config?: {
-    fields?: Record<string, FieldConfig>; // Updated to use FieldConfig
+    fields?: Record<string, FieldConfig>;
     values?: Record<string, any>;
   };
-  ports?: Port[];
+}
+
+export interface NodeState {
+  validation: NodeValidation;
 }
 
 export interface Node extends RFNode {
-  //   config: Object;
-  //   states: Object;
   data: NodeData;
 }
 
@@ -43,7 +51,10 @@ export interface NodeProps extends RFNodeProps {
 }
 
 // edge
-export interface Edge extends RFEdge {}
+export interface Edge extends RFEdge {
+  sourcePort?: string;
+  targetPort?: string;
+}
 
 // workspace
 
@@ -66,6 +77,14 @@ export interface Workspace {
   edges: Edge[];
 }
 
+export interface WorkspaceValidation {
+  isValid: boolean;
+  errors: {
+    nodeId: string;
+    errors: string[];
+  }[];
+}
+
 export interface WorkspaceState extends Workspace {
   // Workspace operations
   updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => void;
@@ -79,9 +98,14 @@ export interface WorkspaceState extends Workspace {
   setEdges: (edges: Edge[]) => void;
 
   // Node operations
+  getNode: (id: string) => Node | undefined;
   addNode: (type: string) => void;
   deleteNode: (id: string) => void;
   updateNodeData: (nodeId: string, updater: (data: any) => any) => void;
+
+  // Add validation state
+  validation: WorkspaceValidation;
+  validate: () => void;
 }
 
 //store
@@ -96,4 +120,5 @@ export interface Port {
   id?: string;
   type: "source" | "target";
   label?: string;
+  edgeId?: string | null;
 }

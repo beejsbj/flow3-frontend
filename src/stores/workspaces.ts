@@ -11,7 +11,7 @@ const dummyWorkspaces: Workspace[] = [
     lastModified: new Date(),
     config: {
       layout: {
-        direction: "horizontal",
+        direction: "vertical",
       },
     },
     nodes: [
@@ -46,7 +46,7 @@ const dummyWorkspaces: Workspace[] = [
     lastModified: new Date(),
     config: {
       layout: {
-        direction: "horizontal",
+        direction: "vertical",
       },
     },
     nodes: [
@@ -65,7 +65,6 @@ const dummyWorkspaces: Workspace[] = [
       {
         id: "c",
         type: "default",
-
         position: { x: 100, y: 100 },
         data: { label: "your ideas" },
       },
@@ -89,11 +88,11 @@ const dummyWorkspaces: Workspace[] = [
     lastModified: new Date(),
     config: {
       layout: {
-        direction: "horizontal",
+        direction: "vertical",
       },
     },
     nodes: [
-      nodeRegistry.createNodeFromDefinition("position-logger", {
+      nodeRegistry.createNodeFromDefinition("delay", {
         x: 100,
         y: 100,
       }),

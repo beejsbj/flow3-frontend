@@ -87,7 +87,8 @@ export function NodeConfigModal({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!node) return;
+    if (!node || !node.data.config) return;
+    //  node.data.config.values = values;
     updateNodeValues(node.id, values);
     onOpenChange(false);
   }
