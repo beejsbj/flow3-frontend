@@ -1,19 +1,11 @@
 import { Handle, Position } from "@xyflow/react";
-import {
-  NodeProps,
-  Port,
-  NodeData,
-  NodeValidation,
-} from "@/components/workspace/types";
-import {
-  useLayoutDirection,
-  useUpdateNodeData,
-  useUpdateNodeValidation,
-} from "@/stores/workspace";
+import { NodeProps, Port } from "@/components/workspace/types";
+import { useLayoutDirection, useNode } from "@/stores/workspace";
 import { useState } from "react";
 import { NodeConfigModal } from "./NodeConfigModal";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { useInternalNode, useNodes } from "@xyflow/react";
 
 interface BaseNodeProps extends NodeProps {
   onClick?: () => void;
@@ -66,35 +58,6 @@ function calculatePortPositions(
   });
 }
 
-function validateNode(
-  nodeId: string,
-  data: NodeData,
-  updateNodeValidation: (nodeId: string, validation: NodeValidation) => void
-) {
-  if (!data.config?.fields) return;
-
-  const errors: string[] = [];
-
-  Object.entries(data.config.fields).forEach(([fieldName, field]) => {
-    if (field.required) {
-      const value = data.config?.values?.[fieldName];
-      if (value === undefined || value === "" || value === null) {
-        errors.push(`${field.label} is required`);
-      }
-    }
-  });
-
-  const validation = {
-    isValid: errors.length === 0,
-    errors,
-  };
-
-  // Only update if validation state actually changed
-  if (JSON.stringify(data.state.validation) !== JSON.stringify(validation)) {
-    updateNodeValidation(nodeId, validation);
-  }
-}
-
 export function BaseNode({
   type,
   id,
@@ -106,8 +69,9 @@ export function BaseNode({
   const { icon: Icon, label, ports } = data;
   const direction = useLayoutDirection();
   const [configModalOpen, setConfigModalOpen] = useState(false);
-  const updateNodeData = useUpdateNodeData();
-  const updateNodeValidation = useUpdateNodeValidation();
+  const node = useNode(id);
+  const internalNode = useInternalNode(id);
+  const nodes = useNodes();
 
   // Calculate port positions
   const portsWithPositions = calculatePortPositions(
@@ -117,8 +81,10 @@ export function BaseNode({
 
   // Validate when config values change
   useEffect(() => {
-    validateNode(id, data, updateNodeValidation);
-  }, [data.config?.values, id, updateNodeValidation]);
+    //  validateNode(id, data, updateNodeValidation);
+    node?.validate();
+    console.log("nodes", node, internalNode);
+  }, [data.config?.values]);
 
   const handleClick = () => {
     // Only open config modal if node has config schema
@@ -130,12 +96,16 @@ export function BaseNode({
   };
 
   // Dynamic border color based on validation
+
   const borderColor = cn("border border-solid transition-colors", {
     "border-red-500":
       data?.state?.validation && !data?.state?.validation?.isValid,
-    "border-primary": selected,
-    "border-border":
-      !selected &&
+    "border-red-800": selected && !data?.state?.validation?.isValid,
+
+    "border-green-500":
+      !data?.state?.validation || data?.state?.validation?.isValid,
+    "border-green-800":
+      selected &&
       (!data?.state?.validation || data?.state?.validation?.isValid),
   });
 
