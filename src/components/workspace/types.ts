@@ -27,7 +27,7 @@ export interface NodeValidation {
 
 export interface NodeData extends Record<string, any> {
   label?: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   description: string;
   category: string;
   ports: Port[];
@@ -44,6 +44,9 @@ export interface NodeState {
 
 export interface Node extends RFNode {
   data: NodeData;
+  test: string;
+  validate: () => void;
+  updatePortConnections: (portId: string, edgeId: string) => void;
 }
 
 export interface NodeProps extends RFNodeProps {
