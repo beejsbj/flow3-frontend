@@ -33,12 +33,13 @@ export interface CategoryData {
 // Node registry to store all available nodes
 export class NodeRegistry {
   private nodes: Map<string, NodeDefinition> = new Map();
+  private nodeIdCounter = 0;
 
   private createPorts(nodeId: string, definition: NodeDefinition): Port[] {
     if (!definition.ports) return [];
-    return definition.ports.map((port) => ({
+    return definition.ports.map((port, index) => ({
       ...port,
-      id: `${nodeId}-${port.type}-${port.id || crypto.randomUUID()}`,
+      id: `${nodeId}__${port.type}-${index}`,
     }));
   }
 
@@ -67,7 +68,7 @@ export class NodeRegistry {
     const definition = this.get(type);
     if (!definition) return undefined;
 
-    const nodeId = crypto.randomUUID();
+    const nodeId = `${type}-${Date.now()}-${this.nodeIdCounter++}`;
 
     return {
       id: nodeId,
