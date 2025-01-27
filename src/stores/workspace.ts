@@ -1,15 +1,15 @@
 import { create } from "zustand";
 import { addEdge, applyNodeChanges, applyEdgeChanges } from "@xyflow/react";
-import { nodeRegistry } from "@/components/workspace/nodes/registry";
 import {
   type WorkspaceState,
-  type Node,
+  type Node as NodeType,
   type Workspace,
   type WorkspaceConfig,
   type NodeValidation,
   type WorkspaceValidation,
 } from "@/components/workspace/types";
 import { subscribeWithSelector } from "zustand/middleware";
+import { Node } from "@/components/workspace/nodes/Node";
 
 const useWorkspaceStore = create(
   subscribeWithSelector<WorkspaceState>((set, get) => ({
@@ -82,7 +82,7 @@ const useWorkspaceStore = create(
     // React Flow operations
     onNodesChange: (changes) => {
       set({
-        nodes: applyNodeChanges(changes, get().nodes) as Node[],
+        nodes: applyNodeChanges(changes, get().nodes) as NodeType[],
         lastModified: new Date(),
       });
     },
@@ -100,25 +100,11 @@ const useWorkspaceStore = create(
         connection.sourceHandle || ""
       }-${connection.target}${connection.targetHandle || ""}`;
 
-      // Update source node ports
-      get().updateNodeData(connection.source, (data) => ({
-        ...data,
-        ports: data.ports.map((port) =>
-          port.id === connection.sourceHandle
-            ? { ...port, edgeId: edgeId } // Use the generated edgeId
-            : port
-        ),
-      }));
-
-      // Update target node ports
-      get().updateNodeData(connection.target, (data) => ({
-        ...data,
-        ports: data.ports.map((port) =>
-          port.id === connection.targetHandle
-            ? { ...port, edgeId: edgeId } // Use the generated edgeId
-            : port
-        ),
-      }));
+      // Update port connections
+      get().nodes.forEach((node) => {
+        node.updatePortConnections(connection.sourceHandle, edgeId);
+        node.updatePortConnections(connection.targetHandle, edgeId);
+      });
 
       set({
         edges: addEdge(connection, get().edges),
@@ -143,14 +129,19 @@ const useWorkspaceStore = create(
     },
 
     addNode: (type) => {
-      const position = { x: 0, y: 0 };
-      const newNode = nodeRegistry.createNodeFromDefinition(type, position);
-      if (!newNode) return;
+      try {
+        const position = { x: 0, y: 0 };
+        const newNode = new Node(type, position);
 
-      set({
-        nodes: [...get().nodes, newNode],
-        lastModified: new Date(),
-      });
+        console.log("newNode", newNode);
+
+        set({
+          nodes: [...get().nodes, newNode],
+          lastModified: new Date(),
+        });
+      } catch (error) {
+        console.error("Failed to create node:", error);
+      }
     },
 
     deleteNode: (id: string) => {

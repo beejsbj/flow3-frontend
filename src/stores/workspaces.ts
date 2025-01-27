@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { Workspace, Node } from "@/components/workspace/types";
-import { nodeRegistry } from "@/components/workspace/nodes/registry";
-
+import { Node as NodeClass } from "@/components/workspace/nodes/Node";
 // Dummy data
 const dummyWorkspaces: Workspace[] = [
   {
@@ -93,11 +92,21 @@ const dummyWorkspaces: Workspace[] = [
       },
     },
     nodes: [
-      nodeRegistry.createNodeFromDefinition("delay", {
+      // nodeRegistry.createNodeFromDefinition("delay", {
+      //   x: 100,
+      //   y: 100,
+      // }),
+
+      // nodeRegistry.createNodeFromDefinition("delay", {
+      //   x: 0,
+      //   y: 200,
+      // }),
+
+      new NodeClass("delay", {
         x: 100,
         y: 100,
       }),
-      nodeRegistry.createNodeFromDefinition("delay", {
+      new NodeClass("delay", {
         x: 0,
         y: 200,
       }),
