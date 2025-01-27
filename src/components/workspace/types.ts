@@ -14,8 +14,10 @@ import { LucideIcon } from "lucide-react";
 // node
 
 export interface FieldConfig {
+  name: string;
   type: "string" | "number" | "boolean" | "select";
   label: string;
+  value?: any;
   required?: boolean;
   options?: Array<{ value: string; label: string }>;
 }
@@ -33,8 +35,7 @@ export interface NodeData extends Record<string, any> {
   ports: Port[];
   state: NodeState;
   config?: {
-    fields?: Record<string, FieldConfig>;
-    values?: Record<string, any>;
+    form?: FieldConfig[];
   };
 }
 
@@ -47,6 +48,7 @@ export interface Node extends RFNode {
   test: string;
   validate: () => void;
   updatePortConnections: (portId: string, edgeId: string) => void;
+  updateValues: (values: Record<string, any>) => void;
 }
 
 export interface NodeProps extends RFNodeProps {

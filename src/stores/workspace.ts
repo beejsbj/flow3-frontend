@@ -5,7 +5,6 @@ import {
   type Node as NodeType,
   type Workspace,
   type WorkspaceConfig,
-  type NodeValidation,
   type WorkspaceValidation,
 } from "@/components/workspace/types";
 import { subscribeWithSelector } from "zustand/middleware";
@@ -102,8 +101,12 @@ const useWorkspaceStore = create(
 
       // Update port connections
       get().nodes.forEach((node) => {
-        node.updatePortConnections(connection.sourceHandle, edgeId);
-        node.updatePortConnections(connection.targetHandle, edgeId);
+        if (connection.sourceHandle) {
+          node.updatePortConnections(connection.sourceHandle, edgeId);
+        }
+        if (connection.targetHandle) {
+          node.updatePortConnections(connection.targetHandle, edgeId);
+        }
       });
 
       set({
@@ -191,32 +194,6 @@ export const useAddNode = () => useWorkspaceStore((state) => state.addNode);
 
 export const useNode = (nodeId: string) =>
   useWorkspaceStore((state) => state.getNode(nodeId));
-
-export const useUpdateNodeData = () =>
-  useWorkspaceStore((state) => state.updateNodeData);
-
-export const useUpdateNodeValues = () => {
-  const updateNodeData = useUpdateNodeData();
-  return (nodeId: string, newValues: any) =>
-    updateNodeData(nodeId, (data) => ({
-      ...data,
-      config: {
-        ...data.config,
-        values: newValues,
-      },
-    }));
-};
-
-// Specific helper for validation updates
-export const useUpdateNodeValidation = () => {
-  const updateNodeData = useUpdateNodeData();
-  return (nodeId: string, validation: NodeValidation) => {
-    updateNodeData(nodeId, (data) => ({
-      ...data,
-      validation,
-    }));
-  };
-};
 
 // Add convenience hook for workspace validation
 export const useWorkspaceValidation = () =>

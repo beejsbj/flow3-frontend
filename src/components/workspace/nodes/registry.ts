@@ -1,9 +1,4 @@
-import {
-  Node,
-  NodeProps,
-  NodeTypes,
-  NodeData,
-} from "@/components/workspace/types";
+import { NodeProps, NodeTypes } from "@/components/workspace/types";
 import { ComponentType } from "react";
 import { LucideIcon } from "lucide-react";
 import { BaseNode } from "./BaseNode";
@@ -32,50 +27,6 @@ export interface CategoryData {
 // Node registry to store all available nodes
 export class NodeRegistry {
   private nodes: Map<string, NodeDefinition> = new Map();
-  private nodeIdCounter = 0;
-
-  private createPorts(nodeId: string, definition: NodeDefinition): Port[] {
-    if (!definition.ports) return [];
-    return definition.ports.map((port, index) => ({
-      ...port,
-      id: `_${port.type}-${index}_`,
-    }));
-  }
-
-  private createNodeData(nodeId: string, definition: NodeDefinition): NodeData {
-    const ports = this.createPorts(nodeId, definition);
-
-    const data: NodeData = {
-      label: definition.label,
-      icon: definition.icon,
-      description: definition.description,
-      category: definition.category,
-      config: definition.config,
-      ports,
-      state: {
-        validation: { isValid: true, errors: [] },
-      },
-    };
-
-    return data;
-  }
-
-  createNodeFromDefinition(
-    type: string,
-    position: { x: number; y: number }
-  ): Node | undefined {
-    const definition = this.get(type);
-    if (!definition) return undefined;
-
-    const nodeId = `${type}-${Date.now()}-${this.nodeIdCounter++}`;
-
-    return {
-      id: nodeId,
-      type: definition.type,
-      position,
-      data: this.createNodeData(nodeId, definition),
-    };
-  }
 
   // Register a new node type
   register(nodeDefinition: NodeDefinition) {
@@ -131,34 +82,3 @@ export class NodeRegistry {
 
 // Create and export a single instance
 export const nodeRegistry = new NodeRegistry();
-
-// Register default React Flow node types
-nodeRegistry.register({
-  type: "default",
-  label: "Default Node",
-  description: "A default node with input and output ports",
-  category: "default",
-  icon: Square,
-  ports: [
-    { type: "target", label: "Input" },
-    { type: "source", label: "Output" },
-  ],
-});
-
-nodeRegistry.register({
-  type: "input",
-  label: "Input Node",
-  description: "A node with only output ports",
-  category: "default",
-  icon: ArrowRightCircle,
-  ports: [{ type: "source", label: "Output" }],
-});
-
-nodeRegistry.register({
-  type: "output",
-  label: "Output Node",
-  description: "A node with only input ports",
-  category: "default",
-  icon: ArrowLeftCircle,
-  ports: [{ type: "target", label: "Input" }],
-});

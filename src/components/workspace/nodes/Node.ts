@@ -20,6 +20,9 @@ export class Node implements NodeType {
     this.data = this.createNodeData();
     this.validate = this.validate;
     this.updatePortConnections = this.updatePortConnections;
+    this.updateValues = this.updateValues;
+
+    this.validate();
   }
 
   private generateId(): string {
@@ -54,22 +57,28 @@ export class Node implements NodeType {
   }
 
   validate(): void {
-    if (!this.data.config?.fields) {
+    if (!this.data.config?.form) {
       return;
     }
 
     const errors: string[] = [];
 
-    Object.entries(this.data.config.fields).forEach(([fieldName, field]) => {
+    this.data.config.form.forEach((field) => {
       if (field.required) {
-        const value = this.data.config?.values?.[fieldName];
+        const value = field.value;
         if (value === undefined || value === "" || value === null) {
           errors.push(`${field.label} is required`);
         }
       }
     });
 
-    // update node validation
+    //check ports connections
+    this.data.ports.forEach((port) => {
+      if (!port.edgeId) {
+        errors.push(`Please connect ${port.label}`);
+      }
+    });
+
     this.data.state.validation = {
       isValid: errors.length === 0,
       errors,
@@ -83,5 +92,20 @@ export class Node implements NodeType {
         port.edgeId = edgeId;
       }
     });
+    this.validate();
+  }
+
+  updateValues(values: Record<string, any>): void {
+    if (!this.data.config?.form) {
+      return;
+    }
+
+    this.data.config.form = this.data.config.form.map((field) => ({
+      ...field,
+      value: values[field.name] ?? field.value,
+    }));
+
+    // Validate after updating values
+    this.validate();
   }
 }

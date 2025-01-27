@@ -6,7 +6,6 @@ import {
   Square,
   ArrowLeftCircle,
   ArrowRightCircle,
-  Folder,
 } from "lucide-react";
 
 // Register the position logger node first
@@ -27,16 +26,15 @@ nodeRegistry.register({
   category: "Flow Control",
   icon: Clock,
   config: {
-    fields: {
-      delay: {
+    form: [
+      {
+        name: "delayTime",
         type: "number",
         label: "Delay (ms)",
         required: true,
+        value: 1000,
       },
-    },
-    values: {
-      delay: 1000, // Default value only defined here
-    },
+    ],
   },
   ports: [
     { type: "target", label: "Input" },
@@ -58,7 +56,7 @@ nodeRegistry.register({
   ],
 });
 
-// Example nodes demonstrating different form fields
+// Example with multiple fields of same type
 nodeRegistry.register({
   type: "form-examples",
   label: "Form Fields Example",
@@ -66,39 +64,48 @@ nodeRegistry.register({
   category: "Examples",
   icon: Clock,
   config: {
-    fields: {
-      textField: {
+    form: [
+      {
+        name: "firstName",
         type: "string",
-        label: "Text Input",
+        label: "First Name",
         required: true,
+        value: "John",
       },
-      numberField: {
-        type: "number",
-        label: "Number Input",
+      {
+        name: "lastName",
+        type: "string",
+        label: "Last Name",
         required: false,
+        value: "Doe",
       },
-      booleanField: {
+      {
+        name: "age",
+        type: "number",
+        label: "Age",
+        required: false,
+        value: 0,
+      },
+      {
+        name: "isActive",
         type: "boolean",
-        label: "Toggle Switch",
+        label: "Active Status",
         required: true,
+        value: false,
       },
-      dropdownField: {
+      {
+        name: "userType",
         type: "select",
-        label: "Dropdown Menu",
+        label: "User Type",
         required: true,
         options: [
-          { value: "option1", label: "Option 1" },
-          { value: "option2", label: "Option 2" },
-          { value: "option3", label: "Option 3" },
+          { value: "admin", label: "Administrator" },
+          { value: "user", label: "Regular User" },
+          { value: "guest", label: "Guest" },
         ],
+        value: "user",
       },
-    },
-    values: {
-      textField: "",
-      numberField: 42,
-      booleanField: false,
-      dropdownField: "option1",
-    },
+    ],
   },
   ports: [
     { type: "target", label: "Input" },

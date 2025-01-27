@@ -18,9 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useUpdateNodeValues } from "@/stores/workspace";
 import { useNode } from "@/stores/workspace";
-import { FieldConfig } from "@/components/workspace/types";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -41,18 +39,13 @@ export function NodeConfigModal({
   open,
   onOpenChange,
 }: NodeConfigModalProps) {
-  const updateNodeValues = useUpdateNodeValues();
   const node = useNode(nodeId);
 
-  if (!node?.data.config?.fields) return null;
-
-  const { fields } = node.data.config as {
-    fields: Record<string, FieldConfig>;
-  };
+  if (!node?.data.config?.form) return null;
 
   const generateZodSchema = () => {
     const schemaMap: Record<string, z.ZodType> = {};
-    Object.entries(fields).forEach(([fieldName, field]) => {
+    node?.data?.config?.form?.forEach((field) => {
       let fieldSchema: z.ZodType;
 
       switch (field.type) {
@@ -72,7 +65,7 @@ export function NodeConfigModal({
           fieldSchema = z.any();
       }
 
-      schemaMap[fieldName] = field.required
+      schemaMap[field.name] = field.required
         ? fieldSchema
         : fieldSchema.optional();
     });
@@ -81,15 +74,20 @@ export function NodeConfigModal({
 
   const formSchema = generateZodSchema();
 
+  // Create initial values object from form fields
+  const initialValues = node.data.config.form.reduce((acc, field) => {
+    acc[field.name] = field.value;
+    return acc;
+  }, {} as Record<string, any>);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: node.data.config.values,
+    defaultValues: initialValues,
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!node || !node.data.config) return;
-    //  node.data.config.values = values;
-    updateNodeValues(node.id, values);
+    node.updateValues(values);
     onOpenChange(false);
   }
 
@@ -101,11 +99,11 @@ export function NodeConfigModal({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {Object.entries(fields).map(([fieldName, field]) => (
+            {node.data.config.form.map((field) => (
               <FormField
-                key={fieldName}
+                key={field.name}
                 control={form.control}
-                name={fieldName}
+                name={field.name}
                 render={({ field: formField }) => (
                   <FormItem>
                     <FormLabel>{field.label}</FormLabel>

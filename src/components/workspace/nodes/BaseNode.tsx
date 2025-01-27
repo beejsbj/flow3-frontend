@@ -4,8 +4,6 @@ import { useLayoutDirection, useNode } from "@/stores/workspace";
 import { useState } from "react";
 import { NodeConfigModal } from "./NodeConfigModal";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-import { useInternalNode, useNodes } from "@xyflow/react";
 
 interface BaseNodeProps extends NodeProps {
   onClick?: () => void;
@@ -70,8 +68,6 @@ export function BaseNode({
   const direction = useLayoutDirection();
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const node = useNode(id);
-  const internalNode = useInternalNode(id);
-  const nodes = useNodes();
 
   // Calculate port positions
   const portsWithPositions = calculatePortPositions(
@@ -79,16 +75,9 @@ export function BaseNode({
     direction ?? "horizontal"
   );
 
-  // Validate when config values change
-  useEffect(() => {
-    //  validateNode(id, data, updateNodeValidation);
-    node?.validate();
-    console.log("nodes", node, internalNode);
-  }, [data.config?.values]);
-
   const handleClick = () => {
-    // Only open config modal if node has config schema
-    if (data.config?.fields) {
+    // Only open config modal if node has config form
+    if (data.config?.form && data.config.form.length > 0) {
       setConfigModalOpen(true);
     }
     // Still call the original onClick if provided
