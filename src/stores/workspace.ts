@@ -95,17 +95,37 @@ const useWorkspaceStore = create(
     },
 
     onConnect: (connection) => {
-      // Create edge with port information
-      const edge = {
-        ...connection,
-        sourcePort: connection.sourceHandle,
-        targetPort: connection.targetHandle,
-      };
+      // Generate edge ID using the same format as addEdge
+      const edgeId = `xy-edge__${connection.source}${
+        connection.sourceHandle || ""
+      }-${connection.target}${connection.targetHandle || ""}`;
+
+      // Update source node ports
+      get().updateNodeData(connection.source, (data) => ({
+        ...data,
+        ports: data.ports.map((port) =>
+          port.id === connection.sourceHandle
+            ? { ...port, edgeId: edgeId } // Use the generated edgeId
+            : port
+        ),
+      }));
+
+      // Update target node ports
+      get().updateNodeData(connection.target, (data) => ({
+        ...data,
+        ports: data.ports.map((port) =>
+          port.id === connection.targetHandle
+            ? { ...port, edgeId: edgeId } // Use the generated edgeId
+            : port
+        ),
+      }));
 
       set({
-        edges: addEdge(edge, get().edges),
+        edges: addEdge(connection, get().edges),
         lastModified: new Date(),
       });
+
+      console.log(get().edges);
     },
 
     setNodes: (nodes) => {
