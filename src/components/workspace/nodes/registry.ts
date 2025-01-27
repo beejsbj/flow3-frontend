@@ -8,7 +8,6 @@ import { ComponentType } from "react";
 import { LucideIcon } from "lucide-react";
 import { BaseNode } from "./BaseNode";
 import { Port } from "@/components/workspace/types";
-import useWorkspaceStore from "@/stores/workspace";
 import { Square, ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 
 // Registry type to store node definitions
@@ -39,7 +38,7 @@ export class NodeRegistry {
     if (!definition.ports) return [];
     return definition.ports.map((port, index) => ({
       ...port,
-      id: `${nodeId}__${port.type}-${index}`,
+      id: `_${port.type}-${index}_`,
     }));
   }
 
@@ -86,6 +85,11 @@ export class NodeRegistry {
   // Get a node definition by type
   get(type: string): NodeDefinition | undefined {
     return this.nodes.get(type);
+  }
+
+  // does type exist
+  has(type: string): boolean {
+    return this.nodes.has(type);
   }
 
   // Get all registered nodes
