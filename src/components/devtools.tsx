@@ -135,24 +135,73 @@ function NodeInfo({ node, absPosition }: NodeInfoProps) {
     absPosition.y + node.measured.height
   }px)`;
 
+  // Helper function to extract icon name from complex icon objects
+  const simplifyIcon = (icon: any): string => {
+    if (!icon) return "none";
+    if (icon.$$typeof && typeof icon.$$typeof === "symbol") {
+      return icon.render?.name || icon.className || "ReactComponent";
+    }
+    return String(icon);
+  };
+
+  // Recursive function to format nested objects and arrays
+  const formatValue = (
+    value: any,
+    depth = 0,
+    key?: string
+  ): JSX.Element | string => {
+    if (value === null) return "null";
+    if (value === undefined) return "undefined";
+    if (typeof value !== "object") return String(value);
+
+    // Special handling for icon property
+    if (key === "icon") {
+      return simplifyIcon(value);
+    }
+
+    if (Array.isArray(value)) {
+      const items = value.map((v, i) => (
+        <div key={i} style={{ marginLeft: `${depth}em` }}>
+          {formatValue(v, depth + 1)}
+        </div>
+      ));
+      return <div>[{items}]</div>;
+    }
+
+    const entries = Object.entries(value).map(([k, v], i) => (
+      <div key={i} style={{ marginLeft: `${depth}em` }}>
+        <span className="font-semibold text-blue-600">{k}:</span>{" "}
+        {formatValue(v, depth + 1, k)}
+      </div>
+    ));
+
+    return (
+      <div>
+        {`{`}
+        {entries}
+        {`}`}
+      </div>
+    );
+  };
+
   // Format all node properties for display
   const nodeProperties = Object.entries(node).map(([key, value]) => (
-    <div key={key} className="text-[8px] pl-1">
+    <div key={key} className="mb-0.5">
       <span className="font-semibold text-blue-600">{key}:</span>{" "}
-      {typeof value === "object" ? JSON.stringify(value) : String(value)}
+      {formatValue(value, 1, key)}
     </div>
   ));
 
   return (
-    <div
+    <code
       style={{
         position: "absolute",
         transform: absoluteTransform,
       }}
-      className="absolute text-[8px]"
+      className="absolute text-[8px] max-w-[25em] bg-white/95 p-1.5 rounded border shadow-sm"
     >
       {nodeProperties}
-    </div>
+    </code>
   );
 }
 
