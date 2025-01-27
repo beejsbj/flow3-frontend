@@ -131,10 +131,12 @@ export function BaseNode({
 
   // Dynamic border color based on validation
   const borderColor = cn("border border-solid transition-colors", {
-    "border-red-500": data.state.validation && !data.state.validation.isValid,
+    "border-red-500":
+      data?.state?.validation && !data?.state?.validation?.isValid,
     "border-primary": selected,
     "border-border":
-      !selected && (!data.state.validation || data.state.validation.isValid),
+      !selected &&
+      (!data?.state?.validation || data?.state?.validation?.isValid),
   });
 
   return (
