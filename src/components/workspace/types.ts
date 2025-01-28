@@ -29,7 +29,7 @@ export interface NodeValidation {
 
 export interface NodeData extends Record<string, any> {
   label?: string;
-  icon?: LucideIcon;
+  icon?: string;
   description?: string;
   category?: string;
   ports?: {
@@ -84,7 +84,7 @@ export interface Workspace {
   id: string;
   name: string;
   description: string;
-  lastModified: Date;
+  lastModified: string | Date;
   config?: WorkspaceConfig;
 
   // Content

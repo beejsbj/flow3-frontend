@@ -1,62 +1,30 @@
 import { create } from "zustand";
-import { Workspace, Node } from "@/components/workspace/types";
+import { Workspace } from "@/components/workspace/types";
 import { Node as NodeClass } from "@/components/workspace/nodes/Node";
-// Dummy data
+import * as workspaceService from "@/services/workspaces";
+// Import node registrations
+// import "@/components/workspace/nodes";
 
-const createInitialNodesAndEdges = (workspaceId: string) => {
-  const startNode = new NodeClass("start", { x: 0, y: 0 });
-  const placeholderNode = new NodeClass("placeholder", { x: 0, y: 100 });
+// Create nodes with proper data structure
+const createStartNode = () => NodeClass.create("start");
+const createPlaceholderNode = () => NodeClass.create("placeholder");
 
-  const edge = {
-    id: `${startNode.id}-${placeholderNode.id}`,
-    source: startNode.id,
-    target: placeholderNode.id,
-    sourceHandle: "output-0",
-    targetHandle: "input-0",
-    type: "base",
-  };
-
-  return { nodes: [startNode, placeholderNode], edges: [edge] };
-};
-
-const dummyWorkspaces: Workspace[] = [
-  {
-    id: "1",
-    name: "Marketing Campaign",
-    description: "Q4 marketing initiatives and planning",
-    lastModified: new Date(),
-    config: {
-      layout: {
-        direction: "LR",
-        spacing: [100, 100],
-        auto: true,
-      },
-    },
-    ...createInitialNodesAndEdges("1"),
-  },
-  {
-    id: "2",
-    name: "Product Launch",
-    description: "New feature launch preparation",
-    lastModified: new Date(),
-    config: {
-      layout: {
-        direction: "LR",
-        spacing: [50, 50],
-        auto: true,
-      },
-    },
-    ...createInitialNodesAndEdges("2"),
-  },
-];
+// Helper function to process workspace nodes
+const processWorkspaceNodes = (workspace: any) => ({
+  ...workspace,
+  nodes: workspace.nodes.map((nodeData: any) =>
+    NodeClass.createFromStorage(nodeData)
+  ),
+});
 
 interface WorkspacesState {
   workspaces: Workspace[];
   isLoading: boolean;
   error: string | null;
-  fetchWorkspaces: (userId: string) => void;
-  createWorkspace: (workspace: Omit<Workspace, "id">) => void;
-  updateWorkspace: (workspace: Workspace) => void;
+  fetchWorkspaces: (userId: string) => Promise<void>;
+  createWorkspace: () => Promise<void>;
+  updateWorkspace: (workspace: Workspace) => Promise<void>;
+  deleteWorkspace: (id: string) => Promise<void>;
 }
 
 export const useWorkspacesStore = create<WorkspacesState>((set) => ({
@@ -64,26 +32,23 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
   isLoading: false,
   error: null,
 
-  fetchWorkspaces: (userId: string) => {
-    console.log("fetchWorkspaces", userId);
-    set({ isLoading: true });
-    // Simulate API delay
-    setTimeout(() => {
-      set({ workspaces: dummyWorkspaces, isLoading: false });
-    }, 500);
+  fetchWorkspaces: async (userId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const workspaces = await workspaceService.fetchWorkspaces();
+      const processedWorkspaces = workspaces.map(processWorkspaceNodes);
+      set({ workspaces: processedWorkspaces, isLoading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false });
+    }
   },
 
-  createWorkspace: (workspaceData) => {
-    set({ isLoading: true });
-    // Simulate API delay
-    setTimeout(() => {
-      // Create start node
-      const startNode = new NodeClass("start", { x: 0, y: 0 });
+  createWorkspace: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const startNode = createStartNode();
+      const placeholderNode = createPlaceholderNode();
 
-      // Create placeholder node
-      const placeholderNode = new NodeClass("placeholder", { x: 0, y: 100 });
-
-      // Create connecting edge
       const edge = {
         id: `${startNode.id}-${placeholderNode.id}`,
         source: startNode.id,
@@ -93,31 +58,64 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
         type: "base",
       };
 
-      const newWorkspace = {
-        ...workspaceData,
-        id: Math.random().toString(36).substr(2, 9),
-        lastModified: new Date(),
+      const workspaceData = {
+        name: "New Workspace",
+        description: "Description",
+        lastModified: new Date().toISOString(),
         nodes: [startNode, placeholderNode],
         edges: [edge],
+        config: {
+          layout: {
+            direction: "LR" as const,
+            spacing: [100, 100] as [number, number],
+            auto: true,
+          },
+        },
       };
 
+      const newWorkspace = await workspaceService.createWorkspace(
+        workspaceData
+      );
+      const processedWorkspace = processWorkspaceNodes(newWorkspace);
+
       set((state) => ({
-        workspaces: [...state.workspaces, newWorkspace],
+        workspaces: [...state.workspaces, processedWorkspace],
         isLoading: false,
       }));
-    }, 500);
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false });
+    }
   },
 
-  updateWorkspace: (workspace) => {
-    set({ isLoading: true });
-    // Simulate API delay
-    setTimeout(() => {
+  updateWorkspace: async (workspace) => {
+    set({ isLoading: true, error: null });
+    try {
+      const updatedWorkspace = await workspaceService.updateWorkspace(
+        workspace
+      );
+      const processedWorkspace = processWorkspaceNodes(updatedWorkspace);
+
       set((state) => ({
         workspaces: state.workspaces.map((w) =>
-          w.id === workspace.id ? { ...workspace, lastModified: new Date() } : w
+          w.id === processedWorkspace.id ? processedWorkspace : w
         ),
         isLoading: false,
       }));
-    }, 500);
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false });
+    }
+  },
+
+  deleteWorkspace: async (id: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await workspaceService.deleteWorkspace(id);
+      set((state) => ({
+        workspaces: state.workspaces.filter((w) => w.id !== id),
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false });
+    }
   },
 }));

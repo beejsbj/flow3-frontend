@@ -8,6 +8,7 @@ import {
   getSourceHandlePosition,
   getTargetHandlePosition,
 } from "@/lib/utils";
+import { getIconByName } from "@/lib/icons";
 import React from "react";
 
 interface BaseNodeProps extends NodeProps {
@@ -76,7 +77,8 @@ export function BaseNode({
   className,
   ...props
 }: BaseNodeProps) {
-  const { icon: Icon, label, ports } = data;
+  const { icon, label, ports } = data;
+  const Icon = icon ? getIconByName(icon) : undefined;
 
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const node = useNode(id);

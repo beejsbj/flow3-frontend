@@ -1,0 +1,99 @@
+{
+  "workspaces": [
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-01-28T19:52:05.215Z",
+      "nodes": [
+        {
+          "id": "start-1738093925173-jf09b45t0",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "test": "test"
+        },
+        {
+          "id": "placeholder-1738093925174-upv97twoy",
+          "type": "placeholder",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "test": "test"
+        }
+      ],
+      "edges": [
+        {
+          "id": "start-1738093925173-jf09b45t0-placeholder-1738093925174-upv97twoy",
+          "source": "start-1738093925173-jf09b45t0",
+          "target": "placeholder-1738093925174-upv97twoy",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "type": "base"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "LR",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": true
+        }
+      },
+      "id": "4dfqkehrg"
+    }
+  ]
+}

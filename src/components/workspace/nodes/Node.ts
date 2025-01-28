@@ -1,28 +1,59 @@
 import { LucideIcon } from "lucide-react";
 import { Node as NodeType, NodeData, Port } from "../types";
 import { nodeRegistry } from "./registry";
+import "@/components/workspace/nodes";
 
 export class Node implements NodeType {
   id: string;
   type: string;
   position: { x: number; y: number };
   data: NodeData;
-  test: string;
 
-  constructor(type: string, position: { x: number; y: number }) {
+  constructor(
+    type: string,
+    position: { x: number; y: number } = { x: 0, y: 0 }
+  ) {
     if (!nodeRegistry.has(type)) {
       throw new Error(`Node type "${type}" not found in registry`);
     }
     this.type = type;
     this.position = position;
-    this.test = "test";
     this.id = this.generateId();
     this.data = this.createNodeData();
-    this.validate = this.validate;
-    this.updatePortConnections = this.updatePortConnections;
-    this.updateValues = this.updateValues;
+
+    // Bind methods to this instance
+    this.validate = this.validate.bind(this);
+    this.updatePortConnections = this.updatePortConnections.bind(this);
+    this.updateValues = this.updateValues.bind(this);
 
     this.validate();
+  }
+
+  // Static factory methods
+  static create(type: string, position?: { x: number; y: number }) {
+    return new Node(type, position);
+  }
+
+  static createFromStorage(data: {
+    id: string;
+    type: string;
+    position: { x: number; y: number };
+    data: NodeData;
+  }): Node {
+    const node = new Node(data.type, data.position);
+    node.id = data.id;
+    node.data = data.data;
+    return node;
+  }
+
+  // Serialization method
+  toJSON() {
+    return {
+      id: this.id,
+      type: this.type,
+      position: this.position,
+      data: this.data,
+    };
   }
 
   private generateId(): string {
@@ -53,14 +84,17 @@ export class Node implements NodeType {
 
   private createNodeData(): NodeData {
     const definition = nodeRegistry.get(this.type);
+    if (!definition) {
+      throw new Error(`Node type "${this.type}" not found in registry`);
+    }
 
-    const ports = this.createPorts(definition!.ports);
+    const ports = this.createPorts(definition.ports);
     return {
-      label: definition!.label,
-      icon: definition!.icon as LucideIcon,
-      description: definition!.description,
-      category: definition!.category,
-      config: definition!.config,
+      label: definition.label,
+      icon: definition.icon, // Now it's a string, no need for casting
+      description: definition.description,
+      category: definition.category,
+      config: definition.config,
       ports,
       state: {
         validation: { isValid: true, errors: [] },
@@ -96,10 +130,12 @@ export class Node implements NodeType {
       }
     });
 
-    this.data.state.validation = {
-      isValid: errors.length === 0,
-      errors,
-    };
+    if (this.data.state) {
+      this.data.state.validation = {
+        isValid: errors.length === 0,
+        errors,
+      };
+    }
   }
 
   updatePortConnections(portId: string | null, edgeId: string): void {

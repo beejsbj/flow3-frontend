@@ -16,6 +16,13 @@ interface WorkspaceCardProps {
   workspace: Workspace;
 }
 
+function formatDate(date: string | Date): string {
+  if (typeof date === "string") {
+    return new Date(date).toLocaleDateString();
+  }
+  return date.toLocaleDateString();
+}
+
 function WorkspaceCard({ workspace }: WorkspaceCardProps) {
   return (
     <Card className="hover:border-primary/50 transition-colors">
@@ -27,7 +34,7 @@ function WorkspaceCard({ workspace }: WorkspaceCardProps) {
       </CardHeader>
       <CardFooter className="flex justify-between items-center">
         <span className="whisper-voice">
-          Last modified: {workspace.lastModified.toLocaleDateString()}
+          Last modified: {formatDate(workspace.lastModified)}
         </span>
         <Button asChild variant="link">
           <Link href={`/workspace/${workspace.id}`}>Open workspace →</Link>

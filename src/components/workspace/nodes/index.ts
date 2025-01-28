@@ -1,15 +1,6 @@
-import { PositionLoggerNode } from "./PositionLoggerNode";
 import { nodeRegistry } from "./registry";
-import {
-  Crosshair,
-  Clock,
-  Square,
-  ArrowLeftCircle,
-  ArrowRightCircle,
-  Plus,
-  Play,
-} from "lucide-react";
 import { PlaceholderNode } from "./PlaceholderNode";
+import { PositionLoggerNode } from "./PositionLoggerNode";
 
 // Register the position logger node first
 nodeRegistry.register({
@@ -17,7 +8,7 @@ nodeRegistry.register({
   label: "Position Logger",
   description: "Displays the current position of the node",
   category: "Debug",
-  icon: Crosshair,
+  icon: "Crosshair",
   component: PositionLoggerNode,
   ports: {
     inputs: [{ label: "Input", type: "target" }],
@@ -31,7 +22,7 @@ nodeRegistry.register({
   label: "Delay",
   description: "Adds a time delay to the flow",
   category: "Flow Control",
-  icon: Clock,
+  icon: "Clock",
   config: {
     form: [
       {
@@ -55,13 +46,16 @@ nodeRegistry.register({
   label: "Multi Port Node",
   description: "A node with multiple ports",
   category: "Examples",
-  icon: Clock,
+  icon: "Clock",
   ports: {
     inputs: [
       { label: "Input 1", type: "target" },
       { label: "Input 2", type: "target" },
     ],
-    outputs: [{ label: "Output", type: "source" }],
+    outputs: [
+      { label: "Output 1", type: "source" },
+      { label: "Output 2", type: "source" },
+    ],
   },
 });
 
@@ -71,7 +65,7 @@ nodeRegistry.register({
   label: "Form Fields Example",
   description: "Demonstrates different types of form fields",
   category: "Examples",
-  icon: Clock,
+  icon: "Clock",
   config: {
     form: [
       {
@@ -127,7 +121,7 @@ nodeRegistry.register({
   label: "Add Node",
   description: "Click to add a new node",
   category: "System",
-  icon: Plus,
+  icon: "Plus",
   component: PlaceholderNode,
   ports: {
     inputs: [{ label: "Input", type: "target" }],
@@ -141,7 +135,7 @@ nodeRegistry.register({
   label: "Start",
   description: "The start of the flow",
   category: "System",
-  icon: Play,
+  icon: "Play",
   ports: {
     outputs: [{ label: "Output", type: "source" }],
   },

@@ -10,7 +10,7 @@ export interface NodeDefinition {
   label: string;
   description: string;
   category: string;
-  icon: LucideIcon;
+  icon: string;
   component?: ComponentType<NodeProps>;
   config?: Record<string, any>;
   ports?: {

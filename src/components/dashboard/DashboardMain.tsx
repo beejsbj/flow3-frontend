@@ -28,21 +28,11 @@ function DashboardMain() {
   const { name } = useUser();
   const { createWorkspace } = useWorkspacesStore();
 
-  const handleNewWorkspace = () => {
-    createWorkspace({
-      name: "New Workspace",
-      description: "Description",
-      lastModified: new Date(),
-      edges: [],
-      nodes: [],
-    });
-  };
-
   return (
     <section className="p-6">
       <DashboardHeader
         userName={name || ""}
-        onNewWorkspace={handleNewWorkspace}
+        onNewWorkspace={() => createWorkspace()}
       />
       <WorkspacesList />
     </section>
