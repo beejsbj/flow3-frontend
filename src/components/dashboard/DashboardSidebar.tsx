@@ -8,24 +8,10 @@ import {
   SidebarMenuButton,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import {
-  Home,
-  Settings,
-  Users,
-  FileText,
-  Wallet,
-  LayoutTemplate,
-} from "lucide-react";
+import { Home, Settings, Users, FileText, Wallet } from "lucide-react";
 import UserNav from "@/components/user/UserNav";
-import {
-  useToggleLayoutDirection,
-  useLayoutDirection,
-} from "@/stores/workspace";
 
 export default function DashboardSidebar() {
-  const toggleLayout = useToggleLayoutDirection();
-  const direction = useLayoutDirection();
-
   return (
     <Sidebar side="left">
       <SidebarHeader className="">
@@ -56,13 +42,6 @@ export default function DashboardSidebar() {
           </SidebarMenuItem>
 
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Toggle Layout" onClick={toggleLayout}>
-              <LayoutTemplate />
-              <span>Layout: {direction}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
             <SidebarMenuButton tooltip="Settings">
               <Settings />
               <span>Settings</span>
@@ -71,7 +50,6 @@ export default function DashboardSidebar() {
         </SidebarMenu>
       </SidebarContent>
 
-      {/*  */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>

@@ -1,20 +1,24 @@
-import { Handle, Position } from "@xyflow/react";
-import { NodeProps, Port } from "@/components/workspace/types";
-import { useLayoutDirection, useNode } from "@/stores/workspace";
+import { Handle, Position, useInternalNode } from "@xyflow/react";
+import { NodeProps, Port, LayoutOptions } from "@/components/workspace/types";
+import { useLayoutOptions, useNode } from "@/stores/workspace";
 import { useState } from "react";
 import { NodeConfigModal } from "./NodeConfigModal";
-import { cn } from "@/lib/utils";
+import {
+  cn,
+  getSourceHandlePosition,
+  getTargetHandlePosition,
+} from "@/lib/utils";
+import React from "react";
 
 interface BaseNodeProps extends NodeProps {
   onClick?: () => void;
   children?: React.ReactNode;
+  className?: string;
 }
 
-function calculatePortPositions(
-  ports: Port[] | undefined,
-  direction: "horizontal" | "vertical"
-) {
+function calculatePortPositions(ports: Port[], layoutOptions: LayoutOptions) {
   if (!ports || ports.length === 0) return [];
+
   const sourcePorts = ports.filter((p) => p.type === "source");
   const targetPorts = ports.filter((p) => p.type === "target");
 
@@ -41,16 +45,14 @@ function calculatePortPositions(
         ? 0.5 // Center if single port
         : EDGE_PADDING + index * spacing;
 
+    // Use the node's source/target position based on layout direction
+    const handlePosition = isSource
+      ? getSourceHandlePosition(layoutOptions.direction)
+      : getTargetHandlePosition(layoutOptions.direction);
+
     return {
       ...port,
-      position:
-        direction === "horizontal"
-          ? isSource
-            ? Position.Right
-            : Position.Left
-          : isSource
-          ? Position.Bottom
-          : Position.Top,
+      position: handlePosition,
       offset: position * 100,
     };
   });
@@ -63,17 +65,18 @@ export function BaseNode({
   children,
   onClick,
   selected,
+  className,
+  ...props
 }: BaseNodeProps) {
   const { icon: Icon, label, ports } = data;
-  const direction = useLayoutDirection();
+
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const node = useNode(id);
+  const internalNode = useInternalNode(id);
+  const layoutOptions = useLayoutOptions();
 
-  // Calculate port positions
-  const portsWithPositions = calculatePortPositions(
-    ports,
-    direction ?? "horizontal"
-  );
+  // Calculate port positions passing the entire node
+  const portsWithPositions = calculatePortPositions(ports, layoutOptions);
 
   const handleClick = () => {
     // Only open config modal if node has config form
@@ -99,8 +102,8 @@ export function BaseNode({
   });
 
   return (
-    <>
-      <div className="flex flex-col items-center" onClick={handleClick}>
+    <RFBaseNode onClick={handleClick}>
+      <div className="flex flex-col items-center">
         <div className="relative">
           {/* Render all ports */}
           {portsWithPositions.map((port) => (
@@ -120,7 +123,12 @@ export function BaseNode({
 
           {/* Square container for icon with dynamic border color */}
           <div
-            className={`w-16 h-16 bg-secondary flex items-center justify-center rounded-lg ${borderColor}`}
+            className={cn(
+              "w-16 h-16 bg-secondary flex items-center justify-center rounded-lg hover:bg-muted/50 transition-colors",
+
+              borderColor,
+              className
+            )}
           >
             {children ? children : Icon && <Icon />}
           </div>
@@ -135,6 +143,12 @@ export function BaseNode({
         open={configModalOpen}
         onOpenChange={setConfigModalOpen}
       />
-    </>
+    </RFBaseNode>
   );
 }
+
+export const RFBaseNode = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((props, ref) => <div ref={ref} tabIndex={0} role="button" {...props} />);
+RFBaseNode.displayName = "RFBaseNode";

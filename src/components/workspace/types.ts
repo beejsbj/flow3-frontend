@@ -30,10 +30,10 @@ export interface NodeValidation {
 export interface NodeData extends Record<string, any> {
   label?: string;
   icon?: LucideIcon;
-  description: string;
-  category: string;
-  ports: Port[];
-  state: NodeState;
+  description?: string;
+  category?: string;
+  ports?: Port[]; //@TODO: Add inputs and outputs
+  state?: NodeState;
   config?: {
     form?: FieldConfig[];
   };
@@ -45,10 +45,11 @@ export interface NodeState {
 
 export interface Node extends RFNode {
   data: NodeData;
-  test: string;
-  validate: () => void;
-  updatePortConnections: (portId: string, edgeId: string) => void;
-  updateValues: (values: Record<string, any>) => void;
+
+  // Optional methods
+  validate?: () => void;
+  updatePortConnections?: (portId: string, edgeId: string) => void;
+  updateValues?: (values: Record<string, any>) => void;
 }
 
 export interface NodeProps extends RFNodeProps {
@@ -63,10 +64,16 @@ export interface Edge extends RFEdge {
 
 // workspace
 
+export type Direction = "TB" | "LR" | "RL" | "BT";
+
+export type LayoutOptions = {
+  direction: Direction;
+  spacing: [number, number];
+  auto: boolean;
+};
+
 export interface WorkspaceConfig extends Record<string, any> {
-  layout: {
-    direction: "vertical" | "horizontal";
-  };
+  layout: LayoutOptions;
 }
 
 export interface Workspace {
@@ -104,9 +111,18 @@ export interface WorkspaceState extends Workspace {
 
   // Node operations
   getNode: (id: string) => Node | undefined;
-  addNode: (type: string) => void;
+  addNode: (
+    type: string,
+    position?: { x: number; y: number }
+  ) => Node | undefined;
   deleteNode: (id: string) => void;
   updateNodeData: (nodeId: string, updater: (data: any) => any) => void;
+  connectNodes: (params: {
+    source: string;
+    target: string;
+    sourceHandle?: string;
+    targetHandle?: string;
+  }) => void;
 
   // Add validation state
   validation: WorkspaceValidation;

@@ -10,160 +10,180 @@ import {
 import { subscribeWithSelector } from "zustand/middleware";
 import { Node } from "@/components/workspace/nodes/Node";
 
-const useWorkspaceStore = create(
-  subscribeWithSelector<WorkspaceState>((set, get) => ({
-    // Metadata
-    id: "", // Will be set when loading a workspace
-    name: "",
-    description: "",
-    config: {
-      layout: {
-        direction: "vertical",
-      },
+const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
+  // Metadata
+  id: "", // Will be set when loading a workspace
+  name: "",
+  description: "",
+  config: {
+    layout: {
+      direction: "LR",
+      spacing: [100, 100],
+      auto: true,
     },
-    lastModified: new Date(),
+  },
+  lastModified: new Date(),
 
-    // Content state - initialize as empty arrays instead of static data
-    nodes: [],
-    edges: [],
+  // Content state - initialize as empty arrays instead of static data
+  nodes: [],
+  edges: [],
 
-    // Add validation state
-    validation: {
-      isValid: true,
-      errors: [],
-    },
+  // Add validation state
+  validation: {
+    isValid: true,
+    errors: [],
+  },
 
-    // Add validate method
-    validate: () => {
-      const nodes = get().nodes;
-      const errors: WorkspaceValidation["errors"] = [];
+  // Add validate method
+  validate: () => {
+    const nodes = get().nodes;
+    const errors: WorkspaceValidation["errors"] = [];
 
-      nodes.forEach((node) => {
-        if (!node.data.state.validation.isValid) {
-          errors.push({
-            nodeId: node.id,
-            errors: node.data.state.validation.errors,
-          });
-        }
-      });
-
-      set({
-        validation: {
-          isValid: errors.length === 0,
-          errors,
-        },
-      });
-    },
-
-    // Add a new method to load workspace data
-    loadWorkspace: (workspace: Workspace) => {
-      set({
-        id: workspace.id,
-        name: workspace.name,
-        description: workspace.description,
-        config: workspace.config,
-        nodes: workspace.nodes,
-        edges: workspace.edges,
-        lastModified: workspace.lastModified,
-      });
-    },
-
-    // Operations
-
-    // Workspace operations
-    updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => {
-      set({
-        config: updater(get().config!),
-        lastModified: new Date(),
-      });
-    },
-
-    // React Flow operations
-    onNodesChange: (changes) => {
-      set({
-        nodes: applyNodeChanges(changes, get().nodes) as NodeType[],
-        lastModified: new Date(),
-      });
-    },
-
-    onEdgesChange: (changes) => {
-      set({
-        edges: applyEdgeChanges(changes, get().edges),
-        lastModified: new Date(),
-      });
-    },
-
-    onConnect: (connection) => {
-      // Generate edge ID using the same format as addEdge
-      const edgeId = `xy-edge__${connection.source}${
-        connection.sourceHandle || ""
-      }-${connection.target}${connection.targetHandle || ""}`;
-
-      // Update port connections
-      get().nodes.forEach((node) => {
-        if (connection.sourceHandle) {
-          node.updatePortConnections(connection.sourceHandle, edgeId);
-        }
-        if (connection.targetHandle) {
-          node.updatePortConnections(connection.targetHandle, edgeId);
-        }
-      });
-
-      set({
-        edges: addEdge(connection, get().edges),
-        lastModified: new Date(),
-      });
-
-      console.log(get().edges);
-    },
-
-    setNodes: (nodes) => {
-      set({ nodes, lastModified: new Date() });
-    },
-
-    setEdges: (edges) => {
-      set({ edges, lastModified: new Date() });
-    },
-
-    // Node operations
-
-    getNode: (id: string) => {
-      return get().nodes.find((node) => node.id === id);
-    },
-
-    addNode: (type) => {
-      try {
-        const position = { x: 0, y: 0 };
-        const newNode = new Node(type, position);
-
-        console.log("newNode", newNode);
-
-        set({
-          nodes: [...get().nodes, newNode],
-          lastModified: new Date(),
+    nodes.forEach((node) => {
+      if (!node.data.state.validation.isValid) {
+        errors.push({
+          nodeId: node.id,
+          errors: node.data.state.validation.errors,
         });
-      } catch (error) {
-        console.error("Failed to create node:", error);
       }
-    },
+    });
 
-    deleteNode: (id: string) => {
+    set({
+      validation: {
+        isValid: errors.length === 0,
+        errors,
+      },
+    });
+  },
+
+  // Add a new method to load workspace data
+  loadWorkspace: (workspace: Workspace) => {
+    set({
+      id: workspace.id,
+      name: workspace.name,
+      description: workspace.description,
+      config: workspace.config,
+      nodes: workspace.nodes,
+      edges: workspace.edges,
+      lastModified: workspace.lastModified,
+    });
+  },
+
+  // Operations
+
+  // Workspace operations
+  updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => {
+    set({
+      config: updater(get().config!),
+      lastModified: new Date(),
+    });
+  },
+
+  // React Flow operations
+  onNodesChange: (changes) => {
+    set({
+      nodes: applyNodeChanges(changes, get().nodes) as NodeType[],
+      lastModified: new Date(),
+    });
+  },
+
+  onEdgesChange: (changes) => {
+    set({
+      edges: applyEdgeChanges(changes, get().edges),
+      lastModified: new Date(),
+    });
+
+    console.log(get().edges);
+  },
+
+  onConnect: (connection) => {
+    // Generate edge ID using the same format as addEdge
+    const edgeId = `xy-edge__${connection.source}${
+      connection.sourceHandle || ""
+    }-${connection.target}${connection.targetHandle || ""}`;
+
+    // Update port connections
+    get().nodes.forEach((node) => {
+      // if(!node) return;
+      if (connection.sourceHandle) {
+        node.updatePortConnections(connection.sourceHandle, edgeId);
+      }
+      if (connection.targetHandle) {
+        node.updatePortConnections(connection.targetHandle, edgeId);
+      }
+    });
+
+    set({
+      edges: addEdge(connection, get().edges),
+      lastModified: new Date(),
+    });
+
+    //  console.log(get().edges);
+  },
+
+  setNodes: (nodes) => {
+    set({ nodes, lastModified: new Date() });
+  },
+
+  setEdges: (edges) => {
+    set({ edges, lastModified: new Date() });
+  },
+
+  // Node operations
+
+  getNode: (id: string) => {
+    return get().nodes.find((node) => node.id === id);
+  },
+
+  addNode: (type, position = { x: 0, y: 0 }) => {
+    try {
+      const newNode = new Node(type, position);
+
       set({
-        nodes: get().nodes.filter((node) => node.id !== id),
+        nodes: [...get().nodes, newNode],
         lastModified: new Date(),
       });
-    },
 
-    updateNodeData: (nodeId: string, updater: (data: any) => any) => {
-      set({
-        nodes: get().nodes.map((node) =>
-          node.id === nodeId ? { ...node, data: updater(node.data) } : node
-        ),
-        lastModified: new Date(),
-      });
-    },
-  }))
-);
+      return newNode;
+    } catch (error) {
+      console.error("Failed to create node:", error);
+    }
+  },
+
+  deleteNode: (id: string) => {
+    set({
+      nodes: get().nodes.filter((node) => node.id !== id),
+      lastModified: new Date(),
+    });
+  },
+
+  updateNodeData: (nodeId: string, updater: (data: any) => any) => {
+    set({
+      nodes: get().nodes.map((node) =>
+        node.id === nodeId ? { ...node, data: updater(node.data) } : node
+      ),
+      lastModified: new Date(),
+    });
+  },
+
+  // Add this to your workspace store
+  connectNodes: (params: {
+    source: string;
+    target: string;
+    sourceHandle?: string;
+    targetHandle?: string;
+  }) => {
+    const connection = {
+      source: params.source,
+      target: params.target,
+      sourceHandle: params.sourceHandle || null,
+      targetHandle: params.targetHandle || null,
+    };
+
+    // Use the existing onConnect handler
+    get().onConnect(connection);
+  },
+}));
 
 export default useWorkspaceStore;
 
@@ -176,19 +196,6 @@ export default useWorkspaceStore;
 export const useLayoutDirection = () =>
   useWorkspaceStore((state) => state.config?.layout.direction);
 
-export const useToggleLayoutDirection = () => {
-  const updateConfig = useWorkspaceStore((state) => state.updateConfig);
-  return () =>
-    updateConfig((config) => ({
-      ...config,
-      layout: {
-        ...config.layout,
-        direction:
-          config.layout.direction === "horizontal" ? "vertical" : "horizontal",
-      },
-    }));
-};
-
 // Node operations
 export const useAddNode = () => useWorkspaceStore((state) => state.addNode);
 
@@ -198,3 +205,9 @@ export const useNode = (nodeId: string) =>
 // Add convenience hook for workspace validation
 export const useWorkspaceValidation = () =>
   useWorkspaceStore((state) => state.validation);
+
+export const useLayoutOptions = () =>
+  useWorkspaceStore((state) => state.config?.layout);
+
+export const useConnectNodes = () =>
+  useWorkspaceStore((state) => state.connectNodes);

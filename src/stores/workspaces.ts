@@ -2,6 +2,22 @@ import { create } from "zustand";
 import { Workspace, Node } from "@/components/workspace/types";
 import { Node as NodeClass } from "@/components/workspace/nodes/Node";
 // Dummy data
+
+const createInitialNodesAndEdges = (workspaceId: string) => {
+  const startNode = new NodeClass("start", { x: 0, y: 0 });
+  const placeholderNode = new NodeClass("placeholder", { x: 0, y: 100 });
+  const edge = {
+    id: `${startNode.id}-${placeholderNode.id}`,
+    source: startNode.id,
+    target: placeholderNode.id,
+    sourceHandle: "_source-0_",
+    targetHandle: "_target-0_",
+    type: "base",
+  };
+
+  return { nodes: [startNode, placeholderNode], edges: [edge] };
+};
+
 const dummyWorkspaces: Workspace[] = [
   {
     id: "1",
@@ -10,33 +26,12 @@ const dummyWorkspaces: Workspace[] = [
     lastModified: new Date(),
     config: {
       layout: {
-        direction: "horizontal",
+        direction: "LR",
+        spacing: [100, 100],
+        auto: true,
       },
     },
-    nodes: [
-      {
-        id: "1",
-        type: "input",
-        data: { label: "Input" },
-        position: { x: 250, y: 25 },
-      },
-
-      {
-        id: "2",
-        data: { label: "Default" },
-        position: { x: 100, y: 125 },
-      },
-      {
-        id: "3",
-        type: "output",
-        data: { label: "Output" },
-        position: { x: 250, y: 250 },
-      },
-    ], // Add empty initial state
-    edges: [
-      { id: "e1-2", source: "1", target: "2" },
-      { id: "e2-3", source: "2", target: "3" },
-    ],
+    ...createInitialNodesAndEdges("1"),
   },
   {
     id: "2",
@@ -45,73 +40,12 @@ const dummyWorkspaces: Workspace[] = [
     lastModified: new Date(),
     config: {
       layout: {
-        direction: "horizontal",
+        direction: "LR",
+        spacing: [50, 50],
+        auto: true,
       },
     },
-    nodes: [
-      {
-        id: "a",
-        position: { x: 0, y: 0 },
-        type: "default",
-        data: { label: "wire" },
-      },
-      {
-        id: "b",
-        type: "position-logger",
-        position: { x: -100, y: 100 },
-        data: { label: "drag me!" },
-      },
-      {
-        id: "c",
-        type: "default",
-
-        position: { x: 100, y: 100 },
-        data: { label: "your ideas" },
-      },
-      {
-        id: "d",
-        type: "default",
-
-        position: { x: 0, y: 200 },
-        data: { label: "with React Flow" },
-      },
-    ], // Add empty initial state
-    edges: [
-      { id: "a->c", source: "a", target: "c", animated: true },
-      { id: "c->d", source: "c", target: "d" },
-    ],
-  },
-  {
-    id: "3",
-    name: "Team Resources",
-    description: "Team documentation and resources",
-    lastModified: new Date(),
-    config: {
-      layout: {
-        direction: "horizontal",
-      },
-    },
-    nodes: [
-      // nodeRegistry.createNodeFromDefinition("delay", {
-      //   x: 100,
-      //   y: 100,
-      // }),
-
-      // nodeRegistry.createNodeFromDefinition("delay", {
-      //   x: 0,
-      //   y: 200,
-      // }),
-
-      new NodeClass("delay", {
-        x: 100,
-        y: 100,
-      }),
-      new NodeClass("delay", {
-        x: 0,
-        y: 200,
-      }),
-    ].filter((node): node is Node => node !== undefined), // Add empty initial state
-    edges: [],
+    ...createInitialNodesAndEdges("2"),
   },
 ];
 
@@ -142,11 +76,30 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
     set({ isLoading: true });
     // Simulate API delay
     setTimeout(() => {
+      // Create start node
+      const startNode = new NodeClass("start", { x: 0, y: 0 });
+
+      // Create placeholder node
+      const placeholderNode = new NodeClass("placeholder", { x: 0, y: 100 });
+
+      // Create connecting edge
+      const edge = {
+        id: `${startNode.id}-${placeholderNode.id}`,
+        source: startNode.id,
+        target: placeholderNode.id,
+        sourceHandle: "_source-0_",
+        targetHandle: "_target-0_",
+        type: "base",
+      };
+
       const newWorkspace = {
         ...workspaceData,
-        id: Math.random().toString(36).substr(2, 9), // Generate random ID
+        id: Math.random().toString(36).substr(2, 9),
         lastModified: new Date(),
+        nodes: [startNode, placeholderNode],
+        edges: [edge],
       };
+
       set((state) => ({
         workspaces: [...state.workspaces, newWorkspace],
         isLoading: false,

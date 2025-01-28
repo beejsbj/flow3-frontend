@@ -6,7 +6,10 @@ import {
   Square,
   ArrowLeftCircle,
   ArrowRightCircle,
+  Plus,
+  Play,
 } from "lucide-react";
+import { PlaceholderNode } from "./PlaceholderNode";
 
 // Register the position logger node first
 nodeRegistry.register({
@@ -113,35 +116,27 @@ nodeRegistry.register({
   ],
 });
 
-// Register default React Flow node types
 nodeRegistry.register({
-  type: "default",
-  label: "Default Node",
-  description: "A default node with input and output ports",
-  category: "Examples",
-  icon: Square,
+  type: "placeholder",
+  label: "Add Node",
+  description: "Click to add a new node",
+  category: "System",
+  icon: Plus,
+  component: PlaceholderNode,
   ports: [
     { type: "target", label: "Input" },
     { type: "source", label: "Output" },
   ],
 });
 
+//start node
 nodeRegistry.register({
-  type: "input",
-  label: "Input Node",
-  description: "A node with only output ports",
-  category: "Examples",
-  icon: ArrowRightCircle,
+  type: "start",
+  label: "Start",
+  description: "The start of the flow",
+  category: "System",
+  icon: Play,
   ports: [{ type: "source", label: "Output" }],
-});
-
-nodeRegistry.register({
-  type: "output",
-  label: "Output Node",
-  description: "A node with only input ports",
-  category: "Examples",
-  icon: ArrowLeftCircle,
-  ports: [{ type: "target", label: "Input" }],
 });
 
 // Now nodeTypes comes from the registry
