@@ -4,6 +4,7 @@ import useWorkspaceStore from "@/stores/workspace";
 import { NodesSheetList } from "../NodesSheetList";
 import { useState } from "react";
 import { useEdges } from "@xyflow/react";
+
 export function PlaceholderNode(props: NodeProps) {
   const { id, positionAbsoluteX, positionAbsoluteY } = props;
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -15,8 +16,6 @@ export function PlaceholderNode(props: NodeProps) {
     const parentEdge = edges.find((edge) => edge.target === id);
     if (!parentEdge) return;
 
-    //  console.log(parentEdge);
-    // Get the parent node ID from the edge
     const parentId = parentEdge.source;
 
     // Create new placeholder node first
@@ -38,17 +37,15 @@ export function PlaceholderNode(props: NodeProps) {
       source: parentId,
       target: newNode.id,
       sourceHandle: parentEdge.sourceHandle,
-      targetHandle: "_target-0_",
+      targetHandle: "input-0",
     });
-
-    console.log(newNode, newPlaceholder);
 
     // Connect the new node to the new placeholder
     connectNodes({
       source: newNode.id,
       target: newPlaceholder.id,
-      sourceHandle: "_source-0_",
-      targetHandle: "_target-0_",
+      sourceHandle: "output-0",
+      targetHandle: "input-0",
     });
 
     // Delete the current placeholder node last

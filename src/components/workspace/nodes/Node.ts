@@ -31,12 +31,24 @@ export class Node implements NodeType {
       .substr(2, 9)}`;
   }
 
-  private createPorts(ports?: Port[]): Port[] {
-    if (!ports) return [];
-    return ports.map((port, index) => ({
-      ...port,
-      id: `_${port.type}-${index}_`,
-    }));
+  private createPorts(ports?: { inputs?: Port[]; outputs?: Port[] }): {
+    inputs?: Port[];
+    outputs?: Port[];
+  } {
+    if (!ports) return {};
+
+    return {
+      inputs: ports.inputs?.map((port, index) => ({
+        ...port,
+        id: `input-${index}`,
+        type: "target",
+      })),
+      outputs: ports.outputs?.map((port, index) => ({
+        ...port,
+        id: `output-${index}`,
+        type: "source",
+      })),
+    };
   }
 
   private createNodeData(): NodeData {
@@ -72,8 +84,13 @@ export class Node implements NodeType {
       }
     });
 
-    //check ports connections
-    this.data.ports.forEach((port) => {
+    // Update port validation to handle new structure
+    const allPorts = [
+      ...(this.data.ports?.inputs || []),
+      ...(this.data.ports?.outputs || []),
+    ];
+
+    allPorts.forEach((port) => {
       if (!port.edgeId) {
         errors.push(`Please connect ${port.label}`);
       }
@@ -87,11 +104,21 @@ export class Node implements NodeType {
 
   updatePortConnections(portId: string | null, edgeId: string): void {
     if (!portId) return;
-    this.data.ports.forEach((port) => {
+
+    // Check inputs
+    this.data.ports?.inputs?.forEach((port) => {
       if (port.id === portId) {
         port.edgeId = edgeId;
       }
     });
+
+    // Check outputs
+    this.data.ports?.outputs?.forEach((port) => {
+      if (port.id === portId) {
+        port.edgeId = edgeId;
+      }
+    });
+
     this.validate();
   }
 

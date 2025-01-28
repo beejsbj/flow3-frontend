@@ -19,6 +19,10 @@ nodeRegistry.register({
   category: "Debug",
   icon: Crosshair,
   component: PositionLoggerNode,
+  ports: {
+    inputs: [{ label: "Input", type: "target" }],
+    outputs: [{ label: "Output", type: "source" }],
+  },
 });
 
 // Delay node
@@ -39,10 +43,10 @@ nodeRegistry.register({
       },
     ],
   },
-  ports: [
-    { type: "target", label: "Input" },
-    { type: "source", label: "Output" },
-  ],
+  ports: {
+    inputs: [{ label: "Input", type: "target" }],
+    outputs: [{ label: "Output", type: "source" }],
+  },
 });
 
 // Example of registering a node with multiple ports
@@ -52,11 +56,13 @@ nodeRegistry.register({
   description: "A node with multiple ports",
   category: "Examples",
   icon: Clock,
-  ports: [
-    { type: "target", label: "Input 1" },
-    { type: "target", label: "Input 2" },
-    { type: "source", label: "Output" },
-  ],
+  ports: {
+    inputs: [
+      { label: "Input 1", type: "target" },
+      { label: "Input 2", type: "target" },
+    ],
+    outputs: [{ label: "Output", type: "source" }],
+  },
 });
 
 // Example with multiple fields of same type
@@ -110,10 +116,10 @@ nodeRegistry.register({
       },
     ],
   },
-  ports: [
-    { type: "target", label: "Input" },
-    { type: "source", label: "Output" },
-  ],
+  ports: {
+    inputs: [{ label: "Input", type: "target" }],
+    outputs: [{ label: "Output", type: "source" }],
+  },
 });
 
 nodeRegistry.register({
@@ -123,10 +129,10 @@ nodeRegistry.register({
   category: "System",
   icon: Plus,
   component: PlaceholderNode,
-  ports: [
-    { type: "target", label: "Input" },
-    { type: "source", label: "Output" },
-  ],
+  ports: {
+    inputs: [{ label: "Input", type: "target" }],
+    outputs: [{ label: "Output", type: "source" }],
+  },
 });
 
 //start node
@@ -136,7 +142,9 @@ nodeRegistry.register({
   description: "The start of the flow",
   category: "System",
   icon: Play,
-  ports: [{ type: "source", label: "Output" }],
+  ports: {
+    outputs: [{ label: "Output", type: "source" }],
+  },
 });
 
 // Now nodeTypes comes from the registry

@@ -32,7 +32,10 @@ export interface NodeData extends Record<string, any> {
   icon?: LucideIcon;
   description?: string;
   category?: string;
-  ports?: Port[]; //@TODO: Add inputs and outputs
+  ports?: {
+    inputs?: Port[];
+    outputs?: Port[];
+  };
   state?: NodeState;
   config?: {
     form?: FieldConfig[];

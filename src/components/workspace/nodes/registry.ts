@@ -1,8 +1,7 @@
-import { NodeProps, NodeTypes } from "@/components/workspace/types";
+import { NodeProps, NodeTypes, Port } from "@/components/workspace/types";
 import { ComponentType } from "react";
 import { LucideIcon } from "lucide-react";
 import { BaseNode } from "./BaseNode";
-import { Port } from "@/components/workspace/types";
 import { Square, ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 
 // Registry type to store node definitions
@@ -14,7 +13,10 @@ export interface NodeDefinition {
   icon: LucideIcon;
   component?: ComponentType<NodeProps>;
   config?: Record<string, any>;
-  ports?: Port[];
+  ports?: {
+    inputs?: Port[];
+    outputs?: Port[];
+  };
 }
 
 // Add this interface

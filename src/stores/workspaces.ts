@@ -6,12 +6,13 @@ import { Node as NodeClass } from "@/components/workspace/nodes/Node";
 const createInitialNodesAndEdges = (workspaceId: string) => {
   const startNode = new NodeClass("start", { x: 0, y: 0 });
   const placeholderNode = new NodeClass("placeholder", { x: 0, y: 100 });
+
   const edge = {
     id: `${startNode.id}-${placeholderNode.id}`,
     source: startNode.id,
     target: placeholderNode.id,
-    sourceHandle: "_source-0_",
-    targetHandle: "_target-0_",
+    sourceHandle: "output-0",
+    targetHandle: "input-0",
     type: "base",
   };
 
@@ -87,8 +88,8 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
         id: `${startNode.id}-${placeholderNode.id}`,
         source: startNode.id,
         target: placeholderNode.id,
-        sourceHandle: "_source-0_",
-        targetHandle: "_target-0_",
+        sourceHandle: "output-0",
+        targetHandle: "input-0",
         type: "base",
       };
 

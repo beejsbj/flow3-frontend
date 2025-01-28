@@ -16,11 +16,14 @@ interface BaseNodeProps extends NodeProps {
   className?: string;
 }
 
-function calculatePortPositions(ports: Port[], layoutOptions: LayoutOptions) {
-  if (!ports || ports.length === 0) return [];
+function calculatePortPositions(
+  ports: { inputs?: Port[]; outputs?: Port[] },
+  layoutOptions: LayoutOptions
+) {
+  if (!ports) return [];
 
-  const sourcePorts = ports.filter((p) => p.type === "source");
-  const targetPorts = ports.filter((p) => p.type === "target");
+  const sourcePorts = ports.outputs || [];
+  const targetPorts = ports.inputs || [];
 
   // Add padding from edges (20% from each end)
   const EDGE_PADDING = 0.2;
@@ -32,30 +35,35 @@ function calculatePortPositions(ports: Port[], layoutOptions: LayoutOptions) {
   const targetSpacing =
     targetPorts.length > 1 ? USABLE_SPACE / (targetPorts.length - 1) : 0;
 
-  // Add position data to each port
-  return ports.map((port) => {
-    const isSource = port.type === "source";
-    const portList = isSource ? sourcePorts : targetPorts;
-    const index = portList.indexOf(port);
-    const spacing = isSource ? sourceSpacing : targetSpacing;
+  // Process and return all ports
+  return [
+    ...targetPorts.map((port, index) => {
+      const position =
+        targetPorts.length === 1
+          ? 0.5 // Center if single port
+          : EDGE_PADDING + index * targetSpacing;
 
-    // Calculate relative position (0 to 1)
-    const position =
-      portList.length === 1
-        ? 0.5 // Center if single port
-        : EDGE_PADDING + index * spacing;
+      return {
+        ...port,
+        type: "target" as const,
+        position: getTargetHandlePosition(layoutOptions.direction),
+        offset: position * 100,
+      };
+    }),
+    ...sourcePorts.map((port, index) => {
+      const position =
+        sourcePorts.length === 1
+          ? 0.5 // Center if single port
+          : EDGE_PADDING + index * sourceSpacing;
 
-    // Use the node's source/target position based on layout direction
-    const handlePosition = isSource
-      ? getSourceHandlePosition(layoutOptions.direction)
-      : getTargetHandlePosition(layoutOptions.direction);
-
-    return {
-      ...port,
-      position: handlePosition,
-      offset: position * 100,
-    };
-  });
+      return {
+        ...port,
+        type: "source" as const,
+        position: getSourceHandlePosition(layoutOptions.direction),
+        offset: position * 100,
+      };
+    }),
+  ];
 }
 
 export function BaseNode({
@@ -76,7 +84,10 @@ export function BaseNode({
   const layoutOptions = useLayoutOptions();
 
   // Calculate port positions passing the entire node
-  const portsWithPositions = calculatePortPositions(ports, layoutOptions);
+  const portsWithPositions = calculatePortPositions(
+    data.ports || {},
+    layoutOptions
+  );
 
   const handleClick = () => {
     // Only open config modal if node has config form
