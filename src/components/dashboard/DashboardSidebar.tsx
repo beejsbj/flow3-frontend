@@ -8,8 +8,8 @@ import {
   SidebarMenuButton,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Home, Settings, Users, FileText, Wallet } from "lucide-react";
-import UserNav from "@/components/user/UserNav";
+import { Home, Settings, Users, FileText } from "lucide-react";
+import UserNavSidebar from "@/components/user/UserNav";
 
 export default function DashboardSidebar() {
   return (
@@ -51,15 +51,7 @@ export default function DashboardSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Connect Wallet">
-              <Wallet />
-              <span>Connect Wallet</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-        <UserNav />
+        <UserNavSidebar />
       </SidebarFooter>
     </Sidebar>
   );
