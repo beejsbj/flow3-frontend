@@ -1198,7 +1198,7 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-01-29T22:19:26.904Z",
+      "lastModified": "2025-01-29T22:21:56.135Z",
       "nodes": [
         {
           "id": "start-1738188568349-b65mwoac5",
@@ -1218,7 +1218,7 @@
                   "label": "Output",
                   "type": "source",
                   "id": "output-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ]
             },
@@ -1269,7 +1269,7 @@
                   "label": "Input",
                   "type": "target",
                   "id": "input-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ],
               "outputs": [
@@ -1277,7 +1277,7 @@
                   "label": "Output",
                   "type": "source",
                   "id": "output-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ]
             },
@@ -1328,7 +1328,7 @@
                   "label": "Input",
                   "type": "target",
                   "id": "input-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ],
               "outputs": [
@@ -1336,7 +1336,7 @@
                   "label": "Output",
                   "type": "source",
                   "id": "output-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ]
             },
@@ -1359,10 +1359,69 @@
           "targetPosition": "left"
         },
         {
-          "id": "placeholder-1738188903545-0ue96zt8n",
+          "id": "delay-1738189302989-l99bfl238",
+          "type": "delay",
+          "position": {
+            "x": 624,
+            "y": -44
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "right",
+          "targetPosition": "left"
+        },
+        {
+          "id": "placeholder-1738189302991-9zne8qhq1",
           "type": "placeholder",
           "position": {
-            "x": 628,
+            "x": 792,
             "y": -36
           },
           "data": {
@@ -1376,7 +1435,7 @@
                   "label": "Input",
                   "type": "target",
                   "id": "input-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ],
               "outputs": [
@@ -1384,7 +1443,7 @@
                   "label": "Output",
                   "type": "source",
                   "id": "output-0",
-                  "edgeId": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+                  "edgeId": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
                 }
               ]
             },
@@ -1443,6 +1502,20 @@
           "sourceHandle": "output-0",
           "targetHandle": "input-0",
           "id": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-placeholder-1738188903545-0ue96zt8ninput-0"
+        },
+        {
+          "source": "delay-1738188903544-t14suwcje",
+          "target": "delay-1738189302989-l99bfl238",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738188903544-t14suwcjeoutput-0-delay-1738189302989-l99bfl238input-0"
+        },
+        {
+          "source": "delay-1738189302989-l99bfl238",
+          "target": "placeholder-1738189302991-9zne8qhq1",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738189302989-l99bfl238output-0-placeholder-1738189302991-9zne8qhq1input-0"
         }
       ],
       "config": {

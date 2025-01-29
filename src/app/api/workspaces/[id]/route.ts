@@ -2,10 +2,10 @@
 // This is temporary dummy API implementation
 
 import { NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { Workspace } from "@/components/workspace/types";
-import { type NextRequest } from "next/server";
 
 const DUMMY_DATA_PATH = path.join(
   process.cwd(),
@@ -69,7 +69,7 @@ export async function PUT(
     const updatedWorkspace = {
       ...workspaces[index],
       ...workspaceData,
-      id,
+      id, // Use the extracted id
       lastModified: new Date(),
     };
 
