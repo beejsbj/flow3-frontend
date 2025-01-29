@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -27,6 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Node, FieldConfig } from "@/components/workspace/types";
+import { X } from "lucide-react";
 
 interface NodeConfigModalProps {
   nodeId: string;
@@ -39,13 +42,13 @@ export function NodeConfigModal({
   open,
   onOpenChange,
 }: NodeConfigModalProps) {
-  const node = useNode(nodeId);
+  const node = useNode(nodeId) as Node | undefined;
 
   if (!node?.data.config?.form) return null;
 
   const generateZodSchema = () => {
     const schemaMap: Record<string, z.ZodType> = {};
-    node?.data?.config?.form?.forEach((field) => {
+    node?.data?.config?.form?.forEach((field: FieldConfig) => {
       let fieldSchema: z.ZodType;
 
       switch (field.type) {
@@ -87,7 +90,9 @@ export function NodeConfigModal({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!node || !node.data.config) return;
-    node.updateValues(values);
+    if (typeof node.updateValues === "function") {
+      node.updateValues(values);
+    }
     onOpenChange(false);
   }
 

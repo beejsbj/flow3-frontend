@@ -4,6 +4,7 @@ import useWorkspaceStore from "@/stores/workspace";
 import { NodesSheetList } from "../NodesSheetList";
 import { useState } from "react";
 import { useEdges } from "@xyflow/react";
+import { nodeRegistry } from "./registry";
 
 export function PlaceholderNode(props: NodeProps) {
   const { id, positionAbsoluteX, positionAbsoluteY } = props;
@@ -18,14 +19,14 @@ export function PlaceholderNode(props: NodeProps) {
 
     const parentId = parentEdge.source;
 
-    // Create new placeholder node first
-    const newPlaceholder = addNode("placeholder", {
-      x: positionAbsoluteX,
-      y: positionAbsoluteY + 50,
-    });
-    if (!newPlaceholder) return;
+    // Get the node definition to check number of output ports
+    const nodeDefinition = nodeRegistry.get(nodeType);
+    if (!nodeDefinition) return;
 
-    // Then create the new selected node
+    const outputPorts = nodeDefinition.ports?.outputs || [];
+    const numOutputs = outputPorts.length;
+
+    // Create the new selected node
     const newNode = addNode(nodeType, {
       x: positionAbsoluteX,
       y: positionAbsoluteY,
@@ -36,22 +37,33 @@ export function PlaceholderNode(props: NodeProps) {
     connectNodes({
       source: parentId,
       target: newNode.id,
-      sourceHandle: parentEdge.sourceHandle,
+      sourceHandle: parentEdge.sourceHandle || undefined,
       targetHandle: "input-0",
     });
 
-    // Connect the new node to the new placeholder
-    connectNodes({
-      source: newNode.id,
-      target: newPlaceholder.id,
-      sourceHandle: "output-0",
-      targetHandle: "input-0",
+    // Create a placeholder node for each output port
+    outputPorts.forEach((port, index) => {
+      // Calculate position for each placeholder
+      // Spread them out horizontally if there are multiple outputs
+      const offsetX = numOutputs > 1 ? (index - (numOutputs - 1) / 2) * 200 : 0;
+
+      const newPlaceholder = addNode("placeholder", {
+        x: positionAbsoluteX + offsetX,
+        y: positionAbsoluteY + 100,
+      });
+      if (!newPlaceholder) return;
+
+      // Connect the new node to each placeholder
+      connectNodes({
+        source: newNode.id,
+        target: newPlaceholder.id,
+        sourceHandle: `output-${index}`,
+        targetHandle: "input-0",
+      });
     });
 
     // Delete the current placeholder node last
     deleteNode(id);
-
-    console.log(edges, internalEdges);
   };
 
   return (
@@ -59,7 +71,7 @@ export function PlaceholderNode(props: NodeProps) {
       <BaseNode
         {...props}
         onClick={() => setSheetOpen(true)}
-        className="border-2 border-dashed border-muted-foreground"
+        className="border-2 border-dashed border-muted-foreground rounded-full w-12 h-12"
       />
 
       <NodesSheetList

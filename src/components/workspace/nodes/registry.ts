@@ -6,6 +6,7 @@ import { Square, ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 
 // Registry type to store node definitions
 export interface NodeDefinition {
+  isAddable?: boolean;
   type: string;
   label: string;
   description: string;
@@ -74,11 +75,15 @@ export class NodeRegistry {
   // Add this new method
   getCategoriesWithNodes(): CategoryData[] {
     const categories = this.getCategories();
-    return categories.map((categoryName) => ({
-      id: categoryName,
-      name: categoryName,
-      nodes: this.getByCategory(categoryName),
-    }));
+    return categories
+      .map((categoryName) => ({
+        id: categoryName,
+        name: categoryName,
+        nodes: this.getByCategory(categoryName).filter(
+          (node) => node.isAddable !== false
+        ),
+      }))
+      .filter((category) => category.nodes.length > 0);
   }
 }
 

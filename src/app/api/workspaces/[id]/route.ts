@@ -53,10 +53,11 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const id = params.id; // Extract id immediately
     const workspaceData = await request.json();
     const { workspaces } = await readWorkspaces();
 
-    const index = workspaces.findIndex((w) => w.id === params.id);
+    const index = workspaces.findIndex((w) => w.id === id);
     if (index === -1) {
       return NextResponse.json(
         { error: "Workspace not found" },
@@ -67,7 +68,7 @@ export async function PUT(
     const updatedWorkspace = {
       ...workspaces[index],
       ...workspaceData,
-      id: params.id,
+      id, // Use the extracted id
       lastModified: new Date(),
     };
 

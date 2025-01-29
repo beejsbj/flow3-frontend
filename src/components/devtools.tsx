@@ -1,3 +1,4 @@
+import React from "react";
 import {
   useEffect,
   useState,
@@ -149,7 +150,7 @@ function NodeInfo({ node, absPosition }: NodeInfoProps) {
     value: any,
     depth = 0,
     key?: string
-  ): JSX.Element | string => {
+  ): React.ReactNode => {
     if (value === null) return "null";
     if (value === undefined) return "undefined";
     if (typeof value !== "object") return String(value);

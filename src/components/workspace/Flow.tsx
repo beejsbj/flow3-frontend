@@ -17,6 +17,7 @@ import { nodeTypes } from "./nodes";
 import { edgeTypes, defaultEdgeOptions } from "./edges";
 import { DevTools } from "@/components/devtools";
 import useAutoLayout from "@/hooks/useAutoLayout";
+import { Node, Edge, WorkspaceState } from "./types";
 
 function FlowContent() {
   const validation = useWorkspaceStore((state) => state.validation);
@@ -30,13 +31,23 @@ function FlowContent() {
       <MiniMap />
       <Controls />
       <LayoutPanel />
-      <DevTools />
+      {/* <DevTools /> */}
     </>
   );
 }
 
 // Create a new component that will use the ReactFlow hooks
-function FlowWithAutoLayout({ nodes, edges, setNodes, setEdges }) {
+function FlowWithAutoLayout({
+  nodes,
+  edges,
+  setNodes,
+  setEdges,
+}: {
+  nodes: Node[];
+  edges: Edge[];
+  setNodes: (nodes: Node[]) => void;
+  setEdges: (edges: Edge[]) => void;
+}) {
   const { fitView } = useReactFlow();
 
   useAutoLayout({
@@ -52,7 +63,7 @@ function FlowWithAutoLayout({ nodes, edges, setNodes, setEdges }) {
 
 export default function Flow() {
   const layoutOptions = useLayoutOptions();
-  const selector = (state) => ({
+  const selector = (state: WorkspaceState) => ({
     nodes: state.nodes,
     edges: state.edges,
     onNodesChange: state.onNodesChange,
@@ -84,7 +95,7 @@ export default function Flow() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
-        nodesDraggable={!layoutOptions.auto}
+        nodesDraggable={layoutOptions?.auto === false}
       >
         <FlowContent />
         <FlowWithAutoLayout
@@ -101,10 +112,11 @@ export default function Flow() {
 
 // layout settings panel
 function LayoutPanel() {
+  //#todo implement this better, should onlly work when auto layout is turned on
   const updateConfig = useWorkspaceStore((state) => state.updateConfig);
   const config = useWorkspaceStore((state) => state.config);
 
-  const handleDirectionChange = (direction) => {
+  const handleDirectionChange = (direction: "TB" | "BT" | "LR" | "RL") => {
     updateConfig((prev) => ({
       ...prev,
       layout: {
@@ -114,8 +126,12 @@ function LayoutPanel() {
     }));
   };
 
-  const handleSpacingChange = (index, value) => {
-    const newSpacing = [...config.layout.spacing];
+  const handleSpacingChange = (index: number, value: string) => {
+    if (!config) return;
+    const newSpacing: [number, number] = [...config.layout.spacing] as [
+      number,
+      number
+    ];
     newSpacing[index] = parseInt(value);
 
     updateConfig((prev) => ({
@@ -143,7 +159,7 @@ function LayoutPanel() {
         <div>
           <h3 className="font-medium mb-2">Auto Layout</h3>
           <Switch
-            checked={config.layout.auto}
+            checked={config?.layout.auto ?? false}
             onCheckedChange={handleAutoChange}
           />
         </div>
@@ -154,9 +170,11 @@ function LayoutPanel() {
             {["TB", "BT", "LR", "RL"].map((direction) => (
               <button
                 key={direction}
-                onClick={() => handleDirectionChange(direction)}
+                onClick={() =>
+                  handleDirectionChange(direction as "TB" | "BT" | "LR" | "RL")
+                }
                 className={`px-3 py-1 rounded ${
-                  config.layout.direction === direction
+                  config?.layout.direction === direction
                     ? "bg-blue-500 text-white"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
@@ -176,7 +194,7 @@ function LayoutPanel() {
                 type="number"
                 min="20"
                 max="200"
-                value={config.layout.spacing[0]}
+                value={config?.layout.spacing[0] ?? 50}
                 onChange={(e) => handleSpacingChange(0, e.target.value)}
                 className="w-full px-2 py-1 border rounded"
               />
@@ -187,7 +205,7 @@ function LayoutPanel() {
                 type="number"
                 min="20"
                 max="200"
-                value={config.layout.spacing[1]}
+                value={config?.layout.spacing[1] ?? 50}
                 onChange={(e) => handleSpacingChange(1, e.target.value)}
                 className="w-full px-2 py-1 border rounded"
               />

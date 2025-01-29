@@ -1,5 +1,20 @@
+/* #todo
+
+- [ ] better styling
+- [ ] better port positioning
+- [ ] delete node button
+- [ ] tooltip to show validation errors?
+- [ ] execution states
+*/
+
 import { Handle, Position, useInternalNode } from "@xyflow/react";
-import { NodeProps, Port, LayoutOptions } from "@/components/workspace/types";
+import {
+  NodeProps,
+  Port,
+  LayoutOptions,
+  Node,
+  NodeData,
+} from "@/components/workspace/types";
 import { useLayoutOptions, useNode } from "@/stores/workspace";
 import { useState } from "react";
 import { NodeConfigModal } from "./NodeConfigModal";
@@ -20,7 +35,7 @@ interface BaseNodeProps extends NodeProps {
 function calculatePortPositions(
   ports: { inputs?: Port[]; outputs?: Port[] },
   layoutOptions: LayoutOptions
-) {
+): Array<Port & { position: Position; offset: number }> {
   if (!ports) return [];
 
   const sourcePorts = ports.outputs || [];
@@ -77,18 +92,18 @@ export function BaseNode({
   className,
   ...props
 }: BaseNodeProps) {
-  const { icon, label, ports } = data;
+  const { icon, label, ports } = data as NodeData;
   const Icon = icon ? getIconByName(icon) : undefined;
 
   const [configModalOpen, setConfigModalOpen] = useState(false);
-  const node = useNode(id);
+  const node = useNode(id) as Node | undefined;
   const internalNode = useInternalNode(id);
   const layoutOptions = useLayoutOptions();
 
   // Calculate port positions passing the entire node
   const portsWithPositions = calculatePortPositions(
     data.ports || {},
-    layoutOptions
+    layoutOptions || { direction: "TB", spacing: [50, 50], auto: false }
   );
 
   const handleClick = () => {
@@ -98,6 +113,10 @@ export function BaseNode({
     }
     // Still call the original onClick if provided
     onClick?.();
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    setConfigModalOpen(open);
   };
 
   // Dynamic border color based on validation
@@ -154,7 +173,7 @@ export function BaseNode({
       <NodeConfigModal
         nodeId={id}
         open={configModalOpen}
-        onOpenChange={setConfigModalOpen}
+        onOpenChange={handleOpenChange}
       />
     </RFBaseNode>
   );

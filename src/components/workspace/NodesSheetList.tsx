@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Plus } from "lucide-react";
 import { nodeRegistry, type CategoryData } from "./nodes/registry";
 import { useAddNode } from "@/stores/workspace";
+import { getIconByName } from "@/lib/icons";
+import { Node } from "@/components/workspace/types";
 
 interface NodesSheetListProps {
   open?: boolean;
@@ -75,7 +77,9 @@ export function NodesSheetList({
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <node.icon className="h-4 w-4" />
+                          {React.createElement(getIconByName(node.icon), {
+                            className: "h-4 w-4",
+                          })}
                           <h3 className="font-medium">{node.label}</h3>
                         </div>
                         <Button

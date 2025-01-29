@@ -117,6 +117,7 @@ nodeRegistry.register({
 });
 
 nodeRegistry.register({
+  isAddable: false,
   type: "placeholder",
   label: "Add Node",
   description: "Click to add a new node",
@@ -131,6 +132,7 @@ nodeRegistry.register({
 
 //start node
 nodeRegistry.register({
+  isAddable: false,
   type: "start",
   label: "Start",
   description: "The start of the flow",

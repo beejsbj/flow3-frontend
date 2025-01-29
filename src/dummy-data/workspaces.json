@@ -3,14 +3,14 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-01-28T19:52:05.215Z",
+      "lastModified": "2025-01-28T20:35:17.571Z",
       "nodes": [
         {
           "id": "start-1738093925173-jf09b45t0",
           "type": "start",
           "position": {
-            "x": 0,
-            "y": 0
+            "x": 132,
+            "y": -44
           },
           "data": {
             "label": "Start",
@@ -22,7 +22,8 @@
                 {
                   "label": "Output",
                   "type": "source",
-                  "id": "output-0"
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738096268848-556ofs4vpoutput-0-placeholder-1738096268848-bycx9gchkinput-0"
                 }
               ]
             },
@@ -32,15 +33,14 @@
                 "errors": []
               }
             }
-          },
-          "test": "test"
+          }
         },
         {
-          "id": "placeholder-1738093925174-upv97twoy",
+          "id": "placeholder-1738096268848-bycx9gchk",
           "type": "placeholder",
           "position": {
-            "x": 0,
-            "y": 0
+            "x": 460,
+            "y": -44
           },
           "data": {
             "label": "Add Node",
@@ -52,14 +52,16 @@
                 {
                   "label": "Input",
                   "type": "target",
-                  "id": "input-0"
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738096268848-556ofs4vpoutput-0-placeholder-1738096268848-bycx9gchkinput-0"
                 }
               ],
               "outputs": [
                 {
                   "label": "Output",
                   "type": "source",
-                  "id": "output-0"
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738096268848-556ofs4vpoutput-0-placeholder-1738096268848-bycx9gchkinput-0"
                 }
               ]
             },
@@ -69,8 +71,56 @@
                 "errors": []
               }
             }
+          }
+        },
+        {
+          "id": "delay-1738096268848-556ofs4vp",
+          "type": "delay",
+          "position": {
+            "x": 296,
+            "y": -44
           },
-          "test": "test"
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738096268848-556ofs4vpoutput-0-placeholder-1738096268848-bycx9gchkinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738096268848-556ofs4vpoutput-0-placeholder-1738096268848-bycx9gchkinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          }
         }
       ],
       "edges": [
@@ -81,6 +131,20 @@
           "sourceHandle": "output-0",
           "targetHandle": "input-0",
           "type": "base"
+        },
+        {
+          "source": "start-1738093925173-jf09b45t0",
+          "target": "delay-1738096268848-556ofs4vp",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738093925173-jf09b45t0output-0-delay-1738096268848-556ofs4vpinput-0"
+        },
+        {
+          "source": "delay-1738096268848-556ofs4vp",
+          "target": "placeholder-1738096268848-bycx9gchk",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738096268848-556ofs4vpoutput-0-placeholder-1738096268848-bycx9gchkinput-0"
         }
       ],
       "config": {
@@ -94,6 +158,1101 @@
         }
       },
       "id": "4dfqkehrg"
+    },
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-01-29T17:34:18.908Z",
+      "nodes": [
+        {
+          "id": "start-1738096531160-c5plm7a8j",
+          "type": "start",
+          "position": {
+            "x": -32,
+            "y": 144
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "form-examples-1738096537681-rbug0c76b",
+          "type": "form-examples",
+          "position": {
+            "x": -58.5,
+            "y": 332
+          },
+          "data": {
+            "label": "Form Fields Example",
+            "icon": "Clock",
+            "description": "Demonstrates different types of form fields",
+            "category": "Examples",
+            "config": {
+              "form": [
+                {
+                  "name": "firstName",
+                  "type": "string",
+                  "label": "First Name",
+                  "required": true,
+                  "value": ""
+                },
+                {
+                  "name": "lastName",
+                  "type": "string",
+                  "label": "Last Name",
+                  "required": false,
+                  "value": "Doe"
+                },
+                {
+                  "name": "age",
+                  "type": "number",
+                  "label": "Age",
+                  "required": false,
+                  "value": 0
+                },
+                {
+                  "name": "isActive",
+                  "type": "boolean",
+                  "label": "Active Status",
+                  "required": true,
+                  "value": false
+                },
+                {
+                  "name": "userType",
+                  "type": "select",
+                  "label": "User Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "admin",
+                      "label": "Administrator"
+                    },
+                    {
+                      "value": "user",
+                      "label": "Regular User"
+                    },
+                    {
+                      "value": "guest",
+                      "label": "Guest"
+                    }
+                  ],
+                  "value": "user"
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": false,
+                "errors": [
+                  "First Name is required"
+                ]
+              }
+            }
+          },
+          "measured": {
+            "width": 117,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": true
+        },
+        {
+          "id": "multi-port-node-1738096616511-pbyd91uqd",
+          "type": "multi-port-node",
+          "position": {
+            "x": -44,
+            "y": 520
+          },
+          "data": {
+            "label": "Multi Port Node",
+            "icon": "Clock",
+            "description": "A node with multiple ports",
+            "category": "Examples",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input 1",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Input 2",
+                  "type": "target",
+                  "id": "input-1"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output 1",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Output 2",
+                  "type": "source",
+                  "id": "output-1",
+                  "edgeId": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-delay-1738096876130-zc8znn8pminput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 88,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "multi-port-node-1738096773937-elrcrzzk3",
+          "type": "multi-port-node",
+          "position": {
+            "x": -44,
+            "y": 708
+          },
+          "data": {
+            "label": "Multi Port Node",
+            "icon": "Clock",
+            "description": "A node with multiple ports",
+            "category": "Examples",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input 1",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Input 2",
+                  "type": "target",
+                  "id": "input-1"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output 1",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Output 2",
+                  "type": "source",
+                  "id": "output-1",
+                  "edgeId": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-delay-1738096876130-zc8znn8pminput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 88,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "multi-port-node-1738096780731-q8c0j0wky",
+          "type": "multi-port-node",
+          "position": {
+            "x": -233.875,
+            "y": 896
+          },
+          "data": {
+            "label": "Multi Port Node",
+            "icon": "Clock",
+            "description": "A node with multiple ports",
+            "category": "Examples",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input 1",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Input 2",
+                  "type": "target",
+                  "id": "input-1"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output 1",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Output 2",
+                  "type": "source",
+                  "id": "output-1",
+                  "edgeId": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-delay-1738096876130-zc8znn8pminput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 88,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "multi-port-node-1738096798629-ykb1km4t7",
+          "type": "multi-port-node",
+          "position": {
+            "x": -396.625,
+            "y": 1084
+          },
+          "data": {
+            "label": "Multi Port Node",
+            "icon": "Clock",
+            "description": "A node with multiple ports",
+            "category": "Examples",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input 1",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Input 2",
+                  "type": "target",
+                  "id": "input-1"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output 1",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Output 2",
+                  "type": "source",
+                  "id": "output-1",
+                  "edgeId": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-delay-1738096876130-zc8znn8pminput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 88,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738096798629-zph0gva5g",
+          "type": "placeholder",
+          "position": {
+            "x": -489.125,
+            "y": 1280
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "multi-port-node-1738096837778-4ouz6si29",
+          "type": "multi-port-node",
+          "position": {
+            "x": -288.125,
+            "y": 1272
+          },
+          "data": {
+            "label": "Multi Port Node",
+            "icon": "Clock",
+            "description": "A node with multiple ports",
+            "category": "Examples",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input 1",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Input 2",
+                  "type": "target",
+                  "id": "input-1"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output 1",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                },
+                {
+                  "label": "Output 2",
+                  "type": "source",
+                  "id": "output-1",
+                  "edgeId": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-delay-1738096876130-zc8znn8pminput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 88,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738096837779-k7u3qtb6p",
+          "type": "placeholder",
+          "position": {
+            "x": -380.625,
+            "y": 1468
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738096837779-s1yfkbwqf",
+          "type": "placeholder",
+          "position": {
+            "x": -163.625,
+            "y": 1468
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738096869432-ytogixfs6",
+          "type": "delay",
+          "position": {
+            "x": 157.875,
+            "y": 896
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738096876130-zc8znn8pm",
+          "type": "delay",
+          "position": {
+            "x": -59.125,
+            "y": 1084
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738096876131-7k33koiuk",
+          "type": "placeholder",
+          "position": {
+            "x": -55.125,
+            "y": 1280
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738167869607-vj14l4te6",
+          "type": "delay",
+          "position": {
+            "x": 157.875,
+            "y": 1084
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738167875890-1i0bh2gko",
+          "type": "delay",
+          "position": {
+            "x": 157.875,
+            "y": 1272
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738167875891-vh44q9lgu",
+          "type": "placeholder",
+          "position": {
+            "x": 161.875,
+            "y": 1468
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              }
+            }
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        }
+      ],
+      "edges": [
+        {
+          "id": "start-1738096531160-c5plm7a8j-placeholder-1738096531160-3slplkbgs",
+          "source": "start-1738096531160-c5plm7a8j",
+          "target": "placeholder-1738096531160-3slplkbgs",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "type": "base"
+        },
+        {
+          "source": "start-1738096531160-c5plm7a8j",
+          "target": "form-examples-1738096537681-rbug0c76b",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738096531160-c5plm7a8joutput-0-form-examples-1738096537681-rbug0c76binput-0"
+        },
+        {
+          "source": "form-examples-1738096537681-rbug0c76b",
+          "target": "placeholder-1738096537681-w5qa983yk",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__form-examples-1738096537681-rbug0c76boutput-0-placeholder-1738096537681-w5qa983ykinput-0"
+        },
+        {
+          "source": "form-examples-1738096537681-rbug0c76b",
+          "target": "multi-port-node-1738096616511-pbyd91uqd",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__form-examples-1738096537681-rbug0c76boutput-0-multi-port-node-1738096616511-pbyd91uqdinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096616511-pbyd91uqd",
+          "target": "placeholder-1738096616511-ve7egk931",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096616511-pbyd91uqdoutput-0-placeholder-1738096616511-ve7egk931input-0"
+        },
+        {
+          "source": "multi-port-node-1738096616511-pbyd91uqd",
+          "target": "multi-port-node-1738096773937-elrcrzzk3",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096616511-pbyd91uqdoutput-0-multi-port-node-1738096773937-elrcrzzk3input-0"
+        },
+        {
+          "source": "multi-port-node-1738096773937-elrcrzzk3",
+          "target": "placeholder-1738096773939-s7pxwo08f",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096773937-elrcrzzk3output-0-placeholder-1738096773939-s7pxwo08finput-0"
+        },
+        {
+          "source": "multi-port-node-1738096773937-elrcrzzk3",
+          "target": "placeholder-1738096773939-p8bkuoyr8",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096773937-elrcrzzk3output-1-placeholder-1738096773939-p8bkuoyr8input-0"
+        },
+        {
+          "source": "multi-port-node-1738096773937-elrcrzzk3",
+          "target": "multi-port-node-1738096780731-q8c0j0wky",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096773937-elrcrzzk3output-0-multi-port-node-1738096780731-q8c0j0wkyinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096780731-q8c0j0wky",
+          "target": "placeholder-1738096780732-l5whfv7j3",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-0-placeholder-1738096780732-l5whfv7j3input-0"
+        },
+        {
+          "source": "multi-port-node-1738096780731-q8c0j0wky",
+          "target": "placeholder-1738096780732-4ko8ptvah",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-placeholder-1738096780732-4ko8ptvahinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096780731-q8c0j0wky",
+          "target": "multi-port-node-1738096798629-ykb1km4t7",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-0-multi-port-node-1738096798629-ykb1km4t7input-0"
+        },
+        {
+          "source": "multi-port-node-1738096798629-ykb1km4t7",
+          "target": "placeholder-1738096798629-zph0gva5g",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096798629-ykb1km4t7output-0-placeholder-1738096798629-zph0gva5ginput-0"
+        },
+        {
+          "source": "multi-port-node-1738096798629-ykb1km4t7",
+          "target": "placeholder-1738096798630-yop6nperr",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096798629-ykb1km4t7output-1-placeholder-1738096798630-yop6nperrinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096798629-ykb1km4t7",
+          "target": "multi-port-node-1738096837778-4ouz6si29",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096798629-ykb1km4t7output-1-multi-port-node-1738096837778-4ouz6si29input-0"
+        },
+        {
+          "source": "multi-port-node-1738096837778-4ouz6si29",
+          "target": "placeholder-1738096837779-k7u3qtb6p",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096837778-4ouz6si29output-0-placeholder-1738096837779-k7u3qtb6pinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096837778-4ouz6si29",
+          "target": "placeholder-1738096837779-s1yfkbwqf",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096837778-4ouz6si29output-1-placeholder-1738096837779-s1yfkbwqfinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096773937-elrcrzzk3",
+          "target": "delay-1738096869432-ytogixfs6",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096773937-elrcrzzk3output-1-delay-1738096869432-ytogixfs6input-0"
+        },
+        {
+          "source": "delay-1738096869432-ytogixfs6",
+          "target": "placeholder-1738096869433-yavlzvldb",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738096869432-ytogixfs6output-0-placeholder-1738096869433-yavlzvldbinput-0"
+        },
+        {
+          "source": "multi-port-node-1738096780731-q8c0j0wky",
+          "target": "delay-1738096876130-zc8znn8pm",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__multi-port-node-1738096780731-q8c0j0wkyoutput-1-delay-1738096876130-zc8znn8pminput-0"
+        },
+        {
+          "source": "delay-1738096876130-zc8znn8pm",
+          "target": "placeholder-1738096876131-7k33koiuk",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738096876130-zc8znn8pmoutput-0-placeholder-1738096876131-7k33koiukinput-0"
+        },
+        {
+          "source": "delay-1738096869432-ytogixfs6",
+          "target": "delay-1738167869607-vj14l4te6",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738096869432-ytogixfs6output-0-delay-1738167869607-vj14l4te6input-0"
+        },
+        {
+          "source": "delay-1738167869607-vj14l4te6",
+          "target": "placeholder-1738167869607-qx5hq9z6x",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738167869607-vj14l4te6output-0-placeholder-1738167869607-qx5hq9z6xinput-0"
+        },
+        {
+          "source": "delay-1738167869607-vj14l4te6",
+          "target": "delay-1738167875890-1i0bh2gko",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738167869607-vj14l4te6output-0-delay-1738167875890-1i0bh2gkoinput-0"
+        },
+        {
+          "source": "delay-1738167875890-1i0bh2gko",
+          "target": "placeholder-1738167875891-vh44q9lgu",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738167875890-1i0bh2gkooutput-0-placeholder-1738167875891-vh44q9lguinput-0"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "TB",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": true
+        }
+      },
+      "id": "4xkbrgm3d"
     }
   ]
 }
