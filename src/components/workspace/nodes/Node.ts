@@ -1,4 +1,3 @@
-import { LucideIcon } from "lucide-react";
 import { Node as NodeType, NodeData, Port } from "../types";
 import { nodeRegistry } from "./registry";
 import "@/components/workspace/nodes";

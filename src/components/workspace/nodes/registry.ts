@@ -1,8 +1,6 @@
 import { NodeProps, NodeTypes, Port } from "@/components/workspace/types";
 import { ComponentType } from "react";
-import { LucideIcon } from "lucide-react";
 import { BaseNode } from "./BaseNode";
-import { Square, ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 
 // Registry type to store node definitions
 export interface NodeDefinition {
