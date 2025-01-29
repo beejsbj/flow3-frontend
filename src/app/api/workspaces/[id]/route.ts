@@ -26,11 +26,11 @@ async function writeWorkspaces(workspaces: Workspace[]): Promise<void> {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const { workspaces } = await readWorkspaces();
-    const workspace = workspaces.find((w) => w.id === params.id);
+    const workspace = workspaces.find((w) => w.id === context.params.id);
 
     if (!workspace) {
       return NextResponse.json(
@@ -50,10 +50,10 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params; // Destructure id from params
+    const { id } = context.params; // Destructure id from params
     const workspaceData = await request.json();
     const { workspaces } = await readWorkspaces();
 
@@ -86,11 +86,13 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const { workspaces } = await readWorkspaces();
-    const filteredWorkspaces = workspaces.filter((w) => w.id !== params.id);
+    const filteredWorkspaces = workspaces.filter(
+      (w) => w.id !== context.params.id
+    );
 
     if (filteredWorkspaces.length === workspaces.length) {
       return NextResponse.json(
