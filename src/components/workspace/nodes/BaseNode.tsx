@@ -15,8 +15,8 @@ import {
   Node,
   NodeData,
 } from "@/components/workspace/types";
-import { useLayoutOptions, useNode } from "@/stores/workspace";
-import { useState } from "react";
+import { useLayoutOptions, useNode, useLayout } from "@/stores/workspace";
+import { useState, memo } from "react";
 import { NodeConfigModal } from "./NodeConfigModal";
 import {
   cn,
@@ -82,7 +82,7 @@ function calculatePortPositions(
   ];
 }
 
-export function BaseNode({
+function BaseNode({
   type,
   id,
   data,
@@ -184,3 +184,5 @@ export const RFBaseNode = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >((props, ref) => <div ref={ref} tabIndex={0} role="button" {...props} />);
 RFBaseNode.displayName = "RFBaseNode";
+
+export default memo(BaseNode);

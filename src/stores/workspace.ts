@@ -278,5 +278,24 @@ export const useWorkspaceValidation = () =>
 export const useLayoutOptions = () =>
   useWorkspaceStore((state) => state.config?.layout);
 
+export const useLayout = () =>
+  useWorkspaceStore((state) => ({
+    options: state.config?.layout,
+    updateLayout: (updates: Partial<WorkspaceConfig["layout"]>) =>
+      state.updateConfig((config) => ({
+        ...config,
+        layout: {
+          ...config.layout,
+          ...updates,
+        },
+      })),
+  }));
+
 export const useConnectNodes = () =>
   useWorkspaceStore((state) => state.connectNodes);
+
+export const useWorkspaceMetadata = () =>
+  useWorkspaceStore((state) => ({
+    name: state.name,
+    description: state.description,
+  }));

@@ -1,4 +1,4 @@
-import { BaseNode } from "./BaseNode";
+import BaseNode from "./BaseNode";
 import { NodeProps } from "@/components/workspace/types";
 import useWorkspaceStore from "@/stores/workspace";
 import { NodesSheetList } from "../NodesSheetList";

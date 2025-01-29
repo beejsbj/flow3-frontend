@@ -1,6 +1,6 @@
 import { NodeProps, NodeTypes, Port } from "@/components/workspace/types";
 import { ComponentType } from "react";
-import { BaseNode } from "./BaseNode";
+import BaseNode from "./BaseNode";
 
 // Registry type to store node definitions
 export interface NodeDefinition {
