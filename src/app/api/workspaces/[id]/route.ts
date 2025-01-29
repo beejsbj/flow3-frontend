@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { Workspace } from "@/components/workspace/types";
+import { type NextRequest } from "next/server";
 
 const DUMMY_DATA_PATH = path.join(
   process.cwd(),
@@ -25,7 +26,7 @@ async function writeWorkspaces(workspaces: Workspace[]): Promise<void> {
 }
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   context: { params: { id: string } }
 ) {
   try {
@@ -49,11 +50,11 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params; // Destructure id from params
+    const { id } = context.params;
     const workspaceData = await request.json();
     const { workspaces } = await readWorkspaces();
 
@@ -68,7 +69,7 @@ export async function PUT(
     const updatedWorkspace = {
       ...workspaces[index],
       ...workspaceData,
-      id, // Use the extracted id
+      id,
       lastModified: new Date(),
     };
 
@@ -85,7 +86,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   context: { params: { id: string } }
 ) {
   try {
