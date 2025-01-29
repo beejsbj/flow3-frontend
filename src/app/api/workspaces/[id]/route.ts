@@ -53,7 +53,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id; // Extract id immediately
+    const { id } = params; // Destructure id from params
     const workspaceData = await request.json();
     const { workspaces } = await readWorkspaces();
 

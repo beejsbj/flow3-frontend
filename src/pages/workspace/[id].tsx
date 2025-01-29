@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { SidebarLayout } from "@/components/layouts/sidebars";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
+import WorkspaceSidebar from "@/components/workspace/WorkspaceSidebar";
 import Flow from "@/components/workspace/Flow";
-import { NodesSheetList } from "@/components/workspace/NodesSheetList";
+import { NodesSheetList } from "@/components/workspace/nodes/NodesSheetList";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import useWorkspaceStore from "@/stores/workspace";
 
@@ -34,7 +35,7 @@ export default function WorkspacePage() {
   }
 
   return (
-    <SidebarLayout left={<DashboardSidebar />} right={<NodesSheetList />}>
+    <SidebarLayout left={<WorkspaceSidebar />} right={<NodesSheetList />}>
       <Flow />
     </SidebarLayout>
   );

@@ -1,7 +1,7 @@
 import BaseNode from "./BaseNode";
 import { NodeProps } from "@/components/workspace/types";
 import useWorkspaceStore from "@/stores/workspace";
-import { NodesSheetList } from "../NodesSheetList";
+import { NodesSheetList } from "./NodesSheetList";
 import { useState } from "react";
 import { useEdges } from "@xyflow/react";
 import { nodeRegistry } from "./registry";

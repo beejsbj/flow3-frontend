@@ -10,6 +10,7 @@ import {
 import { subscribeWithSelector } from "zustand/middleware";
 import { Node } from "@/components/workspace/nodes/Node";
 import { useWorkspacesStore } from "@/stores/workspaces";
+import { shallow } from "zustand/shallow";
 
 // Declare the global _saveTimeout
 declare global {
@@ -190,7 +191,7 @@ const useWorkspaceStore = create(
   }))
 );
 
-// Add auto-save subscription
+// Remove or comment out the auto-save subscription
 useWorkspaceStore.subscribe(
   (state) => ({
     nodes: state.nodes.map((node) => ({
@@ -268,6 +269,9 @@ export const useLayoutDirection = () =>
 // Node operations
 export const useAddNode = () => useWorkspaceStore((state) => state.addNode);
 
+export const useDeleteNode = () =>
+  useWorkspaceStore((state) => state.deleteNode);
+
 export const useNode = (nodeId: string) =>
   useWorkspaceStore((state) => state.getNode(nodeId));
 
@@ -278,24 +282,26 @@ export const useWorkspaceValidation = () =>
 export const useLayoutOptions = () =>
   useWorkspaceStore((state) => state.config?.layout);
 
-export const useLayout = () =>
-  useWorkspaceStore((state) => ({
-    options: state.config?.layout,
-    updateLayout: (updates: Partial<WorkspaceConfig["layout"]>) =>
+export const useUpdateLayout = () =>
+  useWorkspaceStore(
+    (state) => (layoutConfig: Partial<WorkspaceConfig["layout"]>) =>
       state.updateConfig((config) => ({
         ...config,
         layout: {
           ...config.layout,
-          ...updates,
+          ...layoutConfig,
         },
-      })),
-  }));
+      }))
+  );
 
 export const useConnectNodes = () =>
   useWorkspaceStore((state) => state.connectNodes);
 
 export const useWorkspaceMetadata = () =>
-  useWorkspaceStore((state) => ({
-    name: state.name,
-    description: state.description,
-  }));
+  useWorkspaceStore(
+    (state) => ({
+      name: state.name || "", // Provide default values
+      description: state.description || "",
+    }),
+    shallow
+  );

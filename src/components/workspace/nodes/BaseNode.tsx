@@ -15,7 +15,7 @@ import {
   Node,
   NodeData,
 } from "@/components/workspace/types";
-import { useLayoutOptions, useNode, useLayout } from "@/stores/workspace";
+import { useDeleteNode, useLayoutOptions, useNode } from "@/stores/workspace";
 import { useState, memo } from "react";
 import { NodeConfigModal } from "./NodeConfigModal";
 import {
@@ -25,6 +25,7 @@ import {
 } from "@/lib/utils";
 import { getIconByName } from "@/lib/icons";
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface BaseNodeProps extends NodeProps {
   onClick?: () => void;
@@ -42,7 +43,7 @@ function calculatePortPositions(
   const targetPorts = ports.inputs || [];
 
   // Add padding from edges (20% from each end)
-  const EDGE_PADDING = 0.2;
+  const EDGE_PADDING = 0.3;
   const USABLE_SPACE = 1 - EDGE_PADDING * 2;
 
   // Calculate spacing for each type
@@ -99,6 +100,9 @@ function BaseNode({
   const node = useNode(id) as Node | undefined;
   const internalNode = useInternalNode(id);
   const layoutOptions = useLayoutOptions();
+  const deleteNode = useDeleteNode();
+
+  console.log(type, data);
 
   // Calculate port positions passing the entire node
   const portsWithPositions = calculatePortPositions(
@@ -136,7 +140,7 @@ function BaseNode({
   return (
     <RFBaseNode onClick={handleClick}>
       <div className="flex flex-col items-center">
-        <div className="relative">
+        <div className="relative group">
           {/* Render all ports */}
           {portsWithPositions.map((port) => (
             <Handle
@@ -152,6 +156,23 @@ function BaseNode({
               }}
             />
           ))}
+
+          {/* Delete button - controlled by data.isDeletable */}
+          {data?.isDeletable !== false && (
+            <Button
+              variant="destructive"
+              size="icon"
+              className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 
+                        opacity-0 group-hover:opacity-100 transition-opacity z-10
+                        rounded-full h-6 w-6"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteNode(id);
+              }}
+            >
+              ×
+            </Button>
+          )}
 
           {/* Square container for icon with dynamic border color */}
           <div

@@ -88,9 +88,9 @@ export class Node implements NodeType {
     }
 
     const ports = this.createPorts(definition.ports);
-    return {
+    const data: NodeData = {
       label: definition.label,
-      icon: definition.icon, // Now it's a string, no need for casting
+      icon: definition.icon,
       description: definition.description,
       category: definition.category,
       config: definition.config,
@@ -98,7 +98,10 @@ export class Node implements NodeType {
       state: {
         validation: { isValid: true, errors: [] },
       },
+      isDeletable: definition.isAddable !== false,
     };
+
+    return data;
   }
 
   validate(): void {
