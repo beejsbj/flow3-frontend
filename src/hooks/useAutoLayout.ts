@@ -29,7 +29,6 @@ function compareNodes(xs: Node[], ys: Node[]) {
       return false;
     }
   }
-
   return true;
 }
 

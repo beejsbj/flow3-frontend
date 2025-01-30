@@ -1,21 +1,9 @@
 import { create } from "zustand";
 import { Workspace } from "@/components/workspace/types";
-import { Node as NodeClass } from "@/components/workspace/nodes/Node";
+import { nodeRegistry } from "@/services/registry";
 import * as workspaceService from "@/services/workspaces";
 // Import node registrations
 // import "@/components/workspace/nodes";
-
-// Create nodes with proper data structure
-const createStartNode = () => NodeClass.create("start");
-const createPlaceholderNode = () => NodeClass.create("placeholder");
-
-// Helper function to process workspace nodes
-const processWorkspaceNodes = (workspace: any) => ({
-  ...workspace,
-  nodes: workspace.nodes.map((nodeData: any) =>
-    NodeClass.createFromStorage(nodeData)
-  ),
-});
 
 interface WorkspacesState {
   workspaces: Workspace[];
@@ -36,8 +24,7 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const workspaces = await workspaceService.fetchWorkspaces();
-      const processedWorkspaces = workspaces.map(processWorkspaceNodes);
-      set({ workspaces: processedWorkspaces, isLoading: false });
+      set({ workspaces, isLoading: false });
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false });
     }
@@ -46,8 +33,8 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
   createWorkspace: async () => {
     set({ isLoading: true, error: null });
     try {
-      const startNode = createStartNode();
-      const placeholderNode = createPlaceholderNode();
+      const startNode = nodeRegistry.createNode("start");
+      const placeholderNode = nodeRegistry.createNode("placeholder");
 
       const edge = {
         id: `${startNode.id}-${placeholderNode.id}`,
@@ -76,10 +63,8 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
       const newWorkspace = await workspaceService.createWorkspace(
         workspaceData
       );
-      const processedWorkspace = processWorkspaceNodes(newWorkspace);
-
       set((state) => ({
-        workspaces: [...state.workspaces, processedWorkspace],
+        workspaces: [...state.workspaces, newWorkspace],
         isLoading: false,
       }));
     } catch (error) {
@@ -93,11 +78,9 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
       const updatedWorkspace = await workspaceService.updateWorkspace(
         workspace
       );
-      const processedWorkspace = processWorkspaceNodes(updatedWorkspace);
-
       set((state) => ({
         workspaces: state.workspaces.map((w) =>
-          w.id === processedWorkspace.id ? processedWorkspace : w
+          w.id === updatedWorkspace.id ? updatedWorkspace : w
         ),
         isLoading: false,
       }));

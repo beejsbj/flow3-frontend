@@ -1,4 +1,4 @@
-import { nodeRegistry } from "./registry";
+import { nodeRegistry } from "@/services/registry";
 import { PlaceholderNode } from "./PlaceholderNode";
 import { PositionLoggerNode } from "./PositionLoggerNode";
 

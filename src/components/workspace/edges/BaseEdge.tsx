@@ -24,8 +24,6 @@ function BaseEdge({
       markerEnd={markerEnd}
       style={{
         ...style,
-        //   strokeWidth: 2,
-        //   stroke: "#333",
       }}
     />
   );

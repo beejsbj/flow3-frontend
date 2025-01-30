@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNode } from "@/stores/workspace";
+import { useNode, useUpdateNodeValues } from "@/stores/workspace";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -29,7 +29,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Node, FieldConfig } from "@/components/workspace/types";
-import { X } from "lucide-react";
 
 interface NodeConfigModalProps {
   nodeId: string;
@@ -43,6 +42,7 @@ export function NodeConfigModal({
   onOpenChange,
 }: NodeConfigModalProps) {
   const node = useNode(nodeId) as Node | undefined;
+  const updateNodeValues = useUpdateNodeValues();
 
   if (!node?.data.config?.form) return null;
 
@@ -90,9 +90,7 @@ export function NodeConfigModal({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!node || !node.data.config) return;
-    if (typeof node.updateValues === "function") {
-      node.updateValues(values);
-    }
+    updateNodeValues(nodeId, values);
     onOpenChange(false);
   }
 

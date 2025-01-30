@@ -1,5 +1,4 @@
 import {
-  //   BadgeCheck,
   Bell,
   ChevronsUpDown,
   CreditCard,
@@ -19,19 +18,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
 import { useUser, useLogout } from "@/stores/user";
 import { UserDialog } from "./UserDialog";
 
 export function UserNav({ children }: { children: React.ReactNode }) {
   const { isMobile } = useSidebar();
-  const router = useRouter();
   const user = useUser();
   const logout = useLogout();
   const [dialogOpen, setDialogOpen] = useState(false);

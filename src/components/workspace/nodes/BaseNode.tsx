@@ -2,7 +2,6 @@
 
 - [ ] better styling
 - [ ] better port positioning
-- [ ] delete node button
 - [ ] tooltip to show validation errors?
 - [ ] execution states
 */
@@ -16,8 +15,7 @@ import {
   NodeData,
 } from "@/components/workspace/types";
 import { useDeleteNode, useLayoutOptions, useNode } from "@/stores/workspace";
-import { useState, memo } from "react";
-import { NodeConfigModal } from "./NodeConfigModal";
+import { memo, useState, useEffect } from "react";
 import {
   cn,
   getSourceHandlePosition,
@@ -25,12 +23,13 @@ import {
 } from "@/lib/utils";
 import { getIconByName } from "@/lib/icons";
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { NodeActions } from "./NodeActions";
 
 interface BaseNodeProps extends NodeProps {
   onClick?: () => void;
   children?: React.ReactNode;
   className?: string;
+  hasActions?: boolean;
 }
 
 function calculatePortPositions(
@@ -91,54 +90,64 @@ function BaseNode({
   onClick,
   selected,
   className,
+  hasActions = true,
   ...props
 }: BaseNodeProps) {
   const { icon, label, ports } = data as NodeData;
   const Icon = icon ? getIconByName(icon) : undefined;
+  const [actionsOpen, setActionsOpen] = useState(false);
 
-  const [configModalOpen, setConfigModalOpen] = useState(false);
-  const node = useNode(id) as Node | undefined;
-  const internalNode = useInternalNode(id);
   const layoutOptions = useLayoutOptions();
-  const deleteNode = useDeleteNode();
-
-  console.log(type, data);
 
   // Calculate port positions passing the entire node
   const portsWithPositions = calculatePortPositions(
-    data.ports || {},
+    ports || {},
     layoutOptions || { direction: "TB", spacing: [50, 50], auto: false }
   );
 
   const handleClick = () => {
-    // Only open config modal if node has config form
-    if (data.config?.form && data.config.form.length > 0) {
-      setConfigModalOpen(true);
-    }
-    // Still call the original onClick if provided
+    setActionsOpen(true);
+    // Call the original onClick if provided
     onClick?.();
   };
 
-  const handleOpenChange = (open: boolean) => {
-    setConfigModalOpen(open);
+  const handleMouseEnter = () => {
+    setTimeout(() => {
+      // setActionsOpen(true);
+    }, 2000);
   };
 
-  // Dynamic border color based on validation
+  const handleMouseLeave = () => {
+    //  setActionsOpen(false);
+  };
 
-  const borderColor = cn("border border-solid transition-colors", {
-    "border-red-500":
-      data?.state?.validation && !data?.state?.validation?.isValid,
-    "border-red-800": selected && !data?.state?.validation?.isValid,
+  // Dynamic border color and animation based on validation and execution state
+  const borderColor = cn(
+    "relative border border-solid transition-colors animate-node",
+    {
+      // Validation states
+      "border-red-500":
+        data?.state?.validation && !data?.state?.validation?.isValid,
+      "border-red-800": selected && !data?.state?.validation?.isValid,
+      "border-green-500":
+        !data?.state?.validation || data?.state?.validation?.isValid,
+      "border-green-800":
+        selected &&
+        (!data?.state?.validation || data?.state?.validation?.isValid),
 
-    "border-green-500":
-      !data?.state?.validation || data?.state?.validation?.isValid,
-    "border-green-800":
-      selected &&
-      (!data?.state?.validation || data?.state?.validation?.isValid),
-  });
+      // Add animation classes using local state
+      running: data?.state?.execution?.isRunning === true,
+      completed: data?.state?.execution?.isCompleted === true,
+      failed: data?.state?.execution?.isFailed === true,
+    }
+  );
 
   return (
-    <RFBaseNode onClick={handleClick}>
+    <RFBaseNode
+      onClick={handleClick}
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
+    >
       <div className="flex flex-col items-center">
         <div className="relative group">
           {/* Render all ports */}
@@ -157,28 +166,20 @@ function BaseNode({
             />
           ))}
 
-          {/* Delete button - controlled by data.isDeletable */}
-          {data?.isDeletable !== false && (
-            <Button
-              variant="destructive"
-              size="icon"
-              className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 
-                        opacity-0 group-hover:opacity-100 transition-opacity z-10
-                        rounded-full h-6 w-6"
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteNode(id);
-              }}
-            >
-              ×
-            </Button>
+          {/* Node Actions */}
+          {hasActions && (
+            <NodeActions
+              id={id}
+              data={data}
+              open={actionsOpen}
+              onOpenChange={setActionsOpen}
+            />
           )}
 
-          {/* Square container for icon with dynamic border color */}
+          {/* Square container for icon with dynamic border color and animation */}
           <div
             className={cn(
-              "w-16 h-16 bg-secondary flex items-center justify-center rounded-lg hover:bg-muted/50 transition-colors",
-
+              "w-16 h-16 bg-secondary flex items-center justify-center rounded-lg hover:bg-muted transition-colors ",
               borderColor,
               className
             )}
@@ -190,12 +191,6 @@ function BaseNode({
         {/* Label below the node */}
         {label && <div className="mt-2 text-xs text-foreground">{label}</div>}
       </div>
-
-      <NodeConfigModal
-        nodeId={id}
-        open={configModalOpen}
-        onOpenChange={handleOpenChange}
-      />
     </RFBaseNode>
   );
 }

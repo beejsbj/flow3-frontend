@@ -1,16 +1,22 @@
 import BaseNode from "./BaseNode";
 import { NodeProps } from "@/components/workspace/types";
-import useWorkspaceStore from "@/stores/workspace";
+import useWorkspaceStore, {
+  useAddNode,
+  useConnectNodes,
+  useDeleteNode,
+} from "@/stores/workspace";
 import { NodesSheetList } from "./NodesSheetList";
 import { useState } from "react";
-import { useEdges } from "@xyflow/react";
-import { nodeRegistry } from "./registry";
+import { nodeRegistry } from "@/services/registry";
 
 export function PlaceholderNode(props: NodeProps) {
   const { id, positionAbsoluteX, positionAbsoluteY } = props;
   const [sheetOpen, setSheetOpen] = useState(false);
-  const { addNode, connectNodes, deleteNode, edges } = useWorkspaceStore();
-  const internalEdges = useEdges();
+  const { edges } = useWorkspaceStore();
+
+  const addNode = useAddNode();
+  const connectNodes = useConnectNodes();
+  const deleteNode = useDeleteNode();
 
   const handleNodeSelection = (nodeType: string) => {
     // Find the edge that connects to this placeholder node
@@ -70,6 +76,7 @@ export function PlaceholderNode(props: NodeProps) {
     <>
       <BaseNode
         {...props}
+        hasActions={false}
         onClick={() => setSheetOpen(true)}
         className="border-2 border-dashed border-muted-foreground rounded-full w-12 h-12"
       />

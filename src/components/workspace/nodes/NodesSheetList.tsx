@@ -8,10 +8,9 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Plus } from "lucide-react";
-import { nodeRegistry, type CategoryData } from "./registry";
+import { nodeRegistry, type CategoryData } from "@/services/registry";
 import { useAddNode } from "@/stores/workspace";
 import { getIconByName } from "@/lib/icons";
-import { Node } from "@/components/workspace/types";
 
 interface NodesSheetListProps {
   open?: boolean;

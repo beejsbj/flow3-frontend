@@ -9,10 +9,8 @@ import type {
   NodeTypes,
   EdgeTypes,
 } from "@xyflow/react";
-import { LucideIcon } from "lucide-react";
 
 // node
-
 export interface FieldConfig {
   name: string;
   type: "string" | "number" | "boolean" | "select";
@@ -25,6 +23,18 @@ export interface FieldConfig {
 export interface NodeValidation {
   isValid: boolean;
   errors: string[];
+}
+export interface NodeExecution {
+  isRunning: boolean;
+  isCompleted: boolean;
+  isFailed: boolean;
+  isCancelled: boolean;
+  error?: string;
+}
+
+export interface NodeState {
+  validation: NodeValidation;
+  execution: NodeExecution;
 }
 
 export interface NodeData extends Record<string, any> {
@@ -43,17 +53,8 @@ export interface NodeData extends Record<string, any> {
   };
 }
 
-export interface NodeState {
-  validation: NodeValidation;
-}
-
 export interface Node extends RFNode {
   data: NodeData;
-
-  // Optional methods
-  validate?: () => void;
-  updatePortConnections?: (portId: string, edgeId: string) => void;
-  updateValues?: (values: Record<string, any>) => void;
 }
 
 export interface NodeProps extends RFNodeProps {
@@ -67,7 +68,6 @@ export interface Edge extends RFEdge {
 }
 
 // workspace
-
 export type Direction = "TB" | "LR" | "RL" | "BT";
 
 export type LayoutOptions = {
@@ -120,7 +120,7 @@ export interface WorkspaceState extends Workspace {
     position?: { x: number; y: number }
   ) => Node | undefined;
   deleteNode: (id: string) => void;
-  updateNodeData: (nodeId: string, updater: (data: any) => any) => void;
+
   connectNodes: (params: {
     source: string;
     target: string;
@@ -128,7 +128,19 @@ export interface WorkspaceState extends Workspace {
     targetHandle?: string;
   }) => void;
 
-  // Add validation state
+  updateNode: (node: Node) => void;
+
+  updateNodePortConnections: (
+    nodeId: string,
+    portId: string | null,
+    edgeId: string
+  ) => void;
+
+  updateNodeValues: (nodeId: string, values: Record<string, any>) => void;
+
+  setNodeExecutionState: (nodeId: string, execution: NodeExecution) => void;
+
+  // Validation
   validation: WorkspaceValidation;
   validate: () => void;
 }

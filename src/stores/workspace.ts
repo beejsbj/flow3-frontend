@@ -6,9 +6,10 @@ import {
   type Workspace,
   type WorkspaceConfig,
   type WorkspaceValidation,
+  type NodeExecution,
 } from "@/components/workspace/types";
 import { subscribeWithSelector } from "zustand/middleware";
-import { Node } from "@/components/workspace/nodes/Node";
+import { nodeRegistry } from "@/services/registry";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import { shallow } from "zustand/shallow";
 
@@ -18,6 +19,52 @@ declare global {
     _saveTimeout?: ReturnType<typeof setTimeout>;
   }
 }
+
+// Pure function to validate a node
+const validateNode = (node: NodeType): NodeType => {
+  const errors: string[] = [];
+
+  if (node.data.config?.form) {
+    node.data.config.form.forEach((field) => {
+      if (field.required) {
+        const value = field.value;
+        if (value === undefined || value === "" || value === null) {
+          errors.push(`${field.label} is required`);
+        }
+      }
+    });
+  }
+
+  const allPorts = [
+    ...(node.data.ports?.inputs || []),
+    ...(node.data.ports?.outputs || []),
+  ];
+
+  allPorts.forEach((port) => {
+    if (!port.edgeId) {
+      errors.push(`Please connect ${port.label}`);
+    }
+  });
+
+  return {
+    ...node,
+    data: {
+      ...node.data,
+      state: {
+        validation: {
+          isValid: errors.length === 0,
+          errors,
+        },
+        execution: node.data.state?.execution || {
+          isRunning: false,
+          isCompleted: false,
+          isFailed: false,
+          isCancelled: false,
+        },
+      },
+    },
+  };
+};
 
 const useWorkspaceStore = create(
   subscribeWithSelector<WorkspaceState>((set, get) => ({
@@ -72,10 +119,16 @@ const useWorkspaceStore = create(
         id: workspace.id,
         name: workspace.name,
         description: workspace.description,
-        config: workspace.config,
+        config: workspace.config || {
+          layout: {
+            direction: "LR",
+            spacing: [100, 100],
+            auto: true,
+          },
+        },
         nodes: workspace.nodes,
         edges: workspace.edges,
-        lastModified: workspace.lastModified,
+        lastModified: new Date(workspace.lastModified),
       });
     },
 
@@ -109,14 +162,22 @@ const useWorkspaceStore = create(
         connection.sourceHandle || ""
       }-${connection.target}${connection.targetHandle || ""}`;
 
-      // Update port connections
+      // Update port connections using the store method
       get().nodes.forEach((node) => {
         if (!node) return;
-        if (connection.sourceHandle && node.updatePortConnections) {
-          node.updatePortConnections(connection.sourceHandle, edgeId);
+        if (connection.sourceHandle) {
+          get().updateNodePortConnections(
+            node.id,
+            connection.sourceHandle,
+            edgeId
+          );
         }
-        if (connection.targetHandle && node.updatePortConnections) {
-          node.updatePortConnections(connection.targetHandle, edgeId);
+        if (connection.targetHandle) {
+          get().updateNodePortConnections(
+            node.id,
+            connection.targetHandle,
+            edgeId
+          );
         }
       });
 
@@ -135,20 +196,17 @@ const useWorkspaceStore = create(
     },
 
     // Node operations
-
     getNode: (id: string) => {
       return get().nodes.find((node) => node.id === id);
     },
 
-    addNode: (type, position = { x: 0, y: 0 }) => {
+    addNode: (type: string, position = { x: 0, y: 0 }) => {
       try {
-        const newNode = new Node(type, position);
-
-        set({
-          nodes: [...get().nodes, newNode],
+        const newNode = nodeRegistry.createNode(type, position);
+        set((state) => ({
+          nodes: [...state.nodes, newNode],
           lastModified: new Date(),
-        });
-
+        }));
         return newNode;
       } catch (error) {
         console.error("Failed to create node:", error);
@@ -156,22 +214,12 @@ const useWorkspaceStore = create(
     },
 
     deleteNode: (id: string) => {
-      set({
-        nodes: get().nodes.filter((node) => node.id !== id),
+      set((state) => ({
+        nodes: state.nodes.filter((node) => node.id !== id),
         lastModified: new Date(),
-      });
+      }));
     },
 
-    updateNodeData: (nodeId: string, updater: (data: any) => any) => {
-      set({
-        nodes: get().nodes.map((node) =>
-          node.id === nodeId ? { ...node, data: updater(node.data) } : node
-        ),
-        lastModified: new Date(),
-      });
-    },
-
-    // Add this to your workspace store
     connectNodes: (params: {
       source: string;
       target: string;
@@ -187,6 +235,93 @@ const useWorkspaceStore = create(
 
       // Use the existing onConnect handler
       get().onConnect(connection);
+    },
+
+    // Core node update method - single source of truth
+    updateNode: (node: NodeType) => {
+      // Always validate the node before updating
+      const validatedNode = validateNode(node);
+
+      set((state) => ({
+        nodes: state.nodes.map((n) =>
+          n.id === validatedNode.id ? validatedNode : n
+        ),
+        lastModified: new Date(),
+      }));
+
+      // Validate workspace after node update
+      get().validate();
+    },
+
+    // Node operations that use updateNode
+    updateNodePortConnections: (
+      nodeId: string,
+      portId: string | null,
+      edgeId: string
+    ) => {
+      const node = get().getNode(nodeId);
+      if (!node || !portId) return;
+
+      const newPorts = {
+        inputs: node.data.ports?.inputs?.map((port) =>
+          port.id === portId ? { ...port, edgeId } : port
+        ),
+        outputs: node.data.ports?.outputs?.map((port) =>
+          port.id === portId ? { ...port, edgeId } : port
+        ),
+      };
+
+      const updatedNode = {
+        ...node,
+        data: {
+          ...node.data,
+          ports: newPorts,
+        },
+      };
+
+      get().updateNode(updatedNode);
+    },
+
+    updateNodeValues: (nodeId: string, values: Record<string, any>) => {
+      const node = get().getNode(nodeId);
+      if (!node || !node.data.config?.form) return;
+
+      const updatedNode = {
+        ...node,
+        data: {
+          ...node.data,
+          config: {
+            ...node.data.config,
+            form: node.data.config.form.map((field) => ({
+              ...field,
+              value: values[field.name] ?? field.value,
+            })),
+          },
+        },
+      };
+
+      get().updateNode(updatedNode);
+    },
+
+    setNodeExecutionState: (nodeId: string, executionState: NodeExecution) => {
+      const node = get().getNode(nodeId);
+      if (!node) return;
+
+      const updatedNode = {
+        ...node,
+        data: {
+          ...node.data,
+          state: {
+            validation: node.data.state?.validation || {
+              isValid: true,
+              errors: [],
+            },
+            execution: executionState,
+          },
+        },
+      };
+
+      get().updateNode(updatedNode);
     },
   }))
 );
@@ -263,19 +398,13 @@ export default useWorkspaceStore;
 
 // Workspace operations
 
-export const useLayoutDirection = () =>
-  useWorkspaceStore((state) => state.config?.layout.direction);
-
-// Node operations
-export const useAddNode = () => useWorkspaceStore((state) => state.addNode);
-
-export const useDeleteNode = () =>
-  useWorkspaceStore((state) => state.deleteNode);
-
-export const useNode = (nodeId: string) =>
-  useWorkspaceStore((state) => state.getNode(nodeId));
-
 // Add convenience hook for workspace validation
+export const useWorkspaceMetadata = () =>
+  useWorkspaceStore((state) => ({
+    name: state.name || "", // Provide default values
+    description: state.description || "",
+  }));
+
 export const useWorkspaceValidation = () =>
   useWorkspaceStore((state) => state.validation);
 
@@ -294,14 +423,26 @@ export const useUpdateLayout = () =>
       }))
   );
 
+// Node operations
+export const useAddNode = () => useWorkspaceStore((state) => state.addNode);
+
+export const useDeleteNode = () =>
+  useWorkspaceStore((state) => state.deleteNode);
+
+export const useNode = (nodeId: string) =>
+  useWorkspaceStore((state) => state.getNode(nodeId));
+
 export const useConnectNodes = () =>
   useWorkspaceStore((state) => state.connectNodes);
 
-export const useWorkspaceMetadata = () =>
-  useWorkspaceStore(
-    (state) => ({
-      name: state.name || "", // Provide default values
-      description: state.description || "",
-    }),
-    shallow
-  );
+export const useUpdateNode = () =>
+  useWorkspaceStore((state) => state.updateNode);
+
+export const useSetNodeExecutionState = () =>
+  useWorkspaceStore((state) => state.setNodeExecutionState);
+
+export const useUpdateNodePortConnections = () =>
+  useWorkspaceStore((state) => state.updateNodePortConnections);
+
+export const useUpdateNodeValues = () =>
+  useWorkspaceStore((state) => state.updateNodeValues);
