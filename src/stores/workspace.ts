@@ -7,6 +7,7 @@ import {
   type WorkspaceConfig,
   type WorkspaceValidation,
   type NodeExecution,
+  type FieldConfig,
 } from "@/components/workspace/types";
 import { subscribeWithSelector } from "zustand/middleware";
 import { nodeRegistry } from "@/services/registry";
@@ -25,11 +26,23 @@ const validateNode = (node: NodeType): NodeType => {
   const errors: string[] = [];
 
   if (node.data.config?.form) {
+    // Helper function to check if a field's dependencies are satisfied
+    const isFieldApplicable = (field: FieldConfig) => {
+      if (!field.dependsOn) return true;
+      const dependentField = node.data.config?.form?.find(
+        (f) => f.name === field.dependsOn?.field
+      );
+      return dependentField?.value === field.dependsOn.value;
+    };
+
     node.data.config.form.forEach((field) => {
-      if (field.required) {
-        const value = field.value;
-        if (value === undefined || value === "" || value === null) {
-          errors.push(`${field.label} is required`);
+      // Only validate fields whose dependencies are satisfied
+      if (isFieldApplicable(field)) {
+        if (field.required) {
+          const value = field.value;
+          if (value === undefined || value === "" || value === null) {
+            errors.push(`${field.label} is required`);
+          }
         }
       }
     });
@@ -214,10 +227,17 @@ const useWorkspaceStore = create(
     },
 
     deleteNode: (id: string) => {
+      // const edges = get().edges.filter(
+      //   (edge) => edge.source !== id || edge.target !== id
+      // );
+
       set((state) => ({
         nodes: state.nodes.filter((node) => node.id !== id),
+        //   edges: edges,
         lastModified: new Date(),
       }));
+
+      console.log(get().edges);
     },
 
     connectNodes: (params: {
