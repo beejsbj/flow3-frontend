@@ -111,17 +111,43 @@ export interface WorkspaceValidation {
   }[];
 }
 
+export interface WorkspaceHistory {
+  past: {
+    nodes: Node[];
+    edges: Edge[];
+  }[];
+  future: {
+    nodes: Node[];
+    edges: Edge[];
+  }[];
+}
+
 export interface WorkspaceState extends Workspace {
   // Workspace operations
   updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => void;
   loadWorkspace: (workspace: Workspace) => void;
 
+  // Validation
+  validation: WorkspaceValidation;
+  validate: () => void;
+
+  // History
+  history: WorkspaceHistory;
+  takeSnapshot: () => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
+
   // React Flow operations
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
-  setNodes: (nodes: Node[]) => void;
-  setEdges: (edges: Edge[]) => void;
+  setNodes: (nodes: Node[], saveSnapshot?: boolean) => void;
+  setEdges: (edges: Edge[], saveSnapshot?: boolean) => void;
+
+  // Edge operations
+  deleteEdge: (edgeId: string) => void;
 
   // Node operations
   getNode: (id: string) => Node | undefined;
@@ -149,10 +175,6 @@ export interface WorkspaceState extends Workspace {
   updateNodeValues: (nodeId: string, values: Record<string, any>) => void;
 
   setNodeExecutionState: (nodeId: string, execution: NodeExecution) => void;
-
-  // Validation
-  validation: WorkspaceValidation;
-  validate: () => void;
 }
 
 //store

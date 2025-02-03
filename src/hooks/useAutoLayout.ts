@@ -7,8 +7,8 @@ import { useLayoutOptions } from "@/stores/workspace";
 type StoreSelectors = {
   getNodes: () => Node[];
   getEdges: () => Edge[];
-  setNodes: (nodes: Node[]) => void;
-  setEdges: (edges: Edge[]) => void;
+  setNodes: (nodes: Node[], isAutoLayout?: boolean) => void;
+  setEdges: (edges: Edge[], isAutoLayout?: boolean) => void;
   fitView: () => void;
 };
 
@@ -110,7 +110,8 @@ export default function useAutoLayout({
               style: { ...node.style, opacity: 1 },
               sourcePosition: getSourceHandlePosition(layoutOptions.direction),
               targetPosition: getTargetHandlePosition(layoutOptions.direction),
-            }))
+            })),
+            false
           );
         },
         // Completion callback
@@ -121,9 +122,10 @@ export default function useAutoLayout({
               style: { ...node.style, opacity: 1 },
               sourcePosition: getSourceHandlePosition(layoutOptions.direction),
               targetPosition: getTargetHandlePosition(layoutOptions.direction),
-            }))
+            })),
+            false
           );
-          setEdges(layoutedEdges);
+          setEdges(layoutedEdges, false);
         },
         // Pass fitView to the animation
         fitView

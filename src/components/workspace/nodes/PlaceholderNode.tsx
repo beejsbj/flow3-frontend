@@ -68,7 +68,6 @@ export function PlaceholderNode(props: NodeProps) {
       });
     });
 
-    // Delete the current placeholder node last
     deleteNode(id);
   };
 

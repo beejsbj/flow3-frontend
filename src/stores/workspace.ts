@@ -12,7 +12,6 @@ import {
 import { subscribeWithSelector } from "zustand/middleware";
 import { nodeRegistry } from "@/services/registry";
 import { useWorkspacesStore } from "@/stores/workspaces";
-import { shallow } from "zustand/shallow";
 
 // Declare the global _saveTimeout
 declare global {
@@ -104,6 +103,11 @@ const useWorkspaceStore = create(
       errors: [],
     },
 
+    history: {
+      past: [],
+      future: [],
+    },
+
     // Add validate method
     validate: () => {
       const nodes = get().nodes;
@@ -125,6 +129,63 @@ const useWorkspaceStore = create(
         },
       });
     },
+
+    // History operations
+    takeSnapshot: () => {
+      console.log("takeSnapshot");
+      set((state) => ({
+        history: {
+          past: [
+            ...state.history.past.slice(state.history.past.length - 99), // Keep last 100 items
+            { nodes: state.nodes, edges: state.edges },
+          ],
+          future: [],
+        },
+      }));
+    },
+
+    undo: () => {
+      console.log("undo");
+      const previous = get().history.past[get().history.past.length - 1];
+
+      if (previous) {
+        // Save current state to future
+        set({
+          history: {
+            past: get().history.past.slice(0, -1),
+            future: [
+              ...get().history.future,
+              { nodes: get().nodes, edges: get().edges },
+            ],
+          },
+          nodes: previous.nodes,
+          edges: previous.edges,
+        });
+      }
+    },
+
+    redo: () => {
+      console.log("redo");
+      const next = get().history.future[get().history.future.length - 1];
+
+      if (next) {
+        // Save current state to past
+        set({
+          history: {
+            future: get().history.future.slice(0, -1),
+            past: [
+              ...get().history.past,
+              { nodes: get().nodes, edges: get().edges },
+            ],
+          },
+          nodes: next.nodes,
+          edges: next.edges,
+        });
+      }
+    },
+
+    canUndo: () => get().history.past.length > 0,
+    canRedo: () => get().history.future.length > 0,
 
     // Add a new method to load workspace data
     loadWorkspace: (workspace: Workspace) => {
@@ -194,18 +255,26 @@ const useWorkspaceStore = create(
         }
       });
 
-      set({
-        edges: addEdge(connection, get().edges),
-        lastModified: new Date(),
-      });
+      get().setEdges(addEdge(connection, get().edges));
     },
 
-    setNodes: (nodes) => {
+    setNodes: (nodes, saveSnapshot = true) => {
+      if (saveSnapshot) {
+        get().takeSnapshot();
+      }
       set({ nodes, lastModified: new Date() });
     },
 
-    setEdges: (edges) => {
+    setEdges: (edges, saveSnapshot = true) => {
+      if (saveSnapshot) {
+        get().takeSnapshot();
+      }
       set({ edges, lastModified: new Date() });
+    },
+
+    //edge operations
+    deleteEdge: (edgeId: string) => {
+      get().setEdges(get().edges.filter((edge) => edge.id !== edgeId));
     },
 
     // Node operations
@@ -216,10 +285,8 @@ const useWorkspaceStore = create(
     addNode: (type: string, position = { x: 0, y: 0 }) => {
       try {
         const newNode = nodeRegistry.createNode(type, position);
-        set((state) => ({
-          nodes: [...state.nodes, newNode],
-          lastModified: new Date(),
-        }));
+
+        get().setNodes([...get().nodes, newNode]);
         return newNode;
       } catch (error) {
         console.error("Failed to create node:", error);
@@ -227,17 +294,12 @@ const useWorkspaceStore = create(
     },
 
     deleteNode: (id: string) => {
-      // const edges = get().edges.filter(
-      //   (edge) => edge.source !== id || edge.target !== id
-      // );
+      const edges = get().edges.filter(
+        (edge) => edge.source !== id && edge.target !== id
+      );
+      get().setNodes(get().nodes.filter((node) => node.id !== id));
 
-      set((state) => ({
-        nodes: state.nodes.filter((node) => node.id !== id),
-        //   edges: edges,
-        lastModified: new Date(),
-      }));
-
-      console.log(get().edges);
+      set({ edges });
     },
 
     connectNodes: (params: {
@@ -262,12 +324,10 @@ const useWorkspaceStore = create(
       // Always validate the node before updating
       const validatedNode = validateNode(node);
 
-      set((state) => ({
-        nodes: state.nodes.map((n) =>
-          n.id === validatedNode.id ? validatedNode : n
-        ),
-        lastModified: new Date(),
-      }));
+      get().setNodes(
+        get().nodes.map((n) => (n.id === validatedNode.id ? validatedNode : n)),
+        false
+      );
 
       // Validate workspace after node update
       get().validate();

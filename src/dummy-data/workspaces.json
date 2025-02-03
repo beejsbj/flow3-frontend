@@ -162,7 +162,7 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-02-03T18:48:08.605Z",
+      "lastModified": "2025-02-03T21:46:39.916Z",
       "nodes": [
         {
           "id": "form-examples-1738096537681-rbug0c76b",
@@ -2689,14 +2689,14 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-02-03T18:49:41.671Z",
+      "lastModified": "2025-02-03T18:58:58.194Z",
       "nodes": [
         {
           "id": "start-1738608409811-2c4cuybdi",
           "type": "start",
           "position": {
-            "x": -106,
-            "y": 152
+            "x": -180,
+            "y": 136
           },
           "data": {
             "label": "Start",
@@ -2848,112 +2848,11 @@
           "targetPosition": "top"
         },
         {
-          "id": "if-1738608416312-jdlr7ukjs",
-          "type": "if",
-          "position": {
-            "x": 50,
-            "y": 144
-          },
-          "data": {
-            "label": "If",
-            "icon": "GitBranch",
-            "description": "Conditionally routes flow based on a condition",
-            "category": "Flow Control",
-            "config": {
-              "form": [
-                {
-                  "name": "condition",
-                  "type": "select",
-                  "label": "Condition Type",
-                  "required": true,
-                  "options": [
-                    {
-                      "value": "equals",
-                      "label": "Equals"
-                    },
-                    {
-                      "value": "notEquals",
-                      "label": "Not Equals"
-                    },
-                    {
-                      "value": "greaterThan",
-                      "label": "Greater Than"
-                    },
-                    {
-                      "value": "lessThan",
-                      "label": "Less Than"
-                    }
-                  ],
-                  "value": "equals"
-                },
-                {
-                  "name": "value",
-                  "type": "string",
-                  "label": "Compare Value",
-                  "required": true,
-                  "value": ""
-                }
-              ]
-            },
-            "ports": {
-              "inputs": [
-                {
-                  "label": "Input",
-                  "type": "target",
-                  "portType": "default",
-                  "id": "input-0",
-                  "edgeId": "xy-edge__delay-1738608420512-py5arqybjoutput-0-placeholder-1738608420520-dxtg64im8input-0"
-                }
-              ],
-              "outputs": [
-                {
-                  "label": "True",
-                  "type": "source",
-                  "portType": "true",
-                  "id": "output-0",
-                  "edgeId": "xy-edge__delay-1738608420512-py5arqybjoutput-0-placeholder-1738608420520-dxtg64im8input-0"
-                },
-                {
-                  "label": "False",
-                  "type": "source",
-                  "portType": "false",
-                  "id": "output-1",
-                  "edgeId": "xy-edge__if-1738608416312-jdlr7ukjsoutput-1-delay-1738608420512-py5arqybjinput-0"
-                }
-              ]
-            },
-            "state": {
-              "validation": {
-                "isValid": false,
-                "errors": [
-                  "Compare Value is required"
-                ]
-              },
-              "execution": {
-                "isRunning": false,
-                "isCompleted": false,
-                "isFailed": false,
-                "isCancelled": false
-              }
-            },
-            "isDeletable": true
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
-        },
-        {
           "id": "placeholder-1738608416317-v1houou21",
           "type": "placeholder",
           "position": {
             "x": -28,
-            "y": 340
+            "y": 136
           },
           "data": {
             "label": "Add Node",
@@ -3003,81 +2902,14 @@
           },
           "sourcePosition": "bottom",
           "targetPosition": "top",
-          "selected": true
-        },
-        {
-          "id": "delay-1738608420512-py5arqybj",
-          "type": "delay",
-          "position": {
-            "x": 132,
-            "y": 332
-          },
-          "data": {
-            "label": "Delay",
-            "icon": "Clock",
-            "description": "Adds a time delay to the flow",
-            "category": "Flow Control",
-            "config": {
-              "form": [
-                {
-                  "name": "delayTime",
-                  "type": "number",
-                  "label": "Delay (ms)",
-                  "required": true,
-                  "value": 1000
-                }
-              ]
-            },
-            "ports": {
-              "inputs": [
-                {
-                  "label": "Input",
-                  "type": "target",
-                  "id": "input-0",
-                  "portType": "default",
-                  "edgeId": "xy-edge__delay-1738608420512-py5arqybjoutput-0-placeholder-1738608420520-dxtg64im8input-0"
-                }
-              ],
-              "outputs": [
-                {
-                  "label": "Output",
-                  "type": "source",
-                  "id": "output-0",
-                  "portType": "default",
-                  "edgeId": "xy-edge__delay-1738608420512-py5arqybjoutput-0-placeholder-1738608420520-dxtg64im8input-0"
-                }
-              ]
-            },
-            "state": {
-              "validation": {
-                "isValid": true,
-                "errors": []
-              },
-              "execution": {
-                "isRunning": false,
-                "isCompleted": false,
-                "isFailed": false,
-                "isCancelled": false
-              }
-            },
-            "isDeletable": true
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+          "selected": false
         },
         {
           "id": "placeholder-1738608420520-dxtg64im8",
           "type": "placeholder",
           "position": {
-            "x": 136,
-            "y": 528
+            "x": 128,
+            "y": 136
           },
           "data": {
             "label": "Add Node",
@@ -3199,6 +3031,1769 @@
         }
       },
       "id": "q4n00iwh1"
+    },
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-02-03T19:14:36.569Z",
+      "nodes": [
+        {
+          "id": "start-1738609220757-7vwrykfrt",
+          "type": "start",
+          "position": {
+            "x": -106,
+            "y": 152
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "config": {
+              "form": [
+                {
+                  "name": "triggerType",
+                  "type": "select",
+                  "label": "Trigger Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "cronjob",
+                      "label": "Cronjob"
+                    },
+                    {
+                      "value": "webhook",
+                      "label": "Webhook"
+                    },
+                    {
+                      "value": "onchain",
+                      "label": "On-Chain Event"
+                    }
+                  ],
+                  "value": "cronjob"
+                },
+                {
+                  "name": "cronExpression",
+                  "type": "string",
+                  "label": "Cron Expression",
+                  "required": true,
+                  "value": "0 * * * *",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "cronjob"
+                  }
+                },
+                {
+                  "name": "webhookPath",
+                  "type": "string",
+                  "label": "Webhook Path",
+                  "required": true,
+                  "value": "/webhook",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "webhookSecret",
+                  "type": "string",
+                  "label": "Webhook Secret",
+                  "required": false,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "contractAddress",
+                  "type": "string",
+                  "label": "Contract Address",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "eventName",
+                  "type": "string",
+                  "label": "Event Name",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "network",
+                  "type": "select",
+                  "label": "Network",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "ethereum",
+                      "label": "Ethereum"
+                    },
+                    {
+                      "value": "polygon",
+                      "label": "Polygon"
+                    },
+                    {
+                      "value": "arbitrum",
+                      "label": "Arbitrum"
+                    },
+                    {
+                      "value": "optimism",
+                      "label": "Optimism"
+                    }
+                  ],
+                  "value": "ethereum",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                }
+              ]
+            },
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 48,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738609227293-1z905ockw",
+          "type": "delay",
+          "position": {
+            "x": -114,
+            "y": 332
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738610063405-93hvzbf8b",
+          "type": "delay",
+          "position": {
+            "x": 50,
+            "y": 144
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738610063411-wzegrqow0",
+          "type": "placeholder",
+          "position": {
+            "x": 54,
+            "y": 340
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        }
+      ],
+      "edges": [
+        {
+          "id": "start-1738609220757-7vwrykfrt-placeholder-1738609220757-172r9fo4x",
+          "source": "start-1738609220757-7vwrykfrt",
+          "target": "placeholder-1738609220757-172r9fo4x",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "type": "base"
+        },
+        {
+          "source": "start-1738609220757-7vwrykfrt",
+          "target": "delay-1738609227293-1z905ockw",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738609220757-7vwrykfrtoutput-0-delay-1738609227293-1z905ockwinput-0"
+        },
+        {
+          "source": "delay-1738609227293-1z905ockw",
+          "target": "placeholder-1738609227298-j09rgo4bp",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738609227293-1z905ockwoutput-0-placeholder-1738609227298-j09rgo4bpinput-0"
+        },
+        {
+          "source": "delay-1738609227293-1z905ockw",
+          "target": "delay-1738609246283-rk7eo5vyj",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738609227293-1z905ockwoutput-0-delay-1738609246283-rk7eo5vyjinput-0"
+        },
+        {
+          "source": "delay-1738610063405-93hvzbf8b",
+          "target": "placeholder-1738610063411-wzegrqow0",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738610063405-93hvzbf8boutput-0-placeholder-1738610063411-wzegrqow0input-0"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "TB",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": true
+        }
+      },
+      "id": "fw1p58irx"
+    },
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-02-03T19:22:11.604Z",
+      "nodes": [
+        {
+          "id": "start-1738610170725-zwwa4p5sz",
+          "type": "start",
+          "position": {
+            "x": -188,
+            "y": 152
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "config": {
+              "form": [
+                {
+                  "name": "triggerType",
+                  "type": "select",
+                  "label": "Trigger Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "cronjob",
+                      "label": "Cronjob"
+                    },
+                    {
+                      "value": "webhook",
+                      "label": "Webhook"
+                    },
+                    {
+                      "value": "onchain",
+                      "label": "On-Chain Event"
+                    }
+                  ],
+                  "value": "cronjob"
+                },
+                {
+                  "name": "cronExpression",
+                  "type": "string",
+                  "label": "Cron Expression",
+                  "required": true,
+                  "value": "0 * * * *",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "cronjob"
+                  }
+                },
+                {
+                  "name": "webhookPath",
+                  "type": "string",
+                  "label": "Webhook Path",
+                  "required": true,
+                  "value": "/webhook",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "webhookSecret",
+                  "type": "string",
+                  "label": "Webhook Secret",
+                  "required": false,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "contractAddress",
+                  "type": "string",
+                  "label": "Contract Address",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "eventName",
+                  "type": "string",
+                  "label": "Event Name",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "network",
+                  "type": "select",
+                  "label": "Network",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "ethereum",
+                      "label": "Ethereum"
+                    },
+                    {
+                      "value": "polygon",
+                      "label": "Polygon"
+                    },
+                    {
+                      "value": "arbitrum",
+                      "label": "Arbitrum"
+                    },
+                    {
+                      "value": "optimism",
+                      "label": "Optimism"
+                    }
+                  ],
+                  "value": "ethereum",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                }
+              ]
+            },
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 48,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738610179573-ijuj2duty",
+          "type": "delay",
+          "position": {
+            "x": -32,
+            "y": 144
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738610206272-3786g493g",
+          "type": "delay",
+          "position": {
+            "x": 132,
+            "y": 144
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
+        },
+        {
+          "id": "delay-1738610449082-mhhojqqlp",
+          "type": "delay",
+          "position": {
+            "x": -196,
+            "y": 332
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        }
+      ],
+      "edges": [
+        {
+          "source": "start-1738610170725-zwwa4p5sz",
+          "target": "delay-1738610449082-mhhojqqlp",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738610170725-zwwa4p5szoutput-0-delay-1738610449082-mhhojqqlpinput-0"
+        },
+        {
+          "source": "delay-1738610449082-mhhojqqlp",
+          "target": "placeholder-1738610449085-h7523tz42",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738610449082-mhhojqqlpoutput-0-placeholder-1738610449085-h7523tz42input-0"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "TB",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": true
+        }
+      },
+      "id": "go8ywfmhz"
+    },
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-02-03T19:22:29.627Z",
+      "nodes": [
+        {
+          "id": "start-1738610530993-7upbk9xts",
+          "type": "start",
+          "position": {
+            "x": -24,
+            "y": 152
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "config": {
+              "form": [
+                {
+                  "name": "triggerType",
+                  "type": "select",
+                  "label": "Trigger Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "cronjob",
+                      "label": "Cronjob"
+                    },
+                    {
+                      "value": "webhook",
+                      "label": "Webhook"
+                    },
+                    {
+                      "value": "onchain",
+                      "label": "On-Chain Event"
+                    }
+                  ],
+                  "value": "cronjob"
+                },
+                {
+                  "name": "cronExpression",
+                  "type": "string",
+                  "label": "Cron Expression",
+                  "required": true,
+                  "value": "0 * * * *",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "cronjob"
+                  }
+                },
+                {
+                  "name": "webhookPath",
+                  "type": "string",
+                  "label": "Webhook Path",
+                  "required": true,
+                  "value": "/webhook",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "webhookSecret",
+                  "type": "string",
+                  "label": "Webhook Secret",
+                  "required": false,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "contractAddress",
+                  "type": "string",
+                  "label": "Contract Address",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "eventName",
+                  "type": "string",
+                  "label": "Event Name",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "network",
+                  "type": "select",
+                  "label": "Network",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "ethereum",
+                      "label": "Ethereum"
+                    },
+                    {
+                      "value": "polygon",
+                      "label": "Polygon"
+                    },
+                    {
+                      "value": "arbitrum",
+                      "label": "Arbitrum"
+                    },
+                    {
+                      "value": "optimism",
+                      "label": "Optimism"
+                    }
+                  ],
+                  "value": "ethereum",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                }
+              ]
+            },
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610538087-gim2fc744output-0-placeholder-1738610538090-r4o41pycainput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 48,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738610538087-gim2fc744",
+          "type": "delay",
+          "position": {
+            "x": -32,
+            "y": 332
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610538087-gim2fc744output-0-placeholder-1738610538090-r4o41pycainput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610538087-gim2fc744output-0-placeholder-1738610538090-r4o41pycainput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        }
+      ],
+      "edges": [
+        {
+          "source": "start-1738610530993-7upbk9xts",
+          "target": "delay-1738610538087-gim2fc744",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738610530993-7upbk9xtsoutput-0-delay-1738610538087-gim2fc744input-0"
+        },
+        {
+          "source": "delay-1738610538087-gim2fc744",
+          "target": "placeholder-1738610538090-r4o41pyca",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738610538087-gim2fc744output-0-placeholder-1738610538090-r4o41pycainput-0"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "TB",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": true
+        }
+      },
+      "id": "32woluqzk"
+    },
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-02-03T19:23:43.579Z",
+      "nodes": [
+        {
+          "id": "start-1738610603326-02vqpgo7q",
+          "type": "start",
+          "position": {
+            "x": -24,
+            "y": 151.99999999999997
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "config": {
+              "form": [
+                {
+                  "name": "triggerType",
+                  "type": "select",
+                  "label": "Trigger Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "cronjob",
+                      "label": "Cronjob"
+                    },
+                    {
+                      "value": "webhook",
+                      "label": "Webhook"
+                    },
+                    {
+                      "value": "onchain",
+                      "label": "On-Chain Event"
+                    }
+                  ],
+                  "value": "cronjob"
+                },
+                {
+                  "name": "cronExpression",
+                  "type": "string",
+                  "label": "Cron Expression",
+                  "required": true,
+                  "value": "0 * * * *",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "cronjob"
+                  }
+                },
+                {
+                  "name": "webhookPath",
+                  "type": "string",
+                  "label": "Webhook Path",
+                  "required": true,
+                  "value": "/webhook",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "webhookSecret",
+                  "type": "string",
+                  "label": "Webhook Secret",
+                  "required": false,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "contractAddress",
+                  "type": "string",
+                  "label": "Contract Address",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "eventName",
+                  "type": "string",
+                  "label": "Event Name",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "network",
+                  "type": "select",
+                  "label": "Network",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "ethereum",
+                      "label": "Ethereum"
+                    },
+                    {
+                      "value": "polygon",
+                      "label": "Polygon"
+                    },
+                    {
+                      "value": "arbitrum",
+                      "label": "Arbitrum"
+                    },
+                    {
+                      "value": "optimism",
+                      "label": "Optimism"
+                    }
+                  ],
+                  "value": "ethereum",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                }
+              ]
+            },
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610609868-81k359sqboutput-0-placeholder-1738610609873-qqh3fi1vxinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 48,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "delay-1738610609868-81k359sqb",
+          "type": "delay",
+          "position": {
+            "x": -31.999999999999936,
+            "y": 331.99999999999994
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610609868-81k359sqboutput-0-placeholder-1738610609873-qqh3fi1vxinput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__delay-1738610609868-81k359sqboutput-0-placeholder-1738610609873-qqh3fi1vxinput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        }
+      ],
+      "edges": [
+        {
+          "source": "start-1738610603326-02vqpgo7q",
+          "target": "delay-1738610609868-81k359sqb",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738610603326-02vqpgo7qoutput-0-delay-1738610609868-81k359sqbinput-0"
+        },
+        {
+          "source": "delay-1738610609868-81k359sqb",
+          "target": "placeholder-1738610609873-qqh3fi1vx",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738610609868-81k359sqboutput-0-placeholder-1738610609873-qqh3fi1vxinput-0"
+        },
+        {
+          "source": "delay-1738610609868-81k359sqb",
+          "target": "delay-1738610614442-4ssybl3y6",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738610609868-81k359sqboutput-0-delay-1738610614442-4ssybl3y6input-0"
+        },
+        {
+          "source": "delay-1738610614442-4ssybl3y6",
+          "target": "placeholder-1738610614443-poc86077n",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1738610614442-4ssybl3y6output-0-placeholder-1738610614443-poc86077ninput-0"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "TB",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": true
+        }
+      },
+      "id": "d87mo4kqz"
+    },
+    {
+      "name": "New Workspace",
+      "description": "Description",
+      "lastModified": "2025-02-03T21:49:12.014Z",
+      "nodes": [
+        {
+          "id": "start-1738610648650-h3hh5w43w",
+          "type": "start",
+          "position": {
+            "x": 164,
+            "y": -224
+          },
+          "data": {
+            "label": "Start",
+            "icon": "Play",
+            "description": "The start of the flow",
+            "category": "System",
+            "config": {
+              "form": [
+                {
+                  "name": "triggerType",
+                  "type": "select",
+                  "label": "Trigger Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "cronjob",
+                      "label": "Cronjob"
+                    },
+                    {
+                      "value": "webhook",
+                      "label": "Webhook"
+                    },
+                    {
+                      "value": "onchain",
+                      "label": "On-Chain Event"
+                    }
+                  ],
+                  "value": "cronjob"
+                },
+                {
+                  "name": "cronExpression",
+                  "type": "string",
+                  "label": "Cron Expression",
+                  "required": true,
+                  "value": "0 * * * *",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "cronjob"
+                  }
+                },
+                {
+                  "name": "webhookPath",
+                  "type": "string",
+                  "label": "Webhook Path",
+                  "required": true,
+                  "value": "/webhook",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "webhookSecret",
+                  "type": "string",
+                  "label": "Webhook Secret",
+                  "required": false,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "webhook"
+                  }
+                },
+                {
+                  "name": "contractAddress",
+                  "type": "string",
+                  "label": "Contract Address",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "eventName",
+                  "type": "string",
+                  "label": "Event Name",
+                  "required": true,
+                  "value": "",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                },
+                {
+                  "name": "network",
+                  "type": "select",
+                  "label": "Network",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "ethereum",
+                      "label": "Ethereum"
+                    },
+                    {
+                      "value": "polygon",
+                      "label": "Polygon"
+                    },
+                    {
+                      "value": "arbitrum",
+                      "label": "Arbitrum"
+                    },
+                    {
+                      "value": "optimism",
+                      "label": "Optimism"
+                    }
+                  ],
+                  "value": "ethereum",
+                  "dependsOn": {
+                    "field": "triggerType",
+                    "value": "onchain"
+                  }
+                }
+              ]
+            },
+            "ports": {
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 48,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "right",
+          "targetPosition": "left"
+        },
+        {
+          "id": "placeholder-1738610660262-4244dqjtg",
+          "type": "placeholder",
+          "position": {
+            "x": 160,
+            "y": -36
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "selected": false,
+          "dragging": false
+        },
+        {
+          "id": "placeholder-1738610676866-p65ps09pv",
+          "type": "placeholder",
+          "position": {
+            "x": 366,
+            "y": -96
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 56,
+            "height": 72
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "selected": true,
+          "dragging": false
+        },
+        {
+          "id": "delay-1738611779218-5cqlg1vpm",
+          "type": "delay",
+          "position": {
+            "x": 365.5,
+            "y": 132.5
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 200
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 88
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "selected": false,
+          "dragging": false
+        },
+        {
+          "id": "position-logger-1738617469179-jf0n0il38",
+          "type": "position-logger",
+          "position": {
+            "x": 434,
+            "y": -249.5
+          },
+          "data": {
+            "label": "Position Logger",
+            "icon": "Crosshair",
+            "description": "Displays the current position of the node",
+            "category": "Debug",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 88,
+            "height": 88
+          },
+          "selected": false,
+          "dragging": false,
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "right",
+          "targetPosition": "left"
+        }
+      ],
+      "edges": [
+        {
+          "type": "base",
+          "markerEnd": {
+            "type": "arrow"
+          },
+          "source": "placeholder-1738610660262-4244dqjtg",
+          "sourceHandle": "output-0",
+          "target": "placeholder-1738610676866-p65ps09pv",
+          "targetHandle": "input-0",
+          "id": "xy-edge__placeholder-1738610660262-4244dqjtgoutput-0-placeholder-1738610676866-p65ps09pvinput-0"
+        },
+        {
+          "type": "base",
+          "markerEnd": {
+            "type": "arrow"
+          },
+          "source": "start-1738610648650-h3hh5w43w",
+          "sourceHandle": "output-0",
+          "target": "position-logger-1738617469179-jf0n0il38",
+          "targetHandle": "input-0",
+          "id": "xy-edge__start-1738610648650-h3hh5w43woutput-0-position-logger-1738617469179-jf0n0il38input-0"
+        }
+      ],
+      "config": {
+        "layout": {
+          "direction": "LR",
+          "spacing": [
+            100,
+            100
+          ],
+          "auto": false
+        }
+      },
+      "id": "2qzyjrs2j"
     }
   ]
 }

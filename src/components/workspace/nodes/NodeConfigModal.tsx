@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -19,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNode, useUpdateNodeValues } from "@/stores/workspace";
+import { useUpdateNodeValues } from "@/stores/workspace";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -28,24 +27,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Node, FieldConfig } from "@/components/workspace/types";
+import { NodeData, FieldConfig } from "@/components/workspace/types";
 
 interface NodeConfigModalProps {
   nodeId: string;
+  data: NodeData;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export function NodeConfigModal({
   nodeId,
+  data,
   open,
   onOpenChange,
 }: NodeConfigModalProps) {
-  const node = useNode(nodeId) as Node | undefined;
   const updateNodeValues = useUpdateNodeValues();
 
-  if (!node?.data.config) return null;
-  const config = node.data.config;
+  // Early return if no config
+  if (!data.config) {
+    return null;
+  }
+
+  const config = data.config;
 
   const generateZodSchema = () => {
     const schemaMap: Record<string, z.ZodType> = {};
@@ -100,7 +104,7 @@ export function NodeConfigModal({
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!node || !node.data.config) return;
+    if (!data.config) return;
     updateNodeValues(nodeId, values);
     onOpenChange(false);
   }
@@ -109,7 +113,7 @@ export function NodeConfigModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Configure {node.data.label}</DialogTitle>
+          <DialogTitle>Configure {data.label}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

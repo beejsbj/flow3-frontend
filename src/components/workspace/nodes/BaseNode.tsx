@@ -231,6 +231,7 @@ function BaseNode({
       {data && (
         <NodeConfigModal
           nodeId={id}
+          data={data}
           open={configModalOpen}
           onOpenChange={setConfigModalOpen}
         />

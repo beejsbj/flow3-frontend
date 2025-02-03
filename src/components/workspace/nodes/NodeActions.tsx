@@ -1,12 +1,11 @@
 import { getIconByName } from "@/lib/icons";
 import {
   useDeleteNode,
-  useNode,
   useSetNodeExecutionState,
   useLayoutOptions,
 } from "@/stores/workspace";
 
-import { NodeData, Node } from "../types";
+import { NodeData } from "../types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +31,6 @@ export function NodeActions({
   onConfigOpen,
 }: NodeActionsProps) {
   const deleteNode = useDeleteNode();
-  const node = useNode(id) as Node;
   const setNodeExecutionState = useSetNodeExecutionState();
   const layoutOptions = useLayoutOptions();
   const SettingsIcon = getIconByName("Settings");
@@ -51,7 +49,7 @@ export function NodeActions({
 
   const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!node || !node.data.state?.validation?.isValid) return;
+    if (!data.state?.validation?.isValid) return;
 
     // Set initial running state
     setNodeExecutionState(id, {
