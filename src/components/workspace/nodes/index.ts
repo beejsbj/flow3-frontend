@@ -1,6 +1,7 @@
 import { nodeRegistry } from "@/services/registry";
 import { PlaceholderNode } from "./PlaceholderNode";
 import { PositionLoggerNode } from "./PositionLoggerNode";
+import { StartNode } from "./StartNode";
 
 // Register the position logger node first
 nodeRegistry.register({
@@ -138,8 +139,154 @@ nodeRegistry.register({
   description: "The start of the flow",
   category: "System",
   icon: "Play",
+  component: StartNode,
+  config: {
+    form: [
+      {
+        name: "triggerType",
+        type: "select",
+        label: "Trigger Type",
+        required: true,
+        options: [
+          { value: "cronjob", label: "Cronjob" },
+          { value: "webhook", label: "Webhook" },
+          { value: "onchain", label: "On-Chain Event" },
+        ],
+        value: "cronjob",
+      },
+      // Cronjob fields
+      {
+        name: "cronExpression",
+        type: "string",
+        label: "Cron Expression",
+        required: true,
+        value: "0 * * * *", // Every hour by default
+        dependsOn: {
+          field: "triggerType",
+          value: "cronjob",
+        },
+      },
+      // Webhook fields
+      {
+        name: "webhookPath",
+        type: "string",
+        label: "Webhook Path",
+        required: true,
+        value: "/webhook",
+        dependsOn: {
+          field: "triggerType",
+          value: "webhook",
+        },
+      },
+      {
+        name: "webhookSecret",
+        type: "string",
+        label: "Webhook Secret",
+        required: false,
+        value: "",
+        dependsOn: {
+          field: "triggerType",
+          value: "webhook",
+        },
+      },
+      // On-chain event fields
+      {
+        name: "contractAddress",
+        type: "string",
+        label: "Contract Address",
+        required: true,
+        value: "",
+        dependsOn: {
+          field: "triggerType",
+          value: "onchain",
+        },
+      },
+      {
+        name: "eventName",
+        type: "string",
+        label: "Event Name",
+        required: true,
+        value: "",
+        dependsOn: {
+          field: "triggerType",
+          value: "onchain",
+        },
+      },
+      {
+        name: "network",
+        type: "select",
+        label: "Network",
+        required: true,
+        options: [
+          { value: "ethereum", label: "Ethereum" },
+          { value: "polygon", label: "Polygon" },
+          { value: "arbitrum", label: "Arbitrum" },
+          { value: "optimism", label: "Optimism" },
+        ],
+        value: "ethereum",
+        dependsOn: {
+          field: "triggerType",
+          value: "onchain",
+        },
+      },
+    ],
+  },
   ports: {
     outputs: [{ label: "Output", type: "source" }],
+  },
+});
+
+// If node for conditional flow control
+nodeRegistry.register({
+  type: "if",
+  label: "If",
+  description: "Conditionally routes flow based on a condition",
+  category: "Flow Control",
+  icon: "GitBranch",
+  config: {
+    form: [
+      {
+        name: "condition",
+        type: "select",
+        label: "Condition Type",
+        required: true,
+        options: [
+          { value: "equals", label: "Equals" },
+          { value: "notEquals", label: "Not Equals" },
+          { value: "greaterThan", label: "Greater Than" },
+          { value: "lessThan", label: "Less Than" },
+        ],
+        value: "equals",
+      },
+      {
+        name: "value",
+        type: "string",
+        label: "Compare Value",
+        required: true,
+        value: "",
+      },
+    ],
+  },
+  ports: {
+    inputs: [
+      {
+        label: "Input",
+        type: "target",
+        portType: "default",
+      },
+    ],
+    outputs: [
+      {
+        label: "True",
+        type: "source",
+        portType: "true",
+      },
+      {
+        label: "False",
+        type: "source",
+        portType: "false",
+      },
+    ],
   },
 });
 

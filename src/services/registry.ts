@@ -50,11 +50,13 @@ const createPorts = (ports?: {
       ...port,
       id: `input-${index}`,
       type: "target",
+      portType: port.portType || "default",
     })),
     outputs: ports.outputs?.map((port, index) => ({
       ...port,
       id: `output-${index}`,
       type: "source",
+      portType: port.portType || "default",
     })),
   };
 };

@@ -34,7 +34,7 @@ function LayoutPanel() {
 
   const { config, updateConfig } = useWorkspaceStore(useShallow(selector));
 
-  const handleDirectionChange = (direction: "TB" | "BT" | "LR" | "RL") => {
+  const handleDirectionChange = (direction: "TB" | "LR") => {
     updateConfig((prev) => ({
       ...prev,
       layout: {
@@ -89,12 +89,11 @@ function LayoutPanel() {
               type="single"
               value={config?.layout.direction}
               onValueChange={(value) =>
-                value &&
-                handleDirectionChange(value as "TB" | "BT" | "LR" | "RL")
+                value && handleDirectionChange(value as "TB" | "LR")
               }
               className="grid grid-cols-2 gap-2"
             >
-              {["TB", "BT", "LR", "RL"].map((direction) => (
+              {["TB", "LR"].map((direction) => (
                 <ToggleGroupItem
                   key={direction}
                   value={direction}

@@ -26,10 +26,6 @@ const getPosition = (x: number, y: number, direction: Direction) => {
       return { x, y };
     case "LR":
       return { x: y, y: x };
-    case "BT":
-      return { x: -x, y: -y };
-    case "RL":
-      return { x: -y, y: x };
   }
 };
 
@@ -75,7 +71,7 @@ const d3HierarchyLayout: LayoutAlgorithm = async (
   edges,
   options
 ): Promise<LayoutResult> => {
-  const isHorizontal = options.direction === "RL" || options.direction === "LR";
+  const isHorizontal = options.direction === "LR";
 
   const initialNodes = [] as NodeWithPosition[];
   let maxNodeWidth = 0;

@@ -18,6 +18,18 @@ export interface FieldConfig {
   value?: any;
   required?: boolean;
   options?: Array<{ value: string; label: string }>;
+  dependsOn?: {
+    field: string;
+    value: any;
+  };
+}
+
+export interface NodeConfig {
+  form?: FieldConfig[];
+  conditionalForms?: {
+    selector: string; // field name that determines which form to show
+    forms: Record<string, FieldConfig[]>; // key is the selector value, value is the form config
+  };
 }
 
 export interface NodeValidation {
@@ -48,9 +60,7 @@ export interface NodeData extends Record<string, any> {
     outputs?: Port[];
   };
   state?: NodeState;
-  config?: {
-    form?: FieldConfig[];
-  };
+  config?: NodeConfig;
 }
 
 export interface Node extends RFNode {
@@ -68,7 +78,7 @@ export interface Edge extends RFEdge {
 }
 
 // workspace
-export type Direction = "TB" | "LR" | "RL" | "BT";
+export type Direction = "TB" | "LR";
 
 export type LayoutOptions = {
   direction: Direction;
@@ -158,4 +168,5 @@ export interface Port {
   type: "source" | "target";
   label?: string;
   edgeId?: string | null;
+  portType?: string;
 }

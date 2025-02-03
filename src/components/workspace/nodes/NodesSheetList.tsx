@@ -45,7 +45,9 @@ export function NodesSheetList({
     <Sheet open={open} onOpenChange={onOpenChange}>
       {showTrigger && (
         <SheetTrigger asChild>
-          <Button variant="outline">Browse Nodes</Button>
+          <Button variant="outline" className="fixed top-2 right-2">
+            Browse Nodes
+          </Button>
         </SheetTrigger>
       )}
       <SheetContent className="w-[400px] sm:w-[540px]">
