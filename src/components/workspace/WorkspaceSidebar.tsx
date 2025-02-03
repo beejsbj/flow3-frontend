@@ -11,8 +11,9 @@ import {
   SidebarGroupContent,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { Home, ArrowLeft } from "lucide-react";
+import { Home, ArrowLeft, Play } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import UserNavSidebar from "@/components/user/UserNav";
 import useWorkspaceStore, { useWorkspaceMetadata } from "@/stores/workspace";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -156,15 +157,23 @@ export default function WorkspaceSidebar() {
     }))
   );
 
+  const execute = useWorkspaceStore((state) => state.execute);
+
   return (
     <Sidebar side="left">
       <SidebarHeader>
-        <SidebarMenuButton className="!p-0 hover:!bg-transparent" asChild>
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <ArrowLeft size={20} />
-            <span className="font-semibold">Flow3</span>
-          </Link>
-        </SidebarMenuButton>
+        <div className="flex items-center justify-between w-full">
+          <SidebarMenuButton className="!p-0 hover:!bg-transparent" asChild>
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <ArrowLeft size={20} />
+              <span className="font-semibold">Flow3</span>
+            </Link>
+          </SidebarMenuButton>
+          <Button size="sm" onClick={execute} className="gap-2">
+            <Play size={16} />
+            Run
+          </Button>
+        </div>
       </SidebarHeader>
 
       <SidebarSeparator />

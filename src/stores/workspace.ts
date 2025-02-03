@@ -8,10 +8,12 @@ import {
   type WorkspaceValidation,
   type NodeExecution,
   type FieldConfig,
+  WorkspaceExecution,
 } from "@/components/workspace/types";
 import { subscribeWithSelector } from "zustand/middleware";
 import { nodeRegistry } from "@/services/registry";
 import { useWorkspacesStore } from "@/stores/workspaces";
+import { executeWorkspace, pollExecutionStatus } from "@/services/execution";
 
 // Declare the global _saveTimeout
 declare global {
@@ -103,6 +105,14 @@ const useWorkspaceStore = create(
       errors: [],
     },
 
+    execution: {
+      isRunning: false,
+      isCompleted: false,
+      isFailed: false,
+      isCancelled: false,
+      error: undefined,
+    },
+
     history: {
       past: [],
       future: [],
@@ -128,6 +138,11 @@ const useWorkspaceStore = create(
           errors,
         },
       });
+    },
+
+    // Execution methods
+    setExecutionState: (executionState: WorkspaceExecution) => {
+      set({ execution: executionState });
     },
 
     // History operations
@@ -402,6 +417,48 @@ const useWorkspaceStore = create(
       };
 
       get().updateNode(updatedNode);
+    },
+
+    resetNodeExecutionStates: () => {
+      get().nodes.forEach((node) => {
+        get().setNodeExecutionState(node.id, {
+          isRunning: false,
+          isCompleted: false,
+          isFailed: false,
+          isCancelled: false,
+        });
+      });
+    },
+    // Execution methods
+    execute: async () => {
+      const state = get();
+      get().resetNodeExecutionStates();
+      get().setExecutionState({
+        isRunning: false,
+        isCompleted: false,
+        isFailed: false,
+        isCancelled: false,
+      });
+      try {
+        await executeWorkspace({
+          id: state.id,
+          name: state.name,
+          description: state.description,
+          nodes: state.nodes,
+          edges: state.edges,
+          lastModified: state.lastModified,
+          config: state.config,
+        });
+      } catch (error) {
+        console.error("Failed to execute workspace:", error);
+        get().setExecutionState({
+          isRunning: false,
+          isCompleted: false,
+          isFailed: true,
+          isCancelled: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+      }
     },
   }))
 );

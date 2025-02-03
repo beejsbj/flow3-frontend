@@ -122,6 +122,13 @@ export interface WorkspaceHistory {
   }[];
 }
 
+export interface WorkspaceExecution {
+  isRunning: boolean;
+  isCompleted: boolean;
+  isFailed: boolean;
+  isCancelled: boolean;
+  error?: string;
+}
 export interface WorkspaceState extends Workspace {
   // Workspace operations
   updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => void;
@@ -130,6 +137,10 @@ export interface WorkspaceState extends Workspace {
   // Validation
   validation: WorkspaceValidation;
   validate: () => void;
+
+  // Execution
+  execution: WorkspaceExecution;
+  setExecutionState: (execution: WorkspaceExecution) => void;
 
   // History
   history: WorkspaceHistory;
@@ -175,6 +186,11 @@ export interface WorkspaceState extends Workspace {
   updateNodeValues: (nodeId: string, values: Record<string, any>) => void;
 
   setNodeExecutionState: (nodeId: string, execution: NodeExecution) => void;
+
+  resetNodeExecutionStates: () => void;
+
+  // Execution
+  execute: () => Promise<void>;
 }
 
 //store
