@@ -3,19 +3,15 @@ import {
   Background,
   BackgroundVariant,
   Controls,
-  MiniMap,
   ReactFlowProvider,
-  Panel,
   useReactFlow,
 } from "@xyflow/react";
-import { Switch } from "@/components/ui/switch";
 
 import { useShallow } from "zustand/react/shallow";
 
 import useWorkspaceStore, { useLayoutOptions } from "@/stores/workspace";
 import { nodeTypes } from "./nodes";
 import { edgeTypes, defaultEdgeOptions } from "./edges";
-import { DevTools } from "@/components/devtools";
 import useAutoLayout from "@/hooks/useAutoLayout";
 import { Node, Edge, WorkspaceState } from "./types";
 
@@ -28,9 +24,7 @@ function FlowContent() {
   return (
     <>
       <Background color={bgColor} variant={BackgroundVariant.Dots} />
-      <MiniMap />
       <Controls />
-      {/* <DevTools /> */}
     </>
   );
 }
