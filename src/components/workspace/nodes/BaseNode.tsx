@@ -6,7 +6,13 @@
 - [ ] execution states
 */
 
+// Import statements organized by category
+// React and React Flow
+import { memo, useState, useEffect } from "react";
+import React from "react";
 import { Handle, Position, useInternalNode } from "@xyflow/react";
+
+// Types
 import {
   NodeProps,
   Port,
@@ -14,17 +20,22 @@ import {
   Node,
   NodeData,
 } from "@/components/workspace/types";
+
+// Hooks and Utils
 import { useDeleteNode, useLayoutOptions, useNode } from "@/stores/workspace";
-import { memo, useState, useEffect } from "react";
 import {
   cn,
   getSourceHandlePosition,
   getTargetHandlePosition,
 } from "@/lib/utils";
 import { getIconByName } from "@/lib/icons";
-import React from "react";
-import { NodeActions } from "./NodeActions";
 
+// Components
+import { NodeActions } from "./NodeActions";
+import { Label } from "@/components/ui/label";
+import { NodeConfigModal } from "./NodeConfigModal";
+
+// Types
 interface BaseNodeProps extends NodeProps {
   onClick?: () => void;
   children?: React.ReactNode;
@@ -32,6 +43,7 @@ interface BaseNodeProps extends NodeProps {
   hasActions?: boolean;
 }
 
+// Utility functions
 function calculatePortPositions(
   ports: { inputs?: Port[]; outputs?: Port[] },
   layoutOptions: LayoutOptions
@@ -82,6 +94,14 @@ function calculatePortPositions(
   ];
 }
 
+// Styled components
+export const RFBaseNode = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((props, ref) => <div ref={ref} tabIndex={0} role="button" {...props} />);
+RFBaseNode.displayName = "RFBaseNode";
+
+// Main component
 function BaseNode({
   type,
   id,
@@ -93,39 +113,31 @@ function BaseNode({
   hasActions = true,
   ...props
 }: BaseNodeProps) {
-  const { icon, label, ports } = data as NodeData;
-  const Icon = icon ? getIconByName(icon) : undefined;
+  // State
+  const [configModalOpen, setConfigModalOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
 
+  // Hooks
   const layoutOptions = useLayoutOptions();
+  const { icon, label, ports } = data as NodeData;
+  const Icon = icon ? getIconByName(icon) : undefined;
 
-  // Calculate port positions passing the entire node
+  // Calculations
   const portsWithPositions = calculatePortPositions(
     ports || {},
     layoutOptions || { direction: "TB", spacing: [50, 50], auto: false }
   );
 
+  // Event handlers
   const handleClick = () => {
     setActionsOpen(true);
-    // Call the original onClick if provided
     onClick?.();
   };
 
-  const handleMouseEnter = () => {
-    setTimeout(() => {
-      // setActionsOpen(true);
-    }, 2000);
-  };
-
-  const handleMouseLeave = () => {
-    //  setActionsOpen(false);
-  };
-
-  // Dynamic border color and animation based on validation and execution state
+  // Styles
   const borderColor = cn(
     "relative border border-solid transition-colors animate-node",
     {
-      // Validation states
       "border-red-500":
         data?.state?.validation && !data?.state?.validation?.isValid,
       "border-red-800": selected && !data?.state?.validation?.isValid,
@@ -134,8 +146,6 @@ function BaseNode({
       "border-green-800":
         selected &&
         (!data?.state?.validation || data?.state?.validation?.isValid),
-
-      // Add animation classes using local state
       running: data?.state?.execution?.isRunning === true,
       completed: data?.state?.execution?.isCompleted === true,
       failed: data?.state?.execution?.isFailed === true,
@@ -143,62 +153,90 @@ function BaseNode({
   );
 
   return (
-    <RFBaseNode
-      onClick={handleClick}
-      // onMouseEnter={handleMouseEnter}
-      // onMouseLeave={handleMouseLeave}
-    >
-      <div className="flex flex-col items-center">
-        <div className="relative group">
-          {/* Render all ports */}
-          {portsWithPositions.map((port) => (
-            <Handle
-              key={port.id}
-              id={port.id}
-              type={port.type}
-              position={port.position}
-              style={{
-                [port.position === Position.Left ||
-                port.position === Position.Right
-                  ? "top"
-                  : "left"]: `${port.offset}%`,
-              }}
-            />
-          ))}
+    <>
+      <RFBaseNode onClick={handleClick}>
+        <div className="flex flex-col items-center">
+          <div className="relative group">
+            {/* Ports */}
+            {portsWithPositions.map((port) => (
+              <Handle
+                key={port.id}
+                id={port.id}
+                type={port.type}
+                position={port.position}
+                style={{
+                  [port.position === Position.Left ||
+                  port.position === Position.Right
+                    ? "top"
+                    : "left"]: `${port.offset}%`,
+                }}
+              />
+            ))}
 
-          {/* Node Actions */}
-          {hasActions && (
-            <NodeActions
-              id={id}
-              data={data}
-              open={actionsOpen}
-              onOpenChange={setActionsOpen}
-            />
-          )}
-
-          {/* Square container for icon with dynamic border color and animation */}
-          <div
-            className={cn(
-              "w-16 h-16 bg-secondary flex items-center justify-center rounded-lg hover:bg-muted transition-colors ",
-              borderColor,
-              className
+            {/* Port Labels */}
+            {portsWithPositions.map((port) =>
+              port.portType && port.portType !== "default" ? (
+                <Label
+                  key={`${port.id}-label`}
+                  className="absolute text-xs text-muted-foreground select-none"
+                  style={{
+                    [port.position === Position.Left
+                      ? "left"
+                      : port.position === Position.Right
+                      ? "right"
+                      : port.position === Position.Top
+                      ? "top"
+                      : "bottom"]: "-25px",
+                    [port.position === Position.Left ||
+                    port.position === Position.Right
+                      ? "top"
+                      : "left"]: `${port.offset * 2.5}%`,
+                    transform: "translate(-220%, -50%)",
+                  }}
+                >
+                  {port.label}
+                </Label>
+              ) : null
             )}
-          >
-            {children ? children : Icon && <Icon />}
-          </div>
-        </div>
 
-        {/* Label below the node */}
-        {label && <div className="mt-2 text-xs text-foreground">{label}</div>}
-      </div>
-    </RFBaseNode>
+            {/* Actions */}
+            {hasActions && (
+              <NodeActions
+                id={id}
+                data={data}
+                open={actionsOpen}
+                onOpenChange={setActionsOpen}
+                onConfigOpen={() => setConfigModalOpen(true)}
+              />
+            )}
+
+            {/* Node Icon */}
+            <div
+              className={cn(
+                "w-16 h-16 bg-secondary flex items-center justify-center rounded-lg hover:bg-muted transition-colors",
+                borderColor,
+                className
+              )}
+            >
+              {children || (Icon && <Icon />)}
+            </div>
+          </div>
+
+          {/* Label */}
+          {label && <div className="mt-2 text-xs text-foreground">{label}</div>}
+        </div>
+      </RFBaseNode>
+
+      {/* Config Modal */}
+      {data && (
+        <NodeConfigModal
+          nodeId={id}
+          open={configModalOpen}
+          onOpenChange={setConfigModalOpen}
+        />
+      )}
+    </>
   );
 }
-
-export const RFBaseNode = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->((props, ref) => <div ref={ref} tabIndex={0} role="button" {...props} />);
-RFBaseNode.displayName = "RFBaseNode";
 
 export default memo(BaseNode);

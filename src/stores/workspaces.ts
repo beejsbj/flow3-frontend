@@ -53,7 +53,7 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
         edges: [edge],
         config: {
           layout: {
-            direction: "LR" as const,
+            direction: "TB" as const,
             spacing: [100, 100] as [number, number],
             auto: true,
           },

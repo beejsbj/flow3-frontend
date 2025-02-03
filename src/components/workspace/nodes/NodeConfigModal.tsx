@@ -44,11 +44,13 @@ export function NodeConfigModal({
   const node = useNode(nodeId) as Node | undefined;
   const updateNodeValues = useUpdateNodeValues();
 
-  if (!node?.data.config?.form) return null;
+  if (!node?.data.config) return null;
+  const config = node.data.config;
 
   const generateZodSchema = () => {
     const schemaMap: Record<string, z.ZodType> = {};
-    node?.data?.config?.form?.forEach((field: FieldConfig) => {
+
+    config.form?.forEach((field: FieldConfig) => {
       let fieldSchema: z.ZodType;
 
       switch (field.type) {
@@ -72,21 +74,30 @@ export function NodeConfigModal({
         ? fieldSchema
         : fieldSchema.optional();
     });
+
     return z.object(schemaMap);
   };
 
   const formSchema = generateZodSchema();
 
   // Create initial values object from form fields
-  const initialValues = node.data.config.form.reduce((acc, field) => {
-    acc[field.name] = field.value;
-    return acc;
-  }, {} as Record<string, any>);
+  const initialValues =
+    config.form?.reduce((acc, field) => {
+      acc[field.name] = field.value;
+      return acc;
+    }, {} as Record<string, any>) || {};
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
   });
+
+  // Helper function to check if a field should be visible based on its dependencies
+  const isFieldApplicable = (field: FieldConfig) => {
+    if (!field.dependsOn) return true;
+    const dependentValue = form.watch(field.dependsOn.field);
+    return dependentValue === field.dependsOn.value;
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!node || !node.data.config) return;
@@ -102,59 +113,61 @@ export function NodeConfigModal({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {node.data.config.form.map((field) => (
-              <FormField
-                key={field.name}
-                control={form.control}
-                name={field.name}
-                render={({ field: formField }) => (
-                  <FormItem>
-                    <FormLabel>{field.label}</FormLabel>
-                    <FormControl>
-                      {field.type === "select" ? (
-                        <Select
-                          value={formField.value}
-                          onValueChange={formField.onChange}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select an option" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {field.options?.map((option) => (
-                              <SelectItem
-                                key={option.value}
-                                value={option.value}
-                              >
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      ) : field.type === "boolean" ? (
-                        <Switch
-                          checked={formField.value}
-                          onCheckedChange={formField.onChange}
-                        />
-                      ) : (
-                        <Input
-                          type={field.type}
-                          placeholder={field.label}
-                          {...formField}
-                          onChange={(e) => {
-                            const value =
-                              field.type === "number"
-                                ? parseFloat(e.target.value)
-                                : e.target.value;
-                            formField.onChange(value);
-                          }}
-                        />
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
+            {config.form?.map((field) =>
+              isFieldApplicable(field) ? (
+                <FormField
+                  key={field.name}
+                  control={form.control}
+                  name={field.name}
+                  render={({ field: formField }) => (
+                    <FormItem>
+                      <FormLabel>{field.label}</FormLabel>
+                      <FormControl>
+                        {field.type === "select" ? (
+                          <Select
+                            value={formField.value}
+                            onValueChange={formField.onChange}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select an option" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {field.options?.map((option) => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : field.type === "boolean" ? (
+                          <Switch
+                            checked={formField.value}
+                            onCheckedChange={formField.onChange}
+                          />
+                        ) : (
+                          <Input
+                            type={field.type}
+                            placeholder={field.label}
+                            {...formField}
+                            onChange={(e) => {
+                              const value =
+                                field.type === "number"
+                                  ? parseFloat(e.target.value)
+                                  : e.target.value;
+                              formField.onChange(value);
+                            }}
+                          />
+                        )}
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : null
+            )}
             <Button type="submit" className="w-full">
               Save Changes
             </Button>
