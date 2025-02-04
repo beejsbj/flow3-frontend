@@ -8,52 +8,49 @@ import {
   type WorkspaceValidation,
   type NodeExecution,
   type FieldConfig,
-  WorkspaceExecution,
+  type WorkspaceExecution,
 } from "@/components/workspace/types";
 import { subscribeWithSelector } from "zustand/middleware";
 import { nodeRegistry } from "@/services/registry";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import { executeWorkspace, pollExecutionStatus } from "@/services/execution";
 
-// Declare the global _saveTimeout
+// ============= Types =============
 declare global {
   interface Window {
     _saveTimeout?: ReturnType<typeof setTimeout>;
   }
 }
 
-// Pure function to validate a node
+// ============= Helper Functions =============
 const validateNode = (node: NodeType): NodeType => {
   const errors: string[] = [];
 
-  if (node.data.config?.form) {
-    // Helper function to check if a field's dependencies are satisfied
-    const isFieldApplicable = (field: FieldConfig) => {
-      if (!field.dependsOn) return true;
-      const dependentField = node.data.config?.form?.find(
-        (f) => f.name === field.dependsOn?.field
-      );
-      return dependentField?.value === field.dependsOn.value;
-    };
+  const isFieldApplicable = (field: FieldConfig) => {
+    if (!field.dependsOn) return true;
+    const dependentField = node.data.config?.form?.find(
+      (f) => f.name === field.dependsOn?.field
+    );
+    return dependentField?.value === field.dependsOn.value;
+  };
 
+  // Validate form fields
+  if (node.data.config?.form) {
     node.data.config.form.forEach((field) => {
-      // Only validate fields whose dependencies are satisfied
-      if (isFieldApplicable(field)) {
-        if (field.required) {
-          const value = field.value;
-          if (value === undefined || value === "" || value === null) {
-            errors.push(`${field.label} is required`);
-          }
+      if (isFieldApplicable(field) && field.required) {
+        const value = field.value;
+        if (value === undefined || value === "" || value === null) {
+          errors.push(`${field.label} is required`);
         }
       }
     });
   }
 
+  // Validate ports
   const allPorts = [
     ...(node.data.ports?.inputs || []),
     ...(node.data.ports?.outputs || []),
   ];
-
   allPorts.forEach((port) => {
     if (!port.edgeId) {
       errors.push(`Please connect ${port.label}`);
@@ -80,12 +77,17 @@ const validateNode = (node: NodeType): NodeType => {
   };
 };
 
+// ============= Store Definition =============
 const useWorkspaceStore = create(
   subscribeWithSelector<WorkspaceState>((set, get) => ({
+    // ========== Initial State ==========
     // Metadata
-    id: "", // Will be set when loading a workspace
+    id: "",
     name: "",
     description: "",
+    lastModified: new Date(),
+
+    // Configuration
     config: {
       layout: {
         direction: "LR",
@@ -93,18 +95,13 @@ const useWorkspaceStore = create(
         auto: true,
       },
     },
-    lastModified: new Date(),
 
-    // Content state - initialize as empty arrays instead of static data
+    // Content
     nodes: [],
     edges: [],
 
-    // Add validation state
-    validation: {
-      isValid: true,
-      errors: [],
-    },
-
+    // State
+    validation: { isValid: true, errors: [] },
     execution: {
       isRunning: false,
       isCompleted: false,
@@ -112,18 +109,35 @@ const useWorkspaceStore = create(
       isCancelled: false,
       error: undefined,
     },
+    history: { past: [], future: [] },
+    isBatchOperation: false,
 
-    history: {
-      past: [],
-      future: [],
+    // ========== Actions ==========
+    // ----- Workspace Actions -----
+    loadWorkspace: (workspace: Workspace) => {
+      set({
+        id: workspace.id,
+        name: workspace.name,
+        description: workspace.description,
+        config: workspace.config || {
+          layout: { direction: "LR", spacing: [100, 100], auto: true },
+        },
+        nodes: workspace.nodes,
+        edges: workspace.edges,
+        lastModified: new Date(workspace.lastModified),
+      });
     },
 
-    // Add validate method
-    validate: () => {
-      const nodes = get().nodes;
-      const errors: WorkspaceValidation["errors"] = [];
+    updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => {
+      set({
+        config: updater(get().config!),
+        lastModified: new Date(),
+      });
+    },
 
-      nodes.forEach((node) => {
+    validate: () => {
+      const errors: WorkspaceValidation["errors"] = [];
+      get().nodes.forEach((node) => {
         if (node.data?.state?.validation?.isValid === false) {
           errors.push({
             nodeId: node.id,
@@ -140,18 +154,35 @@ const useWorkspaceStore = create(
       });
     },
 
-    // Execution methods
-    setExecutionState: (executionState: WorkspaceExecution) => {
-      set({ execution: executionState });
+    // ----- Execution Actions -----
+    setExecutionState: (execution: WorkspaceExecution) => {
+      set({ execution });
     },
 
-    // History operations
+    execute: async () => {
+      const state = get();
+      get().resetNodeExecutionStates();
+      try {
+        await executeWorkspace({
+          id: state.id,
+          name: state.name,
+          description: state.description,
+          nodes: state.nodes,
+          edges: state.edges,
+          lastModified: state.lastModified,
+          config: state.config,
+        });
+      } catch (error) {
+        console.error("Failed to execute workspace:", error);
+      }
+    },
+
+    // ----- History Actions -----
     takeSnapshot: () => {
-      console.log("takeSnapshot");
       set((state) => ({
         history: {
           past: [
-            ...state.history.past.slice(state.history.past.length - 99), // Keep last 100 items
+            ...state.history.past.slice(state.history.past.length - 99),
             { nodes: state.nodes, edges: state.edges },
           ],
           future: [],
@@ -160,11 +191,8 @@ const useWorkspaceStore = create(
     },
 
     undo: () => {
-      console.log("undo");
       const previous = get().history.past[get().history.past.length - 1];
-
       if (previous) {
-        // Save current state to future
         set({
           history: {
             past: get().history.past.slice(0, -1),
@@ -180,11 +208,8 @@ const useWorkspaceStore = create(
     },
 
     redo: () => {
-      console.log("redo");
       const next = get().history.future[get().history.future.length - 1];
-
       if (next) {
-        // Save current state to past
         set({
           history: {
             future: get().history.future.slice(0, -1),
@@ -202,36 +227,17 @@ const useWorkspaceStore = create(
     canUndo: () => get().history.past.length > 0,
     canRedo: () => get().history.future.length > 0,
 
-    // Add a new method to load workspace data
-    loadWorkspace: (workspace: Workspace) => {
-      set({
-        id: workspace.id,
-        name: workspace.name,
-        description: workspace.description,
-        config: workspace.config || {
-          layout: {
-            direction: "LR",
-            spacing: [100, 100],
-            auto: true,
-          },
-        },
-        nodes: workspace.nodes,
-        edges: workspace.edges,
-        lastModified: new Date(workspace.lastModified),
-      });
+    // ----- Batch Actions -----
+    startBatch: () => {
+      get().takeSnapshot();
+      set({ isBatchOperation: true });
     },
 
-    // Operations
-
-    // Workspace operations
-    updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => {
-      set({
-        config: updater(get().config!),
-        lastModified: new Date(),
-      });
+    endBatch: () => {
+      set({ isBatchOperation: false });
     },
 
-    // React Flow operations
+    // ----- Flow Actions -----
     onNodesChange: (changes) => {
       set({
         nodes: applyNodeChanges(changes, get().nodes) as NodeType[],
@@ -251,7 +257,6 @@ const useWorkspaceStore = create(
         connection.sourceHandle || ""
       }-${connection.target}${connection.targetHandle || ""}`;
 
-      // Update port connections using the store method
       get().nodes.forEach((node) => {
         if (!node) return;
         if (connection.sourceHandle) {
@@ -274,33 +279,30 @@ const useWorkspaceStore = create(
     },
 
     setNodes: (nodes, saveSnapshot = true) => {
-      if (saveSnapshot) {
+      if (!get().isBatchOperation && saveSnapshot) {
         get().takeSnapshot();
       }
       set({ nodes, lastModified: new Date() });
     },
 
     setEdges: (edges, saveSnapshot = true) => {
-      if (saveSnapshot) {
+      if (!get().isBatchOperation && saveSnapshot) {
         get().takeSnapshot();
       }
       set({ edges, lastModified: new Date() });
     },
 
-    //edge operations
+    // ----- Edge Actions -----
     deleteEdge: (edgeId: string) => {
       get().setEdges(get().edges.filter((edge) => edge.id !== edgeId));
     },
 
-    // Node operations
-    getNode: (id: string) => {
-      return get().nodes.find((node) => node.id === id);
-    },
+    // ----- Node Actions -----
+    getNode: (id: string) => get().nodes.find((node) => node.id === id),
 
     addNode: (type: string, position = { x: 0, y: 0 }) => {
       try {
         const newNode = nodeRegistry.createNode(type, position);
-
         get().setNodes([...get().nodes, newNode]);
         return newNode;
       } catch (error) {
@@ -313,7 +315,6 @@ const useWorkspaceStore = create(
         (edge) => edge.source !== id && edge.target !== id
       );
       get().setNodes(get().nodes.filter((node) => node.id !== id));
-
       set({ edges });
     },
 
@@ -332,6 +333,69 @@ const useWorkspaceStore = create(
 
       // Use the existing onConnect handler
       get().onConnect(connection);
+    },
+
+    replaceNodeWithConnections: (
+      oldNodeId: string,
+      newNodeType: string,
+      createPlaceholders = true
+    ) => {
+      // Find existing node to get its position
+      const oldNode = get().getNode(oldNodeId);
+      if (!oldNode) return;
+
+      // Find parent edge
+      const parentEdge = get().edges.find((edge) => edge.target === oldNodeId);
+      if (!parentEdge) return;
+
+      // Start batch operation
+      get().startBatch();
+
+      // Add new node at same position
+      const newNode = get().addNode(newNodeType, {
+        x: oldNode.position.x,
+        y: oldNode.position.y,
+      });
+      if (!newNode) {
+        get().endBatch();
+        return;
+      }
+
+      // Connect to parent
+      get().connectNodes({
+        source: parentEdge.source,
+        target: newNode.id,
+        sourceHandle: parentEdge.sourceHandle || undefined,
+        targetHandle: "input-0",
+      });
+
+      // Create placeholders if needed
+      if (createPlaceholders) {
+        const nodeDefinition = nodeRegistry.get(newNodeType);
+        const outputPorts = nodeDefinition?.ports?.outputs || [];
+        const numOutputs = outputPorts.length;
+
+        outputPorts.forEach((port, index) => {
+          const offsetX =
+            numOutputs > 1 ? (index - (numOutputs - 1) / 2) * 200 : 0;
+          const placeholder = get().addNode("placeholder", {
+            x: newNode.position.x + offsetX,
+            y: newNode.position.y + 100,
+          });
+
+          if (placeholder) {
+            get().connectNodes({
+              source: newNode.id,
+              target: placeholder.id,
+              sourceHandle: `output-${index}`,
+              targetHandle: "input-0",
+            });
+          }
+        });
+      }
+
+      get().deleteNode(oldNodeId);
+      get().endBatch();
     },
 
     // Core node update method - single source of truth
@@ -429,41 +493,10 @@ const useWorkspaceStore = create(
         });
       });
     },
-    // Execution methods
-    execute: async () => {
-      const state = get();
-      get().resetNodeExecutionStates();
-      get().setExecutionState({
-        isRunning: false,
-        isCompleted: false,
-        isFailed: false,
-        isCancelled: false,
-      });
-      try {
-        await executeWorkspace({
-          id: state.id,
-          name: state.name,
-          description: state.description,
-          nodes: state.nodes,
-          edges: state.edges,
-          lastModified: state.lastModified,
-          config: state.config,
-        });
-      } catch (error) {
-        console.error("Failed to execute workspace:", error);
-        get().setExecutionState({
-          isRunning: false,
-          isCompleted: false,
-          isFailed: true,
-          isCancelled: false,
-          error: error instanceof Error ? error.message : "Unknown error",
-        });
-      }
-    },
   }))
 );
 
-// Remove or comment out the auto-save subscription
+// ============= Auto-save Subscription =============
 useWorkspaceStore.subscribe(
   (state) => ({
     nodes: state.nodes.map((node) => ({
@@ -527,18 +560,13 @@ useWorkspaceStore.subscribe(
   }
 );
 
+// ============= Exports =============
 export default useWorkspaceStore;
 
-// Convenience exports for common selectors
-// export const useNodes = () => useWorkspaceStore((state) => state.nodes);
-// export const useEdges = () => useWorkspaceStore((state) => state.edges);
-
-// Workspace operations
-
-// Add convenience hook for workspace validation
+// Convenience hooks
 export const useWorkspaceMetadata = () =>
   useWorkspaceStore((state) => ({
-    name: state.name || "", // Provide default values
+    name: state.name || "",
     description: state.description || "",
   }));
 

@@ -4,6 +4,9 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Moon,
+  Sun,
+  Monitor,
 } from "lucide-react";
 import { useState } from "react";
 import UserWallet from "@/components/user/UserWallet";
@@ -27,6 +30,58 @@ import {
 } from "@/components/ui/sidebar";
 import { useUser, useLogout } from "@/stores/user";
 import { UserDialog } from "./UserDialog";
+import { useTheme } from "next-themes";
+import { Toggle } from "@/components/ui/toggle";
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  const getThemeIcon = () => {
+    switch (theme) {
+      case "dark":
+        return <Moon />;
+      case "light":
+        return <Sun />;
+      default:
+        return <Monitor />;
+    }
+  };
+
+  const getThemeText = () => {
+    switch (theme) {
+      case "dark":
+        return "Dark Mode";
+      case "light":
+        return "Light Mode";
+      default:
+        return "System Theme";
+    }
+  };
+
+  const cycleTheme = () => {
+    switch (theme) {
+      case "light":
+        setTheme("dark");
+        break;
+      case "dark":
+        setTheme("system");
+        break;
+      default:
+        setTheme("light");
+    }
+  };
+
+  return (
+    <Toggle
+      pressed={theme !== "light"}
+      onPressedChange={cycleTheme}
+      className="w-full justify-start"
+    >
+      {getThemeIcon()}
+      {getThemeText()}
+    </Toggle>
+  );
+}
 
 export function UserNav({ children }: { children: React.ReactNode }) {
   const { isMobile } = useSidebar();
@@ -83,6 +138,9 @@ export function UserNav({ children }: { children: React.ReactNode }) {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <ThemeToggle />
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogout}>
             <LogOut />
             Log out

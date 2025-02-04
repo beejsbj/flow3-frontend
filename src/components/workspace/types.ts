@@ -10,7 +10,18 @@ import type {
   EdgeTypes,
 } from "@xyflow/react";
 
-// node
+// ============= Base Types =============
+export interface Port {
+  id?: string;
+  type: "source" | "target";
+  label?: string;
+  edgeId?: string | null;
+  portType?: string;
+}
+
+export type Direction = "TB" | "LR";
+
+// ============= Node Types =============
 export interface FieldConfig {
   name: string;
   type: "string" | "number" | "boolean" | "select";
@@ -27,8 +38,8 @@ export interface FieldConfig {
 export interface NodeConfig {
   form?: FieldConfig[];
   conditionalForms?: {
-    selector: string; // field name that determines which form to show
-    forms: Record<string, FieldConfig[]>; // key is the selector value, value is the form config
+    selector: string;
+    forms: Record<string, FieldConfig[]>;
   };
 }
 
@@ -36,6 +47,7 @@ export interface NodeValidation {
   isValid: boolean;
   errors: string[];
 }
+
 export interface NodeExecution {
   isRunning: boolean;
   isCompleted: boolean;
@@ -71,34 +83,29 @@ export interface NodeProps extends RFNodeProps {
   data: Node["data"];
 }
 
-// edge
+// ============= Edge Types =============
 export interface Edge extends RFEdge {
   sourcePort?: string;
   targetPort?: string;
 }
 
-// workspace
-export type Direction = "TB" | "LR";
-
-export type LayoutOptions = {
+// ============= Workspace Types =============
+export interface LayoutOptions {
   direction: Direction;
   spacing: [number, number];
   auto: boolean;
-};
+}
 
 export interface WorkspaceConfig extends Record<string, any> {
   layout: LayoutOptions;
 }
 
 export interface Workspace {
-  // Metadata
   id: string;
   name: string;
   description: string;
   lastModified: string | Date;
   config?: WorkspaceConfig;
-
-  // Content
   nodes: Node[];
   edges: Edge[];
 }
@@ -129,82 +136,73 @@ export interface WorkspaceExecution {
   isCancelled: boolean;
   error?: string;
 }
+
+// ============= Store State & Actions =============
 export interface WorkspaceState extends Workspace {
-  // Workspace operations
+  // State
+  validation: WorkspaceValidation;
+  execution: WorkspaceExecution;
+  history: WorkspaceHistory;
+  isBatchOperation: boolean;
+
+  // Workspace Actions
   updateConfig: (updater: (config: WorkspaceConfig) => WorkspaceConfig) => void;
   loadWorkspace: (workspace: Workspace) => void;
-
-  // Validation
-  validation: WorkspaceValidation;
   validate: () => void;
 
-  // Execution
-  execution: WorkspaceExecution;
+  // Execution Actions
+  execute: () => Promise<void>;
   setExecutionState: (execution: WorkspaceExecution) => void;
 
-  // History
-  history: WorkspaceHistory;
+  // History Actions
   takeSnapshot: () => void;
   undo: () => void;
   redo: () => void;
   canUndo: () => boolean;
-  canRedo: () => boolean;
+  canRedo: () => void;
 
-  // React Flow operations
+  // Batch Actions
+  startBatch: () => void;
+  endBatch: () => void;
+
+  // Flow Actions
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   setNodes: (nodes: Node[], saveSnapshot?: boolean) => void;
   setEdges: (edges: Edge[], saveSnapshot?: boolean) => void;
 
-  // Edge operations
+  // Edge Actions
   deleteEdge: (edgeId: string) => void;
 
-  // Node operations
+  // Node Actions
   getNode: (id: string) => Node | undefined;
   addNode: (
     type: string,
     position?: { x: number; y: number }
   ) => Node | undefined;
   deleteNode: (id: string) => void;
-
   connectNodes: (params: {
     source: string;
     target: string;
     sourceHandle?: string;
     targetHandle?: string;
   }) => void;
-
   updateNode: (node: Node) => void;
-
   updateNodePortConnections: (
     nodeId: string,
     portId: string | null,
     edgeId: string
   ) => void;
-
   updateNodeValues: (nodeId: string, values: Record<string, any>) => void;
-
   setNodeExecutionState: (nodeId: string, execution: NodeExecution) => void;
-
   resetNodeExecutionStates: () => void;
-
-  // Execution
-  execute: () => Promise<void>;
+  replaceNodeWithConnections: (
+    oldNodeId: string,
+    newNodeType: string,
+    createPlaceholders?: boolean
+  ) => void;
 }
 
-//store
-
-///
-
-// Re-export common types
+// ============= Re-exports =============
 export type { EdgeProps, NodeTypes, EdgeTypes };
-
-// Add these new types
-export interface Port {
-  id?: string;
-  type: "source" | "target";
-  label?: string;
-  edgeId?: string | null;
-  portType?: string;
-}
