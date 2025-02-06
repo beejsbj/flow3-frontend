@@ -121,30 +121,19 @@ const d3HierarchyLayout: LayoutAlgorithm = async (
   const nextNodes = nodes.map((node) => {
     const { x, y } = layoutNodes.get(node.id)!;
     const position = getPosition(x, y, options.direction);
-    // The layout algorithm uses the node's center point as its origin, so we need
-    // to offset that position because React Flow uses the top left corner as a
-    // node's origin by default.
-    const offsetPosition = {
-      x: position.x - (node.measured?.width ?? 0) / 2,
-      y: position.y - (node.measured?.height ?? 0) / 2,
-    };
-
-    return { ...node, position: offsetPosition };
+    // Since we're using nodeOrigin={[0.5, 0.5]} in ReactFlow, we don't need to offset
+    // the position anymore as the node's origin is already at its center
+    return { ...node, position };
   });
 
   const transitions: AnimationTransition[] = nodes.map((node) => {
     const { x, y } = layoutNodes.get(node.id)!;
     const targetPosition = getPosition(x, y, options.direction);
-    // Calculate offset position for target
-    const to = {
-      x: targetPosition.x - (node.measured?.width ?? 0) / 2,
-      y: targetPosition.y - (node.measured?.height ?? 0) / 2,
-    };
 
     return {
       id: node.id,
       from: node.position,
-      to,
+      to: targetPosition,
       node,
     };
   });
