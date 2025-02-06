@@ -63,6 +63,7 @@ export interface NodeData extends Record<string, any> {
   icon?: string;
   description?: string;
   category?: string;
+  expanded?: boolean;
   isDeletable?: boolean;
   ports?: {
     inputs?: Port[];
