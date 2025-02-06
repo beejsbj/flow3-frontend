@@ -37,10 +37,7 @@ export interface FieldConfig {
 
 export interface NodeConfig {
   form?: FieldConfig[];
-  conditionalForms?: {
-    selector: string;
-    forms: Record<string, FieldConfig[]>;
-  };
+  expanded?: boolean;
 }
 
 export interface NodeValidation {
@@ -159,7 +156,7 @@ export interface WorkspaceState extends Workspace {
   undo: () => void;
   redo: () => void;
   canUndo: () => boolean;
-  canRedo: () => void;
+  canRedo: () => boolean;
 
   // Batch Actions
   startBatch: () => void;
@@ -189,6 +186,7 @@ export interface WorkspaceState extends Workspace {
     targetHandle?: string;
   }) => void;
   updateNode: (node: Node) => void;
+  toggleNodeExpansion: (nodeId: string) => void;
   updateNodePortConnections: (
     nodeId: string,
     portId: string | null,

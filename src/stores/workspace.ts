@@ -413,6 +413,27 @@ const useWorkspaceStore = create(
     },
 
     // Node operations that use updateNode
+    toggleNodeExpansion: (nodeId: string) => {
+      const node = get().getNode(nodeId);
+      if (!node) return;
+
+      // Update the node with new expansion state
+      const updatedNode = {
+        ...node,
+        measured: undefined, // Reset measured state to trigger re-measurement
+        data: {
+          ...node.data,
+          config: {
+            ...node.data.config,
+            expanded: !node.data.config?.expanded,
+          },
+        },
+      };
+
+      // Update the node
+      get().updateNode(updatedNode);
+    },
+
     updateNodePortConnections: (
       nodeId: string,
       portId: string | null,
@@ -602,6 +623,9 @@ export const useConnectNodes = () =>
 
 export const useUpdateNode = () =>
   useWorkspaceStore((state) => state.updateNode);
+
+export const useToggleNodeExpansion = () =>
+  useWorkspaceStore((state) => state.toggleNodeExpansion);
 
 export const useSetNodeExecutionState = () =>
   useWorkspaceStore((state) => state.setNodeExecutionState);

@@ -20,13 +20,23 @@ function compareNodes(xs: Node[], ys: Node[]) {
     const y = ys[i];
 
     if (!y) return false;
+
+    // Skip during user interactions unless expansion changed
     if (x.resizing || x.dragging) return true;
-    if (!x.measured || !y.measured) return false;
-    if (
-      x.measured.width !== y.measured.width ||
-      x.measured.height !== y.measured.height
-    ) {
+
+    // Check expansion state change
+    if (x.data.config?.expanded !== y.data.config?.expanded) {
       return false;
+    }
+
+    // Only check measurements if they exist
+    if (x.measured && y.measured) {
+      if (
+        x.measured.width !== y.measured.width ||
+        x.measured.height !== y.measured.height
+      ) {
+        return false;
+      }
     }
   }
   return true;
@@ -60,7 +70,8 @@ export default function useAutoLayout({
   const prevLayoutOptionsRef = useRef(layoutOptions);
 
   useEffect(() => {
-    if (!layoutOptions.auto) {
+    // Skip if no layout options or auto layout is disabled
+    if (!layoutOptions?.auto) {
       return;
     }
 
@@ -74,6 +85,8 @@ export default function useAutoLayout({
 
     // Check if layout options have changed
     const layoutChanged =
+      !prevLayoutOptionsRef.current ||
+      !layoutOptions ||
       prevLayoutOptionsRef.current.direction !== layoutOptions.direction ||
       prevLayoutOptionsRef.current.spacing[0] !== layoutOptions.spacing[0] ||
       prevLayoutOptionsRef.current.spacing[1] !== layoutOptions.spacing[1];
@@ -98,30 +111,49 @@ export default function useAutoLayout({
       const nextNodes = nodes.map((node) => ({ ...node }));
       const nextEdges = edges.map((edge) => ({ ...edge }));
 
-      const result = await layoutAlgorithm(nextNodes, nextEdges, layoutOptions);
+      // Ensure we have valid layout options
+      const currentLayoutOptions = layoutOptions || {
+        direction: "TB",
+        spacing: [50, 50],
+        auto: true,
+      };
+
+      const result = await layoutAlgorithm(
+        nextNodes,
+        nextEdges,
+        currentLayoutOptions
+      );
 
       // Start the animation
-      const cleanup = result.animate(
+      const cleanup = (result as any).animate(
         // Frame update callback
-        (currentNodes) => {
+        (currentNodes: Node[]) => {
           setNodes(
             currentNodes.map((node) => ({
               ...node,
               style: { ...node.style, opacity: 1 },
-              sourcePosition: getSourceHandlePosition(layoutOptions.direction),
-              targetPosition: getTargetHandlePosition(layoutOptions.direction),
+              sourcePosition: getSourceHandlePosition(
+                currentLayoutOptions.direction
+              ),
+              targetPosition: getTargetHandlePosition(
+                currentLayoutOptions.direction
+              ),
             })),
             false
           );
         },
         // Completion callback
-        (finalNodes, layoutedEdges) => {
+        (finalNodes: Node[], layoutedEdges: Edge[]) => {
           setNodes(
             finalNodes.map((node) => ({
               ...node,
               style: { ...node.style, opacity: 1 },
-              sourcePosition: getSourceHandlePosition(layoutOptions.direction),
-              targetPosition: getTargetHandlePosition(layoutOptions.direction),
+              sourcePosition: getSourceHandlePosition(
+                currentLayoutOptions.direction
+              ),
+              targetPosition: getTargetHandlePosition(
+                currentLayoutOptions.direction
+              ),
             })),
             false
           );

@@ -425,32 +425,33 @@
     }
   }
 
-  .animate-node {
+  .animate-node-border {
     position: relative;
   }
 
-  .animate-node::before {
+  .animate-node-border::before {
     content: "";
     position: absolute;
     inset: -2px;
     z-index: -1;
     border-radius: inherit;
     --color: var(--color-primary);
+    transition: all 0.3s ease;
   }
 
-  .animate-node.running::before {
+  .animate-node-border.running::before {
     background: conic-gradient(from var(--angle), transparent, var(--color));
     animation: rotate 2s linear infinite;
   }
 
-  .animate-node.completed::before {
+  .animate-node-border.completed::before {
     --color: var(--color-success);
     background: var(--color);
     inset: -4px;
   }
 
-  .animate-node.failed::before {
-    --color: var(--color-error);
+  .animate-node-border.failed::before {
+    --color: var(--color-destructive);
     background: var(--color);
     animation: var(--animate-ping);
     scale: 0.8;

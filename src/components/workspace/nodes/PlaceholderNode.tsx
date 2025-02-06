@@ -19,7 +19,7 @@ export function PlaceholderNode(props: NodeProps) {
         {...props}
         hasActions={false}
         onClick={() => setSheetOpen(true)}
-        className="border-2 border-muted-foreground rounded-full w-12 h-12 bg-muted"
+        iconClassName="border-2 border-muted-foreground rounded-full w-12 h-12 bg-muted"
       />
 
       <NodesSheetList

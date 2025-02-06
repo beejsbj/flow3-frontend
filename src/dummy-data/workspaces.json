@@ -189,14 +189,14 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-02-04T19:02:11.525Z",
+      "lastModified": "2025-02-04T21:28:31.023Z",
       "nodes": [
         {
           "id": "form-examples-1738096537681-rbug0c76b",
           "type": "form-examples",
           "position": {
-            "x": -601,
-            "y": 144
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Form Fields Example",
@@ -287,24 +287,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 117,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "multi-port-node-1738096773937-elrcrzzk3",
           "type": "multi-port-node",
           "position": {
-            "x": -369.5,
-            "y": 144
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Multi Port Node",
@@ -353,24 +345,16 @@
                 "isFailed": true,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 88,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "multi-port-node-1738096780731-q8c0j0wky",
           "type": "multi-port-node",
           "position": {
-            "x": -369.5,
-            "y": 332
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Multi Port Node",
@@ -419,24 +403,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 88,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "multi-port-node-1738096837778-4ouz6si29",
           "type": "multi-port-node",
           "position": {
-            "x": -152.5,
-            "y": 144
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Multi Port Node",
@@ -485,25 +461,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 88,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top",
-          "selected": false
+            },
+            "expanded": false
+          }
         },
         {
           "id": "placeholder-1738096837779-k7u3qtb6p",
           "type": "placeholder",
           "position": {
-            "x": -136.5,
-            "y": 340
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Add Node",
@@ -539,24 +506,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 56,
-            "height": 72
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "delay-1738096876130-zc8znn8pm",
           "type": "delay",
           "position": {
-            "x": -357.5,
-            "y": 520
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Delay",
@@ -603,24 +562,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "placeholder-1738096876131-7k33koiuk",
           "type": "placeholder",
           "position": {
-            "x": -353.5,
-            "y": 716
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Add Node",
@@ -656,24 +607,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 56,
-            "height": 72
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "delay-1738167869607-vj14l4te6",
           "type": "delay",
           "position": {
-            "x": 76.5,
-            "y": 144
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Delay",
@@ -720,25 +663,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top",
-          "selected": false
+            },
+            "expanded": false
+          }
         },
         {
           "id": "delay-1738167875890-1i0bh2gko",
           "type": "delay",
           "position": {
-            "x": 76.5,
-            "y": 332
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Delay",
@@ -785,24 +719,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "placeholder-1738167875891-vh44q9lgu",
           "type": "placeholder",
           "position": {
-            "x": 80.5,
-            "y": 528
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Add Node",
@@ -838,24 +764,16 @@
                 "isFailed": false,
                 "isCancelled": false
               }
-            }
-          },
-          "measured": {
-            "width": 56,
-            "height": 72
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            },
+            "expanded": false
+          }
         },
         {
           "id": "delay-1738259885033-cx9w6bry0",
           "type": "delay",
           "position": {
-            "x": 293.5,
-            "y": 144
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Delay",
@@ -903,25 +821,16 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top",
-          "selected": true
+            "isDeletable": true,
+            "expanded": false
+          }
         },
         {
           "id": "delay-1738270575900-fqx1vfkid",
           "type": "delay",
           "position": {
-            "x": 293.5,
-            "y": 332
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Delay",
@@ -969,25 +878,16 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top",
-          "selected": false
+            "isDeletable": true,
+            "expanded": false
+          }
         },
         {
           "id": "placeholder-1738270575902-infnw6bex",
           "type": "placeholder",
           "position": {
-            "x": 297.5,
-            "y": 528
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Add Node",
@@ -1024,24 +924,16 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": false
-          },
-          "measured": {
-            "width": 56,
-            "height": 72
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            "isDeletable": false,
+            "expanded": false
+          }
         },
         {
           "id": "delay-1738602251975-gu8x6s5i0",
           "type": "delay",
           "position": {
-            "x": 510.5,
-            "y": 144
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Delay",
@@ -1089,24 +981,16 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
-          },
-          "measured": {
-            "width": 64,
-            "height": 88
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            "isDeletable": true,
+            "expanded": false
+          }
         },
         {
           "id": "placeholder-1738602251993-r1dou7nch",
           "type": "placeholder",
           "position": {
-            "x": 514.5,
-            "y": 340
+            "x": 0,
+            "y": 0
           },
           "data": {
             "label": "Add Node",
@@ -1143,17 +1027,9 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": false
-          },
-          "measured": {
-            "width": 56,
-            "height": 72
-          },
-          "style": {
-            "opacity": 1
-          },
-          "sourcePosition": "bottom",
-          "targetPosition": "top"
+            "isDeletable": false,
+            "expanded": false
+          }
         }
       ],
       "edges": [
@@ -4825,14 +4701,14 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-02-04T19:11:06.295Z",
+      "lastModified": "2025-02-05T00:30:19.905Z",
       "nodes": [
         {
           "id": "start-1738620853281-j6e10o8w1",
           "type": "start",
           "position": {
-            "x": 98,
-            "y": -36
+            "x": -24,
+            "y": 90
           },
           "data": {
             "label": "Start",
@@ -4946,7 +4822,8 @@
                     "value": "onchain"
                   }
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "outputs": [
@@ -4955,7 +4832,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -4966,30 +4843,31 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": true,
-                "isFailed": false,
+                "isCompleted": false,
+                "isFailed": true,
                 "isCancelled": false
               }
             },
-            "isDeletable": false
+            "isDeletable": false,
+            "expanded": false
           },
           "measured": {
             "width": 48,
-            "height": 72
+            "height": 48
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left",
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
           "selected": false
         },
         {
           "id": "delay-1738620858705-ktyyolxcp",
           "type": "delay",
           "position": {
-            "x": 212,
-            "y": -44
+            "x": -32,
+            "y": 196
           },
           "data": {
             "label": "Delay",
@@ -5005,7 +4883,8 @@
                   "required": true,
                   "value": 1000
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "inputs": [
@@ -5014,7 +4893,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5023,7 +4902,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5034,31 +4913,31 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": true,
-                "isFailed": false,
+                "isCompleted": false,
+                "isFailed": true,
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": false
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left",
-          "selected": false,
-          "dragging": false
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": true
         },
         {
           "id": "delay-1738620861521-gxs5vux8h",
           "type": "delay",
           "position": {
-            "x": 334,
-            "y": -44
+            "x": -32,
+            "y": 310
           },
           "data": {
             "label": "Delay",
@@ -5074,7 +4953,8 @@
                   "required": true,
                   "value": 1000
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "inputs": [
@@ -5083,7 +4963,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5092,7 +4972,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5103,31 +4983,31 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": true,
-                "isFailed": false,
+                "isCompleted": false,
+                "isFailed": true,
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": true
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left",
-          "selected": false,
-          "dragging": false
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
         },
         {
           "id": "delay-1738620864833-neofzf0ou",
           "type": "delay",
           "position": {
-            "x": 456,
-            "y": -44
+            "x": -32,
+            "y": 424
           },
           "data": {
             "label": "Delay",
@@ -5143,7 +5023,8 @@
                   "required": true,
                   "value": 1000
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "inputs": [
@@ -5152,7 +5033,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5161,7 +5042,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5177,26 +5058,26 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": false
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left",
-          "selected": false,
-          "dragging": false
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
         },
         {
           "id": "delay-1738689438609-4gvr3d8gs",
           "type": "delay",
           "position": {
-            "x": 578,
-            "y": -44
+            "x": -32,
+            "y": 538
           },
           "data": {
             "label": "Delay",
@@ -5212,7 +5093,8 @@
                   "required": true,
                   "value": 1000
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "inputs": [
@@ -5221,7 +5103,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5230,7 +5112,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5246,26 +5128,26 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": false
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
-          "selected": false,
-          "dragging": false,
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left"
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
         },
         {
           "id": "delay-1738689677211-ip1wrhxqy",
           "type": "delay",
           "position": {
-            "x": 700,
-            "y": -44
+            "x": -32,
+            "y": 652
           },
           "data": {
             "label": "Delay",
@@ -5281,7 +5163,8 @@
                   "required": true,
                   "value": 1000
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "inputs": [
@@ -5290,7 +5173,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5299,7 +5182,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5310,29 +5193,31 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": true,
-                "isFailed": false,
+                "isCompleted": false,
+                "isFailed": true,
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": false
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left"
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
         },
         {
           "id": "delay-1738694716648-pahoho1xk",
           "type": "delay",
           "position": {
-            "x": 822,
-            "y": -44
+            "x": -32,
+            "y": 766
           },
           "data": {
             "label": "Delay",
@@ -5348,7 +5233,8 @@
                   "required": true,
                   "value": 1000
                 }
-              ]
+              ],
+              "expanded": false
             },
             "ports": {
               "inputs": [
@@ -5357,7 +5243,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5366,7 +5252,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5382,24 +5268,26 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": false
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left"
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
         },
         {
           "id": "delay-1738695398418-yxolusrz7",
           "type": "delay",
           "position": {
-            "x": 944,
-            "y": -44
+            "x": -32,
+            "y": 880
           },
           "data": {
             "label": "Delay",
@@ -5424,7 +5312,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5433,7 +5321,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5449,24 +5337,127 @@
                 "isCancelled": false
               }
             },
-            "isDeletable": true
+            "isDeletable": true,
+            "expanded": false
           },
           "measured": {
             "width": 64,
-            "height": 88
+            "height": 64
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left"
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
         },
         {
-          "id": "placeholder-1738695398427-s7fj49hqz",
+          "id": "if-1738713699207-zc6f8y935",
+          "type": "if",
+          "position": {
+            "x": -32,
+            "y": 994
+          },
+          "data": {
+            "label": "If",
+            "icon": "GitBranch",
+            "description": "Conditionally routes flow based on a condition",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "condition",
+                  "type": "select",
+                  "label": "Condition Type",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "equals",
+                      "label": "Equals"
+                    },
+                    {
+                      "value": "notEquals",
+                      "label": "Not Equals"
+                    },
+                    {
+                      "value": "greaterThan",
+                      "label": "Greater Than"
+                    },
+                    {
+                      "value": "lessThan",
+                      "label": "Less Than"
+                    }
+                  ],
+                  "value": "equals"
+                },
+                {
+                  "name": "value",
+                  "type": "string",
+                  "label": "Compare Value",
+                  "required": true,
+                  "value": ""
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "portType": "default",
+                  "id": "input-0",
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "True",
+                  "type": "source",
+                  "portType": "true",
+                  "id": "output-0",
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
+                },
+                {
+                  "label": "False",
+                  "type": "source",
+                  "portType": "false",
+                  "id": "output-1",
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": false,
+                "errors": [
+                  "Compare Value is required"
+                ]
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 64,
+            "height": 64
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top",
+          "selected": false
+        },
+        {
+          "id": "placeholder-1738713699217-cdndh0iun",
           "type": "placeholder",
           "position": {
-            "x": 1070,
-            "y": -36
+            "x": -85,
+            "y": 1116
           },
           "data": {
             "label": "Add Node",
@@ -5480,7 +5471,7 @@
                   "type": "target",
                   "id": "input-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
                 }
               ],
               "outputs": [
@@ -5489,7 +5480,7 @@
                   "type": "source",
                   "id": "output-0",
                   "portType": "default",
-                  "edgeId": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
                 }
               ]
             },
@@ -5499,7 +5490,7 @@
                 "errors": []
               },
               "execution": {
-                "isRunning": true,
+                "isRunning": false,
                 "isCompleted": false,
                 "isFailed": false,
                 "isCancelled": false
@@ -5508,14 +5499,71 @@
             "isDeletable": false
           },
           "measured": {
-            "width": 56,
-            "height": 72
+            "width": 48,
+            "height": 48
           },
           "style": {
             "opacity": 1
           },
-          "sourcePosition": "right",
-          "targetPosition": "left"
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
+        },
+        {
+          "id": "placeholder-1738713699226-camidzr3w",
+          "type": "placeholder",
+          "position": {
+            "x": 37,
+            "y": 1116
+          },
+          "data": {
+            "label": "Add Node",
+            "icon": "Plus",
+            "description": "Click to add a new node",
+            "category": "System",
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default",
+                  "edgeId": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": false,
+                "errors": [
+                  "Please connect Output"
+                ]
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": false
+          },
+          "measured": {
+            "width": 48,
+            "height": 48
+          },
+          "style": {
+            "opacity": 1
+          },
+          "sourcePosition": "bottom",
+          "targetPosition": "top"
         }
       ],
       "edges": [
@@ -5553,7 +5601,8 @@
           "target": "delay-1738689677211-ip1wrhxqy",
           "sourceHandle": "output-0",
           "targetHandle": "input-0",
-          "id": "xy-edge__delay-1738689438609-4gvr3d8gsoutput-0-delay-1738689677211-ip1wrhxqyinput-0"
+          "id": "xy-edge__delay-1738689438609-4gvr3d8gsoutput-0-delay-1738689677211-ip1wrhxqyinput-0",
+          "selected": false
         },
         {
           "source": "delay-1738689677211-ip1wrhxqy",
@@ -5571,18 +5620,32 @@
         },
         {
           "source": "delay-1738695398418-yxolusrz7",
-          "target": "placeholder-1738695398427-s7fj49hqz",
+          "target": "if-1738713699207-zc6f8y935",
           "sourceHandle": "output-0",
           "targetHandle": "input-0",
-          "id": "xy-edge__delay-1738695398418-yxolusrz7output-0-placeholder-1738695398427-s7fj49hqzinput-0"
+          "id": "xy-edge__delay-1738695398418-yxolusrz7output-0-if-1738713699207-zc6f8y935input-0"
+        },
+        {
+          "source": "if-1738713699207-zc6f8y935",
+          "target": "placeholder-1738713699217-cdndh0iun",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__if-1738713699207-zc6f8y935output-0-placeholder-1738713699217-cdndh0iuninput-0"
+        },
+        {
+          "source": "if-1738713699207-zc6f8y935",
+          "target": "placeholder-1738713699226-camidzr3w",
+          "sourceHandle": "output-1",
+          "targetHandle": "input-0",
+          "id": "xy-edge__if-1738713699207-zc6f8y935output-1-placeholder-1738713699226-camidzr3winput-0"
         }
       ],
       "config": {
         "layout": {
-          "direction": "LR",
+          "direction": "TB",
           "spacing": [
             58,
-            100
+            50
           ],
           "auto": true
         }
