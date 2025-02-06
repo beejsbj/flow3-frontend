@@ -143,6 +143,7 @@ export default function Flow() {
   return (
     <ReactFlowProvider>
       <ReactFlow
+        nodeOrigin={[0.5, 0.5]}
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
