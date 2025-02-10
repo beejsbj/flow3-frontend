@@ -48,15 +48,15 @@ const validateNode = (node: NodeType): NodeType => {
   }
 
   // Validate ports
-  const allPorts = [
-    ...(node.data.ports?.inputs || []),
-    ...(node.data.ports?.outputs || []),
-  ];
-  allPorts.forEach((port) => {
-    if (!port.edgeId) {
-      errors.push(`Please connect ${port.label}`);
-    }
-  });
+  //   const allPorts = [
+  //     ...(node.data.ports?.inputs || []),
+  //     ...(node.data.ports?.outputs || []),
+  //   ];
+  //   allPorts.forEach((port) => {
+  //     if (!port.edgeId) {
+  //       errors.push(`Please connect ${port.label}`);
+  //     }
+  //   });
 
   return {
     ...node,
@@ -248,7 +248,10 @@ const useWorkspaceStore = create(
 
     onEdgesChange: (changes) => {
       set({
-        edges: applyEdgeChanges(changes, get().edges),
+        edges: applyEdgeChanges(changes, get().edges).map((edge) => ({
+          ...edge,
+          data: edge.data || {},
+        })) as EdgeType[],
         lastModified: new Date(),
       });
     },
@@ -257,24 +260,6 @@ const useWorkspaceStore = create(
       const edgeId = `xy-edge__${connection.source}${
         connection.sourceHandle || ""
       }-${connection.target}${connection.targetHandle || ""}`;
-
-      get().nodes.forEach((node) => {
-        if (!node) return;
-        if (connection.sourceHandle) {
-          get().updateNodePortConnections(
-            node.id,
-            connection.sourceHandle,
-            edgeId
-          );
-        }
-        if (connection.targetHandle) {
-          get().updateNodePortConnections(
-            node.id,
-            connection.targetHandle,
-            edgeId
-          );
-        }
-      });
 
       get().setEdges(addEdge(connection, get().edges));
     },
@@ -300,6 +285,9 @@ const useWorkspaceStore = create(
     },
 
     deleteEdge: (edgeId: string) => {
+      const edge = get().getEdge(edgeId);
+      if (!edge) return;
+
       get().setEdges(get().edges.filter((edge) => edge.id !== edgeId));
     },
 
@@ -320,12 +308,12 @@ const useWorkspaceStore = create(
       get().updateEdge(updatedEdge);
     },
 
-    toggleEdgeAnimated: (edgeId: string) => {
+    toggleEdgeAnimated: (edgeId: string, isRunning: boolean) => {
       const edge = get().getEdge(edgeId);
       if (!edge) return;
       const updatedEdge = {
         ...edge,
-        animated: !edge.animated,
+        animated: isRunning,
       };
 
       console.log("updatedEdge", updatedEdge);
@@ -370,66 +358,66 @@ const useWorkspaceStore = create(
       get().onConnect(connection);
     },
 
-    replaceNodeWithConnections: (
-      oldNodeId: string,
+    addNodeWithConnections: (
+      sourceNodeId: string,
       newNodeType: string,
-      createPlaceholders = true
+      replaceNode: boolean = false
     ) => {
       // Find existing node to get its position
-      const oldNode = get().getNode(oldNodeId);
-      if (!oldNode) return;
-
-      // Find parent edge
-      const parentEdge = get().edges.find((edge) => edge.target === oldNodeId);
-      if (!parentEdge) return;
+      const sourceNode = get().getNode(sourceNodeId);
+      if (!sourceNode) return;
 
       // Start batch operation
       get().startBatch();
 
-      // Add new node at same position
-      const newNode = get().addNode(newNodeType, {
-        x: oldNode.position.x,
-        y: oldNode.position.y,
-      });
+      // Calculate position based on whether we're replacing or offsetting
+      const position = replaceNode
+        ? sourceNode.position
+        : {
+            x:
+              sourceNode.position.x +
+              (get().config.layout.direction === "LR"
+                ? get().config.layout.spacing[0] + 100
+                : 0),
+            y:
+              sourceNode.position.y +
+              (get().config.layout.direction === "TB"
+                ? get().config.layout.spacing[1] + 100
+                : 0),
+          };
+
+      // Add new node at calculated position
+      const newNode = get().addNode(newNodeType, position);
       if (!newNode) {
         get().endBatch();
         return;
       }
 
-      // Connect to parent
+      // Connect the nodes
       get().connectNodes({
-        source: parentEdge.source,
+        source: sourceNodeId,
         target: newNode.id,
-        sourceHandle: parentEdge.sourceHandle || undefined,
+        sourceHandle: "output-0",
         targetHandle: "input-0",
       });
 
-      // Create placeholders if needed
-      if (createPlaceholders) {
-        const nodeDefinition = nodeRegistry.get(newNodeType);
-        const outputPorts = nodeDefinition?.ports?.outputs || [];
-        const numOutputs = outputPorts.length;
-
-        outputPorts.forEach((port, index) => {
-          const offsetX =
-            numOutputs > 1 ? (index - (numOutputs - 1) / 2) * 200 : 0;
-          const placeholder = get().addNode("placeholder", {
-            x: newNode.position.x + offsetX,
-            y: newNode.position.y + 100,
+      if (replaceNode) {
+        // Find parent edge only if we're replacing the node
+        const parentEdge = get().edges.find(
+          (edge) => edge.target === sourceNodeId
+        );
+        if (parentEdge) {
+          // Connect to parent
+          get().connectNodes({
+            source: parentEdge.source,
+            target: newNode.id,
+            sourceHandle: parentEdge.sourceHandle || undefined,
+            targetHandle: "input-0",
           });
-
-          if (placeholder) {
-            get().connectNodes({
-              source: newNode.id,
-              target: placeholder.id,
-              sourceHandle: `output-${index}`,
-              targetHandle: "input-0",
-            });
-          }
-        });
+        }
+        get().deleteNode(sourceNodeId);
       }
 
-      get().deleteNode(oldNodeId);
       get().endBatch();
     },
 
@@ -466,34 +454,6 @@ const useWorkspaceStore = create(
       };
 
       // Update the node
-      get().updateNode(updatedNode);
-    },
-
-    updateNodePortConnections: (
-      nodeId: string,
-      portId: string | null,
-      edgeId: string
-    ) => {
-      const node = get().getNode(nodeId);
-      if (!node || !portId) return;
-
-      const newPorts = {
-        inputs: node.data.ports?.inputs?.map((port) =>
-          port.id === portId ? { ...port, edgeId } : port
-        ),
-        outputs: node.data.ports?.outputs?.map((port) =>
-          port.id === portId ? { ...port, edgeId } : port
-        ),
-      };
-
-      const updatedNode = {
-        ...node,
-        data: {
-          ...node.data,
-          ports: newPorts,
-        },
-      };
-
       get().updateNode(updatedNode);
     },
 
@@ -536,15 +496,14 @@ const useWorkspaceStore = create(
         },
       };
 
-      //if node is running, toggle edge animated on all ports of the node.data.ports.outputs and node.data.ports.inputs
-      if (executionState.isRunning) {
-        updatedNode.data.ports?.outputs?.forEach((port) => {
-          get().toggleEdgeAnimated(port.edgeId);
-        });
-        updatedNode.data.ports?.inputs?.forEach((port) => {
-          get().toggleEdgeAnimated(port.edgeId);
-        });
-      }
+      // if node is running, toggle edge animated on all ports of the node.data.ports.outputs and node.data.ports.inputs
+      const edgesToAnimate = get().edges.filter(
+        (edge) => edge.source === node.id || edge.target === node.id
+      );
+
+      edgesToAnimate.forEach((edge) => {
+        get().toggleEdgeAnimated(edge.id, executionState.isRunning);
+      });
 
       get().updateNode(updatedNode);
     },
@@ -674,9 +633,6 @@ export const useToggleNodeExpansion = () =>
 
 export const useSetNodeExecutionState = () =>
   useWorkspaceStore((state) => state.setNodeExecutionState);
-
-export const useUpdateNodePortConnections = () =>
-  useWorkspaceStore((state) => state.updateNodePortConnections);
 
 export const useUpdateNodeValues = () =>
   useWorkspaceStore((state) => state.updateNodeValues);
