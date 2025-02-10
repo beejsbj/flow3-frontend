@@ -32,7 +32,11 @@ function BaseEdge({
 
   const deleteEdge = useWorkspaceStore((state) => state.deleteEdge);
   const TrashIcon = getIconByName("Trash");
-
+  //   :is(.react-flow__edge):hover {
+  // 	path {
+  // 	  stroke: var(--primary);
+  // 	}
+  //  }
   return (
     <>
       <RFBaseEdge

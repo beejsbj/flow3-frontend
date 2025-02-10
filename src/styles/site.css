@@ -285,10 +285,7 @@
     path {
       stroke: var(--primary);
     }
-    
   }
-
-  
 }
 
 /* utility classes */
@@ -463,6 +460,6 @@
     --color: var(--color-destructive);
     background: var(--color);
     animation: var(--animate-ping);
-    scale: 0.8;
+    scale: 0.65;
   }
 }

@@ -41,6 +41,16 @@ export function NodesSheetList({
     setCategoryOpen(false);
   };
 
+  const handleCategoryClick = (e: React.MouseEvent, category: CategoryData) => {
+    e.stopPropagation();
+    setSelectedCategory(selectedCategory?.id === category.id ? null : category);
+  };
+
+  const handleNodeClick = (e: React.MouseEvent, nodeType: string) => {
+    e.stopPropagation();
+    handleAddNode(nodeType);
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       {showTrigger && (
@@ -60,11 +70,7 @@ export function NodesSheetList({
               <Button
                 variant="ghost"
                 className="w-full justify-between"
-                onClick={() =>
-                  setSelectedCategory(
-                    selectedCategory?.id === category.id ? null : category
-                  )
-                }
+                onClick={(e) => handleCategoryClick(e, category)}
               >
                 {category.name}
                 <ChevronRight className="h-4 w-4" />
@@ -86,7 +92,7 @@ export function NodesSheetList({
                         <Button
                           size="icon"
                           variant="ghost"
-                          onClick={() => handleAddNode(node.type)}
+                          onClick={(e) => handleNodeClick(e, node.type)}
                           className="opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <Plus className="h-4 w-4" />

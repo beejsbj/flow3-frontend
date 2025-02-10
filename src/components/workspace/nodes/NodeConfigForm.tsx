@@ -88,13 +88,14 @@ export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
     return dependentValue === field.dependsOn.value;
   };
 
-  function handleSubmit(values: z.infer<typeof formSchema>) {
-    updateNodeValues(nodeId, values);
-  }
+  const handleFieldChange = (name: string, value: any) => {
+    form.setValue(name, value);
+    updateNodeValues(nodeId, form.getValues());
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form className="space-y-4">
         {config.form?.map((field) =>
           isFieldApplicable(field) ? (
             <FormField
@@ -108,7 +109,9 @@ export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
                     {field.type === "select" ? (
                       <Select
                         value={formField.value}
-                        onValueChange={formField.onChange}
+                        onValueChange={(value) =>
+                          handleFieldChange(field.name, value)
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select an option" />
@@ -124,7 +127,9 @@ export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
                     ) : field.type === "boolean" ? (
                       <Switch
                         checked={formField.value}
-                        onCheckedChange={formField.onChange}
+                        onCheckedChange={(checked) =>
+                          handleFieldChange(field.name, checked)
+                        }
                       />
                     ) : (
                       <Input
@@ -136,7 +141,7 @@ export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
                             field.type === "number"
                               ? parseFloat(e.target.value)
                               : e.target.value;
-                          formField.onChange(value);
+                          handleFieldChange(field.name, value);
                         }}
                       />
                     )}
@@ -147,9 +152,6 @@ export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
             />
           ) : null
         )}
-        <Button type="submit" className="w-full">
-          Save Changes
-        </Button>
       </form>
     </Form>
   );

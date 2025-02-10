@@ -3,6 +3,7 @@ import type {
   NodeProps as RFNodeProps,
   Edge as RFEdge,
   EdgeProps as RFEdgeProps,
+  Handle as RFHandle,
   OnNodesChange,
   OnEdgesChange,
   OnConnect,
@@ -15,7 +16,7 @@ export interface Port {
   id?: string;
   type: "source" | "target";
   label?: string;
-  edgeId?: string | null;
+  isConnected?: boolean;
   portType?: string;
 }
 
@@ -183,7 +184,7 @@ export interface WorkspaceState extends Workspace {
   updateEdge: (edge: Edge) => void;
   updateEdgeHover: (edgeId: string, hover: boolean) => void;
   getEdge: (edgeId: string) => Edge | undefined;
-  toggleEdgeAnimated: (edgeId: string) => void;
+  toggleEdgeAnimated: (edgeId: string, isRunning: boolean) => void;
   // Node Actions
   getNode: (id: string) => Node | undefined;
   addNode: (
@@ -199,18 +200,13 @@ export interface WorkspaceState extends Workspace {
   }) => void;
   updateNode: (node: Node) => void;
   toggleNodeExpansion: (nodeId: string) => void;
-  updateNodePortConnections: (
-    nodeId: string,
-    portId: string | null,
-    edgeId: string
-  ) => void;
   updateNodeValues: (nodeId: string, values: Record<string, any>) => void;
   setNodeExecutionState: (nodeId: string, execution: NodeExecution) => void;
   resetNodeExecutionStates: () => void;
-  replaceNodeWithConnections: (
-    oldNodeId: string,
+  addNodeWithConnections: (
+    sourceNodeId: string,
     newNodeType: string,
-    createPlaceholders?: boolean
+    replaceNode?: boolean
   ) => void;
 }
 

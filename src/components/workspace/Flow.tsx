@@ -18,7 +18,6 @@ import useAutoLayout from "@/hooks/useAutoLayout";
 import { Node, Edge, WorkspaceState } from "./types";
 import { Button } from "@/components/ui/button";
 import { Undo2, Redo2 } from "lucide-react";
-import { useIsFeatureEnabled } from "@/stores/features";
 import { isFeatureEnabled } from "@/config/features";
 
 function FlowContent() {
