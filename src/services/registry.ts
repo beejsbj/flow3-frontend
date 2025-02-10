@@ -6,7 +6,7 @@ import {
   Node as NodeType,
 } from "@/components/workspace/types";
 import { ComponentType } from "react";
-import BaseNode from "@/components/workspace/nodes/BaseNode";
+import BaseNode from "@/components/workspace/nodes/core/BaseNode";
 
 // Registry type to store node definitions
 export interface NodeDefinition {

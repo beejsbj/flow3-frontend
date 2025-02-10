@@ -86,14 +86,14 @@ const useNodeActionHandlers = (id: string, data: NodeData) => {
 // Component for the config node's top-right actions
 interface NodeActionsProps extends BaseActionsProps {
   className?: string;
-  onClose?: () => void;
+  hideClose?: boolean;
 }
 
 export function NodeActions({
   id,
   data,
   className,
-  onClose,
+  hideClose,
 }: NodeActionsProps) {
   const { handleDelete, handlePlay, handleToggle } = useNodeActionHandlers(
     id,
@@ -105,19 +105,6 @@ export function NodeActions({
 
   return (
     <div className={`flex gap-1 ${className}`}>
-      {onClose && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-        >
-          <XIcon className="h-4 w-4" />
-        </Button>
-      )}
       <Button
         variant="ghost"
         size="icon"
@@ -136,7 +123,7 @@ export function NodeActions({
           <TrashIcon className="h-4 w-4" />
         </Button>
       )}
-      {data.config?.expanded && (
+      {data.config?.expanded && !hideClose && (
         <Button
           variant="ghost"
           size="icon"

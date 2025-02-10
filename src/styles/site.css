@@ -186,7 +186,7 @@
     direction: ltr;
 
     --xy-edge-stroke-default: #b1b1b7;
-    --xy-edge-stroke-width-default: 1;
+    --xy-edge-stroke-width-default: 2;
     --xy-edge-stroke-selected-default: #555;
 
     --xy-connectionline-stroke-default: #b1b1b7;
@@ -280,6 +280,15 @@
     --xy-edge-label-background-color-default: #141414;
     --xy-edge-label-color-default: #f8f8f8;
   }
+
+  :is(.react-flow__edge):hover {
+    path {
+      stroke: var(--primary);
+    }
+    
+  }
+
+  
 }
 
 /* utility classes */

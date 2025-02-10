@@ -3,6 +3,7 @@ import { addEdge, applyNodeChanges, applyEdgeChanges } from "@xyflow/react";
 import {
   type WorkspaceState,
   type Node as NodeType,
+  type Edge as EdgeType,
   type Workspace,
   type WorkspaceConfig,
   type WorkspaceValidation,
@@ -293,8 +294,42 @@ const useWorkspaceStore = create(
     },
 
     // ----- Edge Actions -----
+
+    getEdge: (edgeId: string) => {
+      return get().edges.find((edge) => edge.id === edgeId);
+    },
+
     deleteEdge: (edgeId: string) => {
       get().setEdges(get().edges.filter((edge) => edge.id !== edgeId));
+    },
+
+    updateEdge: (edge: EdgeType) => {
+      get().setEdges(get().edges.map((e) => (e.id === edge.id ? edge : e)));
+    },
+
+    updateEdgeHover: (edgeId: string, hover: boolean) => {
+      const edge = get().getEdge(edgeId);
+      if (!edge) return;
+      const updatedEdge = {
+        ...edge,
+        data: {
+          ...edge.data,
+          isHovering: hover,
+        },
+      };
+      get().updateEdge(updatedEdge);
+    },
+
+    toggleEdgeAnimated: (edgeId: string) => {
+      const edge = get().getEdge(edgeId);
+      if (!edge) return;
+      const updatedEdge = {
+        ...edge,
+        animated: !edge.animated,
+      };
+
+      console.log("updatedEdge", updatedEdge);
+      get().updateEdge(updatedEdge);
     },
 
     // ----- Node Actions -----
@@ -500,6 +535,16 @@ const useWorkspaceStore = create(
           },
         },
       };
+
+      //if node is running, toggle edge animated on all ports of the node.data.ports.outputs and node.data.ports.inputs
+      if (executionState.isRunning) {
+        updatedNode.data.ports?.outputs?.forEach((port) => {
+          get().toggleEdgeAnimated(port.edgeId);
+        });
+        updatedNode.data.ports?.inputs?.forEach((port) => {
+          get().toggleEdgeAnimated(port.edgeId);
+        });
+      }
 
       get().updateNode(updatedNode);
     },

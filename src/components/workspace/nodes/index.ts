@@ -1,7 +1,7 @@
 import { nodeRegistry } from "@/services/registry";
-import { PlaceholderNode } from "./PlaceholderNode";
-import { PositionLoggerNode } from "./PositionLoggerNode";
-import { StartNode } from "./StartNode";
+import { PlaceholderNode } from "./types/PlaceholderNode";
+import { PositionLoggerNode } from "./types/PositionLoggerNode";
+import { StartNode } from "./types/StartNode";
 
 // Register the position logger node first
 nodeRegistry.register({

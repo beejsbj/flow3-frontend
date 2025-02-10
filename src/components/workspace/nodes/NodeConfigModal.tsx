@@ -5,42 +5,44 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useUpdateNodeValues } from "@/stores/workspace";
 import { NodeData } from "@/components/workspace/types";
 import { NodeConfigForm } from "./NodeConfigForm";
+import { NodeActions } from "./NodeActions";
+import { useToggleNodeExpansion } from "@/stores/workspace";
 
 interface NodeConfigModalProps {
   nodeId: string;
   data: NodeData;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function NodeConfigModal({
   nodeId,
   data,
   open,
-  onOpenChange,
 }: NodeConfigModalProps) {
-  const updateNodeValues = useUpdateNodeValues();
+  const toggleNodeExpansion = useToggleNodeExpansion();
 
   // Early return if no config
   if (!data.config) {
     return null;
   }
 
-  function onSubmit(values: any) {
-    updateNodeValues(nodeId, values);
-    onOpenChange(false);
-  }
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      toggleNodeExpansion(nodeId);
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
-        <DialogHeader>
+        <DialogHeader className="flex flex-row items-center justify-between">
           <DialogTitle>Configure {data.label}</DialogTitle>
+          <NodeActions id={nodeId} data={data} hideClose={true} />
         </DialogHeader>
-        <NodeConfigForm data={data} onSubmit={onSubmit} />
+        <NodeConfigForm data={data} nodeId={nodeId} />
       </DialogContent>
     </Dialog>
   );

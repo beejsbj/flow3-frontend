@@ -2,7 +2,7 @@ import type {
   Node as RFNode,
   NodeProps as RFNodeProps,
   Edge as RFEdge,
-  EdgeProps,
+  EdgeProps as RFEdgeProps,
   OnNodesChange,
   OnEdgesChange,
   OnConnect,
@@ -82,9 +82,17 @@ export interface NodeProps extends RFNodeProps {
 }
 
 // ============= Edge Types =============
+
+export interface EdgeData extends Record<string, any> {
+  isHovering?: boolean;
+}
+
 export interface Edge extends RFEdge {
-  sourcePort?: string;
-  targetPort?: string;
+  data: EdgeData;
+}
+
+export interface EdgeProps extends RFEdgeProps {
+  data: Edge["data"];
 }
 
 // ============= Workspace Types =============
@@ -172,7 +180,10 @@ export interface WorkspaceState extends Workspace {
 
   // Edge Actions
   deleteEdge: (edgeId: string) => void;
-
+  updateEdge: (edge: Edge) => void;
+  updateEdgeHover: (edgeId: string, hover: boolean) => void;
+  getEdge: (edgeId: string) => Edge | undefined;
+  toggleEdgeAnimated: (edgeId: string) => void;
   // Node Actions
   getNode: (id: string) => Node | undefined;
   addNode: (
@@ -204,4 +215,4 @@ export interface WorkspaceState extends Workspace {
 }
 
 // ============= Re-exports =============
-export type { EdgeProps, NodeTypes, EdgeTypes };
+export type { NodeTypes, EdgeTypes };

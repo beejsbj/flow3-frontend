@@ -143,9 +143,12 @@ const d3HierarchyLayout: LayoutAlgorithm = async (
     onComplete: (nodes: Node[], edges: Edge[]) => void,
     fitView: (options?: { padding?: number; duration?: number }) => void
   ) => {
+    // Start animation timer that runs on each frame
     const t = timer((elapsed: number) => {
+      // Calculate animation progress (0 to 1)
       const progress = elapsed / ANIMATION_DURATION;
 
+      // Check if animation is complete
       if (progress >= 1) {
         // Final position
         const finalNodes = transitions.map(({ node, to }) => ({
@@ -160,7 +163,7 @@ const d3HierarchyLayout: LayoutAlgorithm = async (
         return;
       }
 
-      // Interpolate positions
+      // Calculate intermediate positions for current frame
       const currentNodes = transitions.map(({ node, from, to }) => ({
         ...node,
         position: {
@@ -169,11 +172,13 @@ const d3HierarchyLayout: LayoutAlgorithm = async (
         },
       }));
 
+      // Update view with current frame
       onFrame(currentNodes);
-      // More zoomed out during animation
+      // Keep view zoomed out during animation
       fitView({ padding: 1, duration: 50 });
     });
 
+    // Return cleanup function to stop animation if needed
     return () => t.stop();
   };
 

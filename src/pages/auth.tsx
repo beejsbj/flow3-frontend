@@ -14,11 +14,12 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useUserStore } from "@/stores/user";
+import { useUserStore, useAuthError, useIsLoading } from "@/stores/user";
 
 const formSchema = z
   .object({
     name: z.string().optional(),
+    organization: z.string().optional(),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().optional(),
@@ -28,6 +29,14 @@ const formSchema = z
     message: "Name must be at least 2 characters",
     path: ["name"],
   })
+  .refine(
+    (data) =>
+      !data.isSignUp || !data.organization || data.organization.length >= 2,
+    {
+      message: "Organization must be at least 2 characters",
+      path: ["organization"],
+    }
+  )
   .refine(
     (data) =>
       !data.isSignUp ||
@@ -43,11 +52,15 @@ export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
   const login = useUserStore((state) => state.login);
+  const register = useUserStore((state) => state.register);
+  const error = useAuthError();
+  const isLoading = useIsLoading();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      organization: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -59,28 +72,28 @@ export default function AuthPage() {
     form.setValue("isSignUp", isSignUp);
   }, [isSignUp, form]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("onSubmit", values);
-
-    // For testing, use dummy data on signup
-
-    const dummy = {
-      id: "dummy-id-123",
-      email: values.email,
-      name: values.name || "John Doe",
-      avatarUrl: null,
-    };
-
-    if (isSignUp) {
-      console.log("signup", values);
-      login(dummy, "dummy-token-123");
-    } else {
-      console.log("signin", values);
-      login(dummy, "dummy-token-123");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      if (isSignUp) {
+        if (!values.name || !values.organization) {
+          throw new Error(
+            "Name and organization are required for registration"
+          );
+        }
+        await register(
+          values.name,
+          values.email,
+          values.password,
+          values.organization
+        );
+      } else {
+        await login(values.email, values.password);
+      }
+      router.push("/dashboard");
+    } catch (error) {
+      // Error is already handled in the store
+      console.error(isSignUp ? "Register error:" : "Login error:", error);
     }
-
-    // Navigate after login
-    router.push("/dashboard");
   }
 
   return (
@@ -95,6 +108,7 @@ export default function AuthPage() {
               ? "Enter your details to sign up"
               : "Enter your credentials to sign in"}
           </p>
+          {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
 
         <Form {...form}>
@@ -111,6 +125,21 @@ export default function AuthPage() {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {isSignUp && (
+              <FormField
+                control={form.control}
+                name="organization"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Organization</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your Organization" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -164,8 +193,8 @@ export default function AuthPage() {
               />
             )}
 
-            <Button type="submit" className="w-full">
-              {isSignUp ? "Sign up" : "Sign in"}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Loading..." : isSignUp ? "Sign up" : "Sign in"}
             </Button>
           </form>
         </Form>

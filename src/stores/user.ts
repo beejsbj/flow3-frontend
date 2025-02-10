@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useRouter } from "next/navigation";
+import { AuthService } from "@/services/auth";
 
 interface User {
   id: string;
   email: string;
   name: string;
+  organization: string;
   avatarUrl: string | null;
 }
 
@@ -13,11 +15,19 @@ interface UserState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  error: string | null;
   accessToken: string | null;
 
   setUser: (user: User | null) => void;
   setAccessToken: (token: string | null) => void;
-  login: (user: User, token: string) => void;
+  setError: (error: string | null) => void;
+  login: (email: string, password: string) => Promise<void>;
+  register: (
+    name: string,
+    email: string,
+    password: string,
+    organization: string
+  ) => Promise<void>;
   logout: () => void;
   updateDisplayName: (name: string) => void;
 }
@@ -31,24 +41,70 @@ export const useUserStore = create<UserState>()(
       user: null,
       isAuthenticated: false,
       isLoading: false,
+      error: null,
       accessToken: null,
 
       setUser: (user) => set({ user, isAuthenticated: !!user }),
       setAccessToken: (token) => set({ accessToken: token }),
+      setError: (error) => set({ error }),
 
-      login: (user, token) =>
-        set({
-          user,
-          accessToken: token,
-          isAuthenticated: true,
-          isLoading: false,
-        }),
+      login: async (email: string, password: string) => {
+        try {
+          set({ isLoading: true, error: null });
+          const { user, token } = await AuthService.login({ email, password });
+          set({
+            user,
+            accessToken: token,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error) {
+          set({
+            isLoading: false,
+            error: error instanceof Error ? error.message : "Failed to login",
+          });
+          throw error; // Re-throw to handle in UI if needed
+        }
+      },
+
+      register: async (
+        name: string,
+        email: string,
+        password: string,
+        organization: string
+      ) => {
+        try {
+          set({ isLoading: true, error: null });
+          const { user, token } = await AuthService.register({
+            name,
+            email,
+            password,
+            organization,
+          });
+          set({
+            user,
+            accessToken: token,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error) {
+          set({
+            isLoading: false,
+            error:
+              error instanceof Error ? error.message : "Failed to register",
+          });
+          throw error; // Re-throw to handle in UI if needed
+        }
+      },
 
       logout: () =>
         set({
           user: null,
           accessToken: null,
           isAuthenticated: false,
+          error: null,
         }),
 
       updateDisplayName: (name) => {
@@ -91,3 +147,6 @@ export const useUser = () => {
 
 export const useIsAuthenticated = () =>
   useUserStore((state) => state.isAuthenticated);
+
+export const useAuthError = () => useUserStore((state) => state.error);
+export const useIsLoading = () => useUserStore((state) => state.isLoading);

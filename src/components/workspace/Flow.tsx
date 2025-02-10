@@ -110,7 +110,7 @@ function FlowWithAutoLayout({
   return null;
 }
 
-export default function Flow() {
+function Flow() {
   const layoutOptions = useLayoutOptions();
   const selector = (state: WorkspaceState) => ({
     nodes: state.nodes,
@@ -120,6 +120,7 @@ export default function Flow() {
     onConnect: state.onConnect,
     setNodes: state.setNodes,
     setEdges: state.setEdges,
+    updateEdgeHover: state.updateEdgeHover,
     takeSnapshot: state.takeSnapshot,
   });
 
@@ -132,7 +133,24 @@ export default function Flow() {
     setNodes,
     setEdges,
     takeSnapshot,
+    updateEdgeHover,
   } = useWorkspaceStore(useShallow(selector));
+
+  //onEdgeMouseEnter
+  //(event: React.MouseEvent, edge: Edge)
+  const onEdgeMouseEnter = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      updateEdgeHover(edge.id, true);
+    },
+    [updateEdgeHover]
+  );
+
+  const onEdgeMouseLeave = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      updateEdgeHover(edge.id, false);
+    },
+    [updateEdgeHover]
+  );
 
   const onNodeDragStart: OnNodeDrag = useCallback(() => {
     // 👇 make dragging a node undoable
@@ -141,29 +159,37 @@ export default function Flow() {
   }, [takeSnapshot]);
 
   return (
-    <ReactFlowProvider>
-      <ReactFlow
-        nodeOrigin={[0.5, 0.5]}
+    <ReactFlow
+      nodeOrigin={[0.5, 0.5]}
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      defaultEdgeOptions={defaultEdgeOptions}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      onNodeDragStart={onNodeDragStart}
+      onEdgeMouseEnter={onEdgeMouseEnter}
+      onEdgeMouseLeave={onEdgeMouseLeave}
+      fitView
+      nodesDraggable={layoutOptions?.auto === false}
+    >
+      <FlowContent />
+      <FlowWithAutoLayout
         nodes={nodes}
         edges={edges}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        defaultEdgeOptions={defaultEdgeOptions}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onNodeDragStart={onNodeDragStart}
-        fitView
-        nodesDraggable={layoutOptions?.auto === false}
-      >
-        <FlowContent />
-        <FlowWithAutoLayout
-          nodes={nodes}
-          edges={edges}
-          setNodes={setNodes}
-          setEdges={setEdges}
-        />
-      </ReactFlow>
+        setNodes={setNodes}
+        setEdges={setEdges}
+      />
+    </ReactFlow>
+  );
+}
+
+export default function FlowWithProvider() {
+  return (
+    <ReactFlowProvider>
+      <Flow />
     </ReactFlowProvider>
   );
 }

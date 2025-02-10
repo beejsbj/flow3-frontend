@@ -1,10 +1,10 @@
-import { MarkerType } from "@xyflow/react";
 import type { EdgeTypes } from "@/components/workspace/types";
 import BaseEdge from "./BaseEdge";
-
+import { MarkerType } from "@xyflow/react";
 const defaultEdgeOptions = {
-  type: "base",
+  //   type: "base",
   markerEnd: { type: MarkerType.Arrow },
+  //   animated: true,
 };
 
 export const edgeTypes = {

@@ -1,5 +1,5 @@
 import { NodeProps } from "@/components/workspace/types";
-import BaseNode from "./BaseNode";
+import BaseNode from "../core/BaseNode";
 
 export function PositionLoggerNode(props: NodeProps) {
   const { positionAbsoluteX, positionAbsoluteY } = props;

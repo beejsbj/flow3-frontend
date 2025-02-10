@@ -20,13 +20,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NodeData, FieldConfig } from "@/components/workspace/types";
+import { useUpdateNodeValues } from "@/stores/workspace";
 
 interface NodeConfigFormProps {
   data: NodeData;
-  onSubmit: (values: any) => void;
+  nodeId: string;
 }
 
-export function NodeConfigForm({ data, onSubmit }: NodeConfigFormProps) {
+export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
+  const updateNodeValues = useUpdateNodeValues();
+
   const config = data.config;
 
   if (!config) {
@@ -86,7 +89,7 @@ export function NodeConfigForm({ data, onSubmit }: NodeConfigFormProps) {
   };
 
   function handleSubmit(values: z.infer<typeof formSchema>) {
-    onSubmit(values);
+    updateNodeValues(nodeId, values);
   }
 
   return (

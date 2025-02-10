@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { SidebarLayout } from "@/components/layouts/sidebars";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import WorkspaceSidebar from "@/components/workspace/WorkspaceSidebar";
-import Flow from "@/components/workspace/Flow";
+import FlowWithProvider from "@/components/workspace/Flow";
 import { NodesSheetList } from "@/components/workspace/nodes/NodesSheetList";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import useWorkspaceStore from "@/stores/workspace";
@@ -36,7 +36,7 @@ export default function WorkspacePage() {
 
   return (
     <SidebarLayout left={<WorkspaceSidebar />} right={<NodesSheetList />}>
-      <Flow />
+      <FlowWithProvider />
     </SidebarLayout>
   );
 }
