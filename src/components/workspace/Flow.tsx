@@ -18,6 +18,8 @@ import useAutoLayout from "@/hooks/useAutoLayout";
 import { Node, Edge, WorkspaceState } from "./types";
 import { Button } from "@/components/ui/button";
 import { Undo2, Redo2 } from "lucide-react";
+import { useIsFeatureEnabled } from "@/stores/features";
+import { isFeatureEnabled } from "@/config/features";
 
 function FlowContent() {
   const validation = useWorkspaceStore((state) => state.validation);
@@ -85,33 +87,10 @@ function FlowContent() {
   );
 }
 
-// Create a new component that will use the ReactFlow hooks
-function FlowWithAutoLayout({
-  nodes,
-  edges,
-  setNodes,
-  setEdges,
-}: {
-  nodes: Node[];
-  edges: Edge[];
-  setNodes: (nodes: Node[]) => void;
-  setEdges: (edges: Edge[]) => void;
-}) {
-  const { fitView } = useReactFlow();
-
-  useAutoLayout({
-    getNodes: () => nodes,
-    getEdges: () => edges,
-    setNodes,
-    setEdges,
-    fitView,
-  });
-
-  return null;
-}
-
 function Flow() {
   const layoutOptions = useLayoutOptions();
+  const isAutoLayoutEnabled = isFeatureEnabled("autoLayout");
+
   const selector = (state: WorkspaceState) => ({
     nodes: state.nodes,
     edges: state.edges,
@@ -120,8 +99,8 @@ function Flow() {
     onConnect: state.onConnect,
     setNodes: state.setNodes,
     setEdges: state.setEdges,
-    updateEdgeHover: state.updateEdgeHover,
     takeSnapshot: state.takeSnapshot,
+    updateEdgeHover: state.updateEdgeHover,
   });
 
   const {
@@ -135,6 +114,17 @@ function Flow() {
     takeSnapshot,
     updateEdgeHover,
   } = useWorkspaceStore(useShallow(selector));
+
+  const { fitView } = useReactFlow();
+
+  useAutoLayout({
+    getNodes: () => nodes,
+    getEdges: () => edges,
+    setNodes,
+    setEdges,
+    fitView,
+    enabled: isAutoLayoutEnabled && (layoutOptions?.auto ?? false),
+  });
 
   //onEdgeMouseEnter
   //(event: React.MouseEvent, edge: Edge)
@@ -173,15 +163,9 @@ function Flow() {
       onEdgeMouseEnter={onEdgeMouseEnter}
       onEdgeMouseLeave={onEdgeMouseLeave}
       fitView
-      nodesDraggable={layoutOptions?.auto === false}
+      nodesDraggable={!isAutoLayoutEnabled || !layoutOptions?.auto}
     >
       <FlowContent />
-      <FlowWithAutoLayout
-        nodes={nodes}
-        edges={edges}
-        setNodes={setNodes}
-        setEdges={setEdges}
-      />
     </ReactFlow>
   );
 }

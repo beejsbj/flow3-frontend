@@ -25,6 +25,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { isFeatureEnabled } from "@/config/features";
 
 // layout settings panel
 function LayoutPanel() {
@@ -158,6 +159,7 @@ export default function WorkspaceSidebar() {
   );
 
   const execute = useWorkspaceStore((state) => state.execute);
+  const isAutoLayoutEnabled = isFeatureEnabled("autoLayout");
 
   return (
     <Sidebar side="left">
@@ -188,12 +190,14 @@ export default function WorkspaceSidebar() {
 
         <SidebarSeparator />
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Layout Settings</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <LayoutPanel />
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {isAutoLayoutEnabled && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Layout Settings</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <LayoutPanel />
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter>

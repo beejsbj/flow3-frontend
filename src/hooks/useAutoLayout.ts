@@ -10,6 +10,7 @@ type StoreSelectors = {
   setNodes: (nodes: Node[], isAutoLayout?: boolean) => void;
   setEdges: (edges: Edge[], isAutoLayout?: boolean) => void;
   fitView: () => void;
+  enabled?: boolean;
 };
 
 function compareNodes(xs: Node[], ys: Node[]) {
@@ -63,6 +64,7 @@ export default function useAutoLayout({
   setNodes,
   setEdges,
   fitView,
+  enabled = true,
 }: StoreSelectors) {
   const layoutOptions = useLayoutOptions();
   const nodesRef = useRef<Node[]>([]);
@@ -71,7 +73,7 @@ export default function useAutoLayout({
 
   useEffect(() => {
     // Skip if no layout options or auto layout is disabled
-    if (!layoutOptions?.auto) {
+    if (!layoutOptions?.auto || !enabled) {
       return;
     }
 
@@ -167,5 +169,5 @@ export default function useAutoLayout({
     };
 
     runLayout();
-  }, [layoutOptions, getNodes, getEdges, setNodes, setEdges, fitView]);
+  }, [layoutOptions, getNodes, getEdges, setNodes, setEdges, fitView, enabled]);
 }

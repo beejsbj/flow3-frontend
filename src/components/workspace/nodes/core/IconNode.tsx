@@ -31,7 +31,7 @@ export default function IconNode({
 
   // Calculate border color
   const borderColor = cn(
-    "relative border border-solid transition-colors animate-node-border",
+    "relative border-2 border-solid transition-colors animate-node-border",
     {
       "border-warning":
         data?.state?.validation && !data?.state?.validation?.isValid,

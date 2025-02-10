@@ -14,6 +14,8 @@
 // React and React Flow
 import { memo, useState } from "react";
 import React from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+
 import { Handle, Position } from "@xyflow/react";
 
 // Types
@@ -32,6 +34,7 @@ import {
   getTargetHandlePosition,
 } from "@/lib/utils";
 import { getIconByName } from "@/lib/icons";
+import { isFeatureEnabled } from "@/config/features";
 
 // Components
 import { Label } from "@/components/ui/label";
@@ -139,7 +142,7 @@ function BaseNode({
   // Hooks
   const layoutOptions = useLayoutOptions();
   const { ports } = data as NodeData;
-
+  const [wrapperRef] = useAutoAnimate();
   // Calculations
   const portsWithPositions = calculatePortPositions(
     ports || {},
@@ -203,8 +206,8 @@ function BaseNode({
           )}
 
           {/* Render either ConfigNode or IconNode based on expanded state */}
-          <div className="">
-            {data.config?.expanded ? (
+          <div ref={wrapperRef}>
+            {data.config?.expanded && !isFeatureEnabled("nodeConfigModal") ? (
               <ConfigNode
                 id={id}
                 data={data}
@@ -226,11 +229,14 @@ function BaseNode({
             )}
           </div>
 
-          <NodeConfigModal
-            nodeId={id}
-            data={data}
-            open={data.config?.expanded || false}
-          />
+          {/* Only render modal if feature is enabled */}
+          {isFeatureEnabled("nodeConfigModal") && data.config?.expanded && (
+            <NodeConfigModal
+              nodeId={id}
+              data={data}
+              open={data.config?.expanded || false}
+            />
+          )}
         </div>
       </div>
     </RFBaseNode>
