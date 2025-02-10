@@ -20,19 +20,10 @@ export default function ConfigNode({
 }: ConfigNodeProps) {
   const { label } = data as NodeData;
 
-  // Calculate border color
-  const borderColor = cn("relative border border-solid transition-colors", {
-    "border-warning":
-      data?.state?.validation && !data?.state?.validation?.isValid,
-    "border-success":
-      !data?.state?.validation || data?.state?.validation?.isValid,
-  });
-
   return (
     <div
       className={cn(
-        "w-[300px] bg-secondary p-4 rounded-sm hover:bg-muted transition-colors",
-        borderColor,
+        "w-[300px] bg-secondary p-4 rounded-[inherit] hover:bg-muted transition-colors",
         className
       )}
     >

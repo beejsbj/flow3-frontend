@@ -37,18 +37,17 @@ import { getIconByName } from "@/lib/icons";
 import { isFeatureEnabled } from "@/config/features";
 
 // Components
-import { Label } from "@/components/ui/label";
 
 import { NodeConfigModal } from "../NodeConfigModal";
 import IconNode from "./IconNode";
 import ConfigNode from "./ConfigNode";
+import BaseHandle from "../../handles/BaseHandle";
 // Types
 export interface BaseNodeProps extends NodeProps {
   children?: React.ReactNode;
   className?: string;
   iconClassName?: string;
   configClassName?: string;
-  hasActions?: boolean;
   onClick?: () => void;
 }
 
@@ -108,15 +107,7 @@ export const RFBaseNode = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { selected?: boolean }
 >(({ selected, ...props }, ref) => (
-  <div
-    ref={ref}
-    tabIndex={0}
-    role="button"
-    {...props}
-    className={cn(
-      selected && "border-3 border-solid border-muted-foreground/60 rounded-sm"
-    )}
-  />
+  <div ref={ref} tabIndex={0} role="button" {...props} />
 ));
 RFBaseNode.displayName = "RFBaseNode";
 
@@ -130,12 +121,10 @@ function BaseNode({
   className,
   iconClassName,
   configClassName,
-  hasActions = true,
   onClick,
   ...props
 }: BaseNodeProps) {
   // State
-  const [actionsOpen, setActionsOpen] = useState(false);
   const { icon } = data as NodeData;
   const Icon = icon ? getIconByName(icon) : undefined;
 
@@ -143,6 +132,7 @@ function BaseNode({
   const layoutOptions = useLayoutOptions();
   const { ports } = data as NodeData;
   const [wrapperRef] = useAutoAnimate();
+
   // Calculations
   const portsWithPositions = calculatePortPositions(
     ports || {},
@@ -151,62 +141,45 @@ function BaseNode({
 
   // Event handlers
   const handleClick = () => {
-    setActionsOpen(true);
     onClick?.();
   };
+
+  // Calculate border color and rounded corners based on ports
+  const borderStyle = cn(
+    "relative border-2 border-solid transition-colors rounded-sm",
+    {
+      "ring-3 ring-muted-foreground/60": selected,
+      "border-warning":
+        data?.state?.validation && !data?.state?.validation?.isValid,
+      "border-success":
+        !data?.state?.validation || data?.state?.validation?.isValid,
+      "running animate-node-border": data?.state?.execution?.isRunning === true,
+      "completed animate-node-border":
+        data?.state?.execution?.isCompleted === true,
+      "failed animate-node-border": data?.state?.execution?.isFailed === true,
+      // Add rounded corners based on ports
+      "rounded-l-2xl":
+        !ports?.inputs?.length && layoutOptions?.direction === "LR",
+      "rounded-r-2xl":
+        !ports?.outputs?.length && layoutOptions?.direction === "LR",
+      "rounded-t-2xl":
+        !ports?.inputs?.length && layoutOptions?.direction === "TB",
+      "rounded-b-2xl":
+        !ports?.outputs?.length && layoutOptions?.direction === "TB",
+    }
+  );
 
   return (
     <RFBaseNode onClick={handleClick} selected={selected}>
       <div className="flex flex-col items-center">
         <div className="relative group">
           {/* Ports */}
-          {portsWithPositions.map((port) => (
-            <Handle
-              key={port.id}
-              id={port.id}
-              type={port.type}
-              position={port.position}
-              className={cn("w-4 h-4 z-10", {
-                "rounded-none w-2": port.type === "target", // Make input handles rectangular
-                "rounded-full": port.type === "source", // Keep output handles circular
-              })}
-              style={{
-                [port.position === Position.Left ||
-                port.position === Position.Right
-                  ? "top"
-                  : "left"]: `${port.offset}%`,
-              }}
-            />
-          ))}
-
-          {/* Port Labels */}
-          {portsWithPositions.map((port) =>
-            port.portType && port.portType !== "default" ? (
-              <Label
-                key={`${port.id}-label`}
-                className="absolute text-xs text-muted-foreground select-none"
-                style={{
-                  [port.position === Position.Left
-                    ? "left"
-                    : port.position === Position.Right
-                    ? "right"
-                    : port.position === Position.Top
-                    ? "top"
-                    : "bottom"]: "-25px",
-                  [port.position === Position.Left ||
-                  port.position === Position.Right
-                    ? "top"
-                    : "left"]: `${port.offset * 2.5}%`,
-                  transform: "translate(-220%, -50%)",
-                }}
-              >
-                {port.label}
-              </Label>
-            ) : null
-          )}
+          {portsWithPositions.map((port) => {
+            return <BaseHandle key={port.id} port={port} nodeId={id} />;
+          })}
 
           {/* Render either ConfigNode or IconNode based on expanded state */}
-          <div ref={wrapperRef}>
+          <div ref={wrapperRef} className={borderStyle}>
             {data.config?.expanded && !isFeatureEnabled("nodeConfigModal") ? (
               <ConfigNode
                 id={id}
@@ -219,9 +192,6 @@ function BaseNode({
                 id={id}
                 data={data}
                 className={iconClassName}
-                hasActions={hasActions}
-                actionsOpen={actionsOpen}
-                setActionsOpen={setActionsOpen}
                 Icon={Icon}
               >
                 {children}

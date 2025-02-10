@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NodeData } from "../../types";
 import { cn } from "@/lib/utils";
 import { NodeActionsDropdown } from "../NodeActions";
@@ -10,9 +10,7 @@ interface IconNodeProps {
   data: NodeData;
   children?: React.ReactNode;
   className?: string;
-  hasActions?: boolean;
-  actionsOpen: boolean;
-  setActionsOpen: (open: boolean) => void;
+
   Icon?: React.ElementType;
 }
 
@@ -22,44 +20,32 @@ export default function IconNode({
   data,
   children,
   className,
-  hasActions,
-  actionsOpen,
-  setActionsOpen,
+
   Icon,
 }: IconNodeProps) {
   const { label } = data as NodeData;
 
-  // Calculate border color
-  const borderColor = cn(
-    "relative border-2 border-solid transition-colors animate-node-border",
-    {
-      "border-warning":
-        data?.state?.validation && !data?.state?.validation?.isValid,
-      "border-success":
-        !data?.state?.validation || data?.state?.validation?.isValid,
-      running: data?.state?.execution?.isRunning === true,
-      completed: data?.state?.execution?.isCompleted === true,
-      failed: data?.state?.execution?.isFailed === true,
-    }
-  );
+  const [actionsOpen, setActionsOpen] = useState(false);
+
+  const handleClick = () => {
+    setActionsOpen(true);
+  };
 
   return (
     <>
       {/* Actions */}
-      {hasActions && (
-        <NodeActionsDropdown
-          id={id}
-          data={data}
-          open={actionsOpen}
-          onOpenChange={setActionsOpen}
-        />
-      )}
+      <NodeActionsDropdown
+        id={id}
+        data={data}
+        open={actionsOpen}
+        onOpenChange={setActionsOpen}
+      />
 
       {/* Node Icon */}
       <div
+        onClick={handleClick}
         className={cn(
-          "w-25 h-25 bg-secondary flex items-center justify-center rounded-sm hover:bg-muted transition-colors",
-          borderColor,
+          "w-25 h-25 bg-secondary flex items-center justify-center rounded-[inherit] hover:bg-muted transition-colors",
           className
         )}
       >
