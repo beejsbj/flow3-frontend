@@ -371,18 +371,25 @@ const useWorkspaceStore = create(
       get().startBatch();
 
       // Calculate position based on whether we're replacing or offsetting
+
+      const direction = get().config?.layout?.direction;
+      const xSpacing = get().config?.layout?.spacing[0];
+      const ySpacing = get().config?.layout?.spacing[1];
+
+      if (!direction || !xSpacing || !ySpacing) return;
+
       const position = replaceNode
         ? sourceNode.position
         : {
             x:
               sourceNode.position.x +
-              (get().config.layout.direction === "LR"
-                ? get().config.layout.spacing[0] + 100
+              (direction === "LR"
+                ? xSpacing + (sourceNode?.measured?.width ?? 100)
                 : 0),
             y:
               sourceNode.position.y +
-              (get().config.layout.direction === "TB"
-                ? get().config.layout.spacing[1] + 100
+              (direction === "TB"
+                ? ySpacing + (sourceNode?.measured?.height ?? 100)
                 : 0),
           };
 

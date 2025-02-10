@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { NodeData, FieldConfig } from "@/components/workspace/types";
 import { useUpdateNodeValues } from "@/stores/workspace";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 interface NodeConfigFormProps {
   data: NodeData;
@@ -29,6 +30,8 @@ interface NodeConfigFormProps {
 
 export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
   const updateNodeValues = useUpdateNodeValues();
+
+  const [formRef] = useAutoAnimate();
 
   const config = data.config;
 
@@ -95,7 +98,7 @@ export function NodeConfigForm({ data, nodeId }: NodeConfigFormProps) {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form className="space-y-4" ref={formRef}>
         {config.form?.map((field) =>
           isFieldApplicable(field) ? (
             <FormField

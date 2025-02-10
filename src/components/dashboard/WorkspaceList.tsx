@@ -11,6 +11,7 @@ import { useWorkspacesStore } from "@/stores/workspaces";
 import { useEffect } from "react";
 import { Workspace } from "@/components/workspace/types";
 import Link from "next/link";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 interface WorkspaceCardProps {
   workspace: Workspace;
@@ -47,6 +48,8 @@ function WorkspaceCard({ workspace }: WorkspaceCardProps) {
 export default function WorkspacesList() {
   const { workspaces, isLoading, fetchWorkspaces } = useWorkspacesStore();
 
+  const [listRef] = useAutoAnimate();
+
   useEffect(() => {
     // For now, we'll just pass a dummy user ID
     fetchWorkspaces("dummy-user-id");
@@ -57,7 +60,10 @@ export default function WorkspacesList() {
   }
 
   return (
-    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <ul
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      ref={listRef}
+    >
       {workspaces.map((workspace) => (
         <WorkspaceCard key={workspace.id} workspace={workspace} />
       ))}
