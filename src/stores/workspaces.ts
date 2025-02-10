@@ -2,8 +2,6 @@ import { create } from "zustand";
 import { Workspace } from "@/components/workspace/types";
 import { nodeRegistry } from "@/services/registry";
 import * as workspaceService from "@/services/workspaces";
-// Import node registrations
-// import "@/components/workspace/nodes";
 
 interface WorkspacesState {
   workspaces: Workspace[];
@@ -34,26 +32,16 @@ export const useWorkspacesStore = create<WorkspacesState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const startNode = nodeRegistry.createNode("start");
-      const placeholderNode = nodeRegistry.createNode("placeholder");
-
-      const edge = {
-        id: `${startNode.id}-${placeholderNode.id}`,
-        source: startNode.id,
-        target: placeholderNode.id,
-        sourceHandle: "output-0",
-        targetHandle: "input-0",
-        type: "base",
-      };
 
       const workspaceData = {
         name: "New Workspace",
         description: "Description",
         lastModified: new Date().toISOString(),
-        nodes: [startNode, placeholderNode],
-        edges: [edge],
+        nodes: [startNode],
+        edges: [],
         config: {
           layout: {
-            direction: "TB" as const,
+            direction: "LR" as const,
             spacing: [100, 100] as [number, number],
             auto: true,
           },
