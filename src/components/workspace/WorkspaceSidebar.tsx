@@ -20,11 +20,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
 import { useShallow } from "zustand/react/shallow";
 import { WorkspaceState } from "./types";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { isFeatureEnabled } from "@/config/features";
 
 // layout settings panel
@@ -157,8 +153,12 @@ export default function WorkspaceSidebar() {
       description: state.description,
     }))
   );
-
   const execute = useWorkspaceStore((state) => state.executeWorkspace);
+
+  const handleRun = () => {
+    execute();
+  };
+
   const isAutoLayoutEnabled = isFeatureEnabled("autoLayout");
 
   return (
@@ -171,7 +171,7 @@ export default function WorkspaceSidebar() {
               <span className="font-semibold">Flow3</span>
             </Link>
           </SidebarMenuButton>
-          <Button size="sm" onClick={execute} className="gap-2">
+          <Button size="sm" onClick={handleRun} className="gap-2">
             <Play size={16} />
             Run
           </Button>

@@ -454,8 +454,7 @@
     stroke-width: var(--xy-edge-stroke-width-default);
     stroke-dasharray: var(--edge-length);
     stroke-dashoffset: calc(var(--edge-length) * 1);
-    /* transition: stroke-dashoffset 0.5s ease; */
-    animation: edge-completed 0.5s ease forwards reverse;
+    animation: edge-completed 0.5s ease-in-out forwards reverse;
   }
 
   .animate-edge.failed {
@@ -467,6 +466,7 @@
 
   .animate-node-border {
     position: relative;
+    --angle: 0deg;
   }
 
   .animate-node-border::before {
@@ -480,8 +480,13 @@
   }
 
   .animate-node-border.running::before {
-    background: conic-gradient(var(--color) var(--angle), transparent 0);
+    background: conic-gradient(
+      from -90deg,
+      var(--color) var(--angle),
+      transparent 0
+    );
     animation: rotate 2s ease-in-out infinite;
+    animation-delay: 0.5s;
   }
 
   .animate-node-border.completed::before {

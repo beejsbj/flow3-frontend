@@ -76,6 +76,17 @@ function PlusHandle({ nodeId }: { nodeId: string }) {
 
 export default function BaseHandle({ port, nodeId }: BaseHandleProps) {
   const edges = useWorkspaceStore((state) => state.edges);
+
+  const sourceEdge = edges.find(
+    (edge) => edge.target === nodeId && edge.targetHandle === port.id
+  );
+  const sourceNode = useNode(sourceEdge?.source || "");
+
+  const isSourceNodeCompleted =
+    sourceNode?.data?.state?.execution?.isCompleted === true;
+  const isSourceNodeFailed =
+    sourceNode?.data?.state?.execution?.isFailed === true;
+
   const node = useNode(nodeId);
   const isNodeCompleted = node?.data?.state?.execution?.isCompleted === true;
   const isNodeFailed = node?.data?.state?.execution?.isFailed === true;
@@ -90,11 +101,15 @@ export default function BaseHandle({ port, nodeId }: BaseHandleProps) {
         edge.targetHandle === port.id)
   );
 
-  const classes = cn("w-4 h-4 z-10 flex items-center justify-center group", {
-    "rounded-none w-3": port.type === "target", // Make input handles rectangular
+  const classes = cn("w-4 h-4 z-10 flex items-center justify-center group ", {
+    "rounded-none w-3 delay-500": port.type === "target", // Make input handles rectangular
     "rounded-full": port.type === "source", // Keep output handles circular
-    "bg-success": isNodeCompleted,
-    "bg-destructive": isNodeFailed,
+    "bg-success":
+      (isNodeCompleted && port.type === "source") ||
+      (isSourceNodeCompleted && port.type === "target"),
+    "bg-destructive":
+      (isNodeFailed && port.type === "source") ||
+      (isSourceNodeFailed && port.type === "target"),
   });
 
   return (

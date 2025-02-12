@@ -76,7 +76,7 @@ export async function executeWorkspace(workspace: Workspace): Promise<void> {
       updateWorkspaceExecutionState(executionState);
 
       // Simulate processing time
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2500));
 
       // Mark current nodes as completed
       executionState.completedNodes.push(

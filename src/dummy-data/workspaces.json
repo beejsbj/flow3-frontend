@@ -3,7 +3,7 @@
     {
       "name": "New Workspace",
       "description": "Description",
-      "lastModified": "2025-02-10T22:21:26.751Z",
+      "lastModified": "2025-02-12T21:57:45.977Z",
       "nodes": [
         {
           "id": "start-1739221892494-x1d1egarf",
@@ -144,8 +144,8 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": false,
-                "isFailed": true,
+                "isCompleted": true,
+                "isFailed": false,
                 "isCancelled": false
               }
             },
@@ -207,8 +207,8 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": false,
-                "isFailed": true,
+                "isCompleted": true,
+                "isFailed": false,
                 "isCancelled": false
               }
             },
@@ -270,7 +270,7 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": false,
+                "isCompleted": true,
                 "isFailed": false,
                 "isCancelled": false
               }
@@ -303,9 +303,10 @@
                   "type": "number",
                   "label": "Delay (ms)",
                   "required": true,
-                  "value": 1000
+                  "value": 100033
                 }
-              ]
+              ],
+              "expanded": true
             },
             "ports": {
               "inputs": [
@@ -332,7 +333,7 @@
               },
               "execution": {
                 "isRunning": false,
-                "isCompleted": false,
+                "isCompleted": true,
                 "isFailed": false,
                 "isCancelled": false
               }
@@ -340,8 +341,8 @@
             "isDeletable": true
           },
           "measured": {
-            "width": 104,
-            "height": 104
+            "width": 304,
+            "height": 152
           },
           "selected": false,
           "dragging": false
@@ -350,8 +351,8 @@
           "id": "form-examples-1739226003863-h20erk8gl",
           "type": "form-examples",
           "position": {
-            "x": 1159.6481795684488,
-            "y": 122.17727601069696
+            "x": 1421.5498052875464,
+            "y": 305.58747737504865
           },
           "data": {
             "label": "Form Fields Example",
@@ -438,7 +439,7 @@
                 ]
               },
               "execution": {
-                "isRunning": false,
+                "isRunning": true,
                 "isCompleted": false,
                 "isFailed": false,
                 "isCancelled": false
@@ -451,6 +452,130 @@
             "height": 448
           },
           "selected": false,
+          "dragging": false
+        },
+        {
+          "id": "delay-1739396644574-t77bqhr3r",
+          "type": "delay",
+          "position": {
+            "x": 1461.697787640469,
+            "y": -243.2756673619071
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 104,
+            "height": 104
+          },
+          "selected": false,
+          "dragging": false
+        },
+        {
+          "id": "delay-1739397367555-reu6bh7ig",
+          "type": "delay",
+          "position": {
+            "x": 1959.1640758991302,
+            "y": 3.9474482014499017
+          },
+          "data": {
+            "label": "Delay",
+            "icon": "Clock",
+            "description": "Adds a time delay to the flow",
+            "category": "Flow Control",
+            "config": {
+              "form": [
+                {
+                  "name": "delayTime",
+                  "type": "number",
+                  "label": "Delay (ms)",
+                  "required": true,
+                  "value": 1000
+                }
+              ]
+            },
+            "ports": {
+              "inputs": [
+                {
+                  "label": "Input",
+                  "type": "target",
+                  "id": "input-0",
+                  "portType": "default"
+                }
+              ],
+              "outputs": [
+                {
+                  "label": "Output",
+                  "type": "source",
+                  "id": "output-0",
+                  "portType": "default"
+                }
+              ]
+            },
+            "state": {
+              "validation": {
+                "isValid": true,
+                "errors": []
+              },
+              "execution": {
+                "isRunning": false,
+                "isCompleted": false,
+                "isFailed": false,
+                "isCancelled": false
+              }
+            },
+            "isDeletable": true
+          },
+          "measured": {
+            "width": 104,
+            "height": 104
+          },
+          "selected": true,
           "dragging": false
         }
       ],
@@ -492,7 +617,38 @@
           "target": "form-examples-1739226003863-h20erk8gl",
           "sourceHandle": "output-0",
           "targetHandle": "input-0",
-          "id": "xy-edge__delay-1739225391723-6ths2dsproutput-0-form-examples-1739226003863-h20erk8glinput-0"
+          "id": "xy-edge__delay-1739225391723-6ths2dsproutput-0-form-examples-1739226003863-h20erk8glinput-0",
+          "data": {
+            "isHovering": false
+          }
+        },
+        {
+          "source": "form-examples-1739226003863-h20erk8gl",
+          "target": "delay-1739396644574-t77bqhr3r",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__form-examples-1739226003863-h20erk8gloutput-0-delay-1739396644574-t77bqhr3rinput-0",
+          "data": {
+            "isHovering": false
+          }
+        },
+        {
+          "source": "delay-1739396644574-t77bqhr3r",
+          "target": "delay-1739397367555-reu6bh7ig",
+          "sourceHandle": "output-0",
+          "targetHandle": "input-0",
+          "id": "xy-edge__delay-1739396644574-t77bqhr3routput-0-delay-1739397367555-reu6bh7iginput-0"
+        },
+        {
+          "type": "base",
+          "markerEnd": {
+            "type": "arrow"
+          },
+          "source": "form-examples-1739226003863-h20erk8gl",
+          "sourceHandle": "output-0",
+          "target": "delay-1739397367555-reu6bh7ig",
+          "targetHandle": "input-0",
+          "id": "xy-edge__form-examples-1739226003863-h20erk8gloutput-0-delay-1739397367555-reu6bh7iginput-0"
         }
       ],
       "config": {

@@ -12,6 +12,7 @@ import { createEdgeSlice } from "./edges";
 import { createStateSlice } from "./state";
 import { createMetadataSlice } from "./metadata";
 import { createConfigSlice } from "./config";
+import { toast } from "sonner";
 
 // ============= Types =============
 declare global {
@@ -61,6 +62,25 @@ const useWorkspaceStore = create(
 
       executeWorkspace: async () => {
         const state = get();
+
+        state.validate();
+        console.log(state.validation);
+
+        if (state.validation.isValid === false) {
+          console.log(state.validation);
+          // use validation.errors
+          //have a button that fitvewis to navigate to the node
+
+          toast.error(
+            "Please fix the errors in the workspace before executing.",
+            {
+              description: state.validation.errors
+                .map((error) => error.errors)
+                .join("\n"),
+            }
+          );
+          return;
+        }
         get().resetNodeExecutionStates();
         try {
           await executeWorkspace({
