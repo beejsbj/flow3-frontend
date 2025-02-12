@@ -158,7 +158,7 @@ export default function WorkspaceSidebar() {
     }))
   );
 
-  const execute = useWorkspaceStore((state) => state.execute);
+  const execute = useWorkspaceStore((state) => state.executeWorkspace);
   const isAutoLayoutEnabled = isFeatureEnabled("autoLayout");
 
   return (

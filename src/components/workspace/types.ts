@@ -158,7 +158,7 @@ export interface WorkspaceState extends Workspace {
   validate: () => void;
 
   // Execution Actions
-  execute: () => Promise<void>;
+  executeWorkspace: () => Promise<void>;
   setExecutionState: (execution: WorkspaceExecution) => void;
 
   // History Actions

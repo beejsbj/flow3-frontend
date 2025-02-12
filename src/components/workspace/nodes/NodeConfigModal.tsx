@@ -17,11 +17,7 @@ interface NodeConfigModalProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function NodeConfigModal({
-  nodeId,
-  data,
-  open,
-}: NodeConfigModalProps) {
+export function NodeConfigModal({ nodeId, data, open }: NodeConfigModalProps) {
   const toggleNodeExpansion = useToggleNodeExpansion();
 
   // Early return if no config
