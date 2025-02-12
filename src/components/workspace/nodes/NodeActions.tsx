@@ -53,11 +53,11 @@ const useNodeActionHandlers = (id: string, data: NodeData) => {
     setTimeout(() => {
       setNodeExecutionState(id, {
         isRunning: false,
-        isCompleted: false,
-        isFailed: true,
+        isCompleted: true,
+        isFailed: false,
         isCancelled: false,
       });
-    }, 3000);
+    }, 100);
   };
 
   const handleToggle = (e: React.MouseEvent) => {

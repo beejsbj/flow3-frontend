@@ -15,6 +15,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { nodeRegistry } from "@/services/registry";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import { executeWorkspace, pollExecutionStatus } from "@/services/execution";
+import { useCallback } from "react";
 
 // ============= Types =============
 declare global {
@@ -503,15 +504,6 @@ const useWorkspaceStore = create(
         },
       };
 
-      // if node is running, toggle edge animated on all ports of the node.data.ports.outputs and node.data.ports.inputs
-      const edgesToAnimate = get().edges.filter(
-        (edge) => edge.source === node.id || edge.target === node.id
-      );
-
-      edgesToAnimate.forEach((edge) => {
-        get().toggleEdgeAnimated(edge.id, executionState.isRunning);
-      });
-
       get().updateNode(updatedNode);
     },
 
@@ -627,7 +619,9 @@ export const useDeleteNode = () =>
   useWorkspaceStore((state) => state.deleteNode);
 
 export const useNode = (nodeId: string) =>
-  useWorkspaceStore((state) => state.getNode(nodeId));
+  useWorkspaceStore(
+    useCallback((state) => state.nodes.find((n) => n.id === nodeId), [nodeId])
+  );
 
 export const useConnectNodes = () =>
   useWorkspaceStore((state) => state.connectNodes);

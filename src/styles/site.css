@@ -283,7 +283,7 @@
 
   :is(.react-flow__edge):hover {
     path {
-      stroke: var(--primary);
+      /* stroke: var(--primary); */
     }
   }
 }
@@ -431,6 +431,40 @@
     }
   }
 
+  @keyframes edge-running {
+    from {
+      stroke-dashoffset: 10;
+    }
+  }
+
+  @keyframes edge-completed {
+    from {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-edge.running {
+    stroke-dasharray: 5;
+    animation: edge-running 0.5s linear infinite;
+  }
+
+  .animate-edge.completed {
+    stroke: var(--color-success);
+    fill: none;
+    stroke-width: var(--xy-edge-stroke-width-default);
+    stroke-dasharray: var(--edge-length);
+    stroke-dashoffset: calc(var(--edge-length) * 1);
+    /* transition: stroke-dashoffset 0.5s ease; */
+    animation: edge-completed 0.5s ease forwards reverse;
+  }
+
+  .animate-edge.failed {
+    stroke: var(--color-destructive);
+    stroke-dasharray: 5;
+
+    animation: edge-running 0.5s steps(4) infinite reverse;
+  }
+
   .animate-node-border {
     position: relative;
   }
@@ -438,7 +472,7 @@
   .animate-node-border::before {
     content: "";
     position: absolute;
-    inset: -2px;
+    inset: -4px;
     z-index: -1;
     border-radius: inherit;
     --color: var(--color-primary);
@@ -446,8 +480,8 @@
   }
 
   .animate-node-border.running::before {
-    background: conic-gradient(from var(--angle), transparent, var(--color));
-    animation: rotate 2s linear infinite;
+    background: conic-gradient(var(--color) var(--angle), transparent 0);
+    animation: rotate 2s ease-in-out infinite;
   }
 
   .animate-node-border.completed::before {

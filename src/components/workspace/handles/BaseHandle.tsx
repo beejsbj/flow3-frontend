@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Port } from "@/components/workspace/types";
 import React from "react";
-import useWorkspaceStore from "@/stores/workspace";
+import useWorkspaceStore, { useNode } from "@/stores/workspace";
 import { NodesSheetList } from "@/components/workspace/nodes/NodesSheetList";
 import { useState } from "react";
 
@@ -76,6 +76,9 @@ function PlusHandle({ nodeId }: { nodeId: string }) {
 
 export default function BaseHandle({ port, nodeId }: BaseHandleProps) {
   const edges = useWorkspaceStore((state) => state.edges);
+  const node = useNode(nodeId);
+  const isNodeCompleted = node?.data?.state?.execution?.isCompleted === true;
+  const isNodeFailed = node?.data?.state?.execution?.isFailed === true;
 
   const isConnected = edges.some(
     (edge) =>
@@ -87,16 +90,20 @@ export default function BaseHandle({ port, nodeId }: BaseHandleProps) {
         edge.targetHandle === port.id)
   );
 
+  const classes = cn("w-4 h-4 z-10 flex items-center justify-center group", {
+    "rounded-none w-3": port.type === "target", // Make input handles rectangular
+    "rounded-full": port.type === "source", // Keep output handles circular
+    "bg-success": isNodeCompleted,
+    "bg-destructive": isNodeFailed,
+  });
+
   return (
     <>
       <Handle
         id={port.id}
         type={port.type}
         position={port.position}
-        className={cn("w-4 h-4 z-10 flex items-center justify-center group", {
-          "rounded-none w-3": port.type === "target", // Make input handles rectangular
-          "rounded-full": port.type === "source", // Keep output handles circular
-        })}
+        className={classes}
         style={{
           [port.position === Position.Left || port.position === Position.Right
             ? "top"

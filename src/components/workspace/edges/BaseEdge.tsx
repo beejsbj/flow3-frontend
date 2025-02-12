@@ -6,10 +6,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { getIconByName } from "@/lib/icons";
 import { EdgeProps } from "@/components/workspace/types";
-import useWorkspaceStore from "@/stores/workspace";
+import useWorkspaceStore, { useNode } from "@/stores/workspace";
+import { cn } from "@/lib/utils";
+import { useCallback, useRef } from "react";
+
+// Add CSS custom property type
+type CSSProperties = React.CSSProperties & {
+  "--edge-length"?: string | number;
+};
 
 function BaseEdge({
   id,
+  source,
+  target,
   sourceX,
   sourceY,
   targetX,
@@ -21,7 +30,7 @@ function BaseEdge({
   targetPosition,
   data,
 }: EdgeProps) {
-  const [edgePath, labelX, labelY, offsetX, offsetY] = getSmoothStepPath({
+  const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
     targetX,
@@ -31,12 +40,24 @@ function BaseEdge({
   });
 
   const deleteEdge = useWorkspaceStore((state) => state.deleteEdge);
+  const CompletedRef = useRef<SVGPathElement>(null);
+
+  const getLength = () => {
+    if (!CompletedRef.current) return 0;
+    return CompletedRef.current.getTotalLength();
+  };
+
+  // Use separate selectors for each node's state to ensure updates
+  const sourceNodeState = useNode(source)?.data?.state?.execution;
+  const targetNodeState = useNode(target)?.data?.state?.execution;
+
   const TrashIcon = getIconByName("Trash");
-  //   :is(.react-flow__edge):hover {
-  // 	path {
-  // 	  stroke: var(--primary);
-  // 	}
-  //  }
+
+  const edgeAnimated = cn("animate-edge", {
+    running: sourceNodeState?.isRunning || targetNodeState?.isRunning,
+    failed: sourceNodeState?.isFailed,
+  });
+
   return (
     <>
       <RFBaseEdge
@@ -45,11 +66,27 @@ function BaseEdge({
         labelY={labelY}
         path={edgePath}
         markerEnd={markerEnd}
-        className="group"
+        className={edgeAnimated}
         style={{
           ...style,
         }}
-      />
+      ></RFBaseEdge>
+
+      <svg
+        className={`${sourceNodeState?.isCompleted ? "" : "hidden"}`}
+        style={
+          {
+            "--edge-length": getLength(),
+          } as CSSProperties
+        }
+      >
+        <path
+          ref={CompletedRef}
+          d={edgePath}
+          strokeLinecap="round"
+          className="animate-edge completed"
+        />
+      </svg>
       <EdgeLabelRenderer>
         <div
           className={`edge-buttons nodrag nopan pointer-events-auto absolute opacity-0 transition-opacity ${

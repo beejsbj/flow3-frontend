@@ -158,13 +158,13 @@ function BaseNode({
         data?.state?.execution?.isCompleted === true,
       "failed animate-node-border": data?.state?.execution?.isFailed === true,
       // Add rounded corners based on ports
-      "rounded-l-2xl":
+      "rounded-l-3xl":
         !ports?.inputs?.length && layoutOptions?.direction === "LR",
-      "rounded-r-2xl":
+      "rounded-r-3xl":
         !ports?.outputs?.length && layoutOptions?.direction === "LR",
-      "rounded-t-2xl":
+      "rounded-t-3xl":
         !ports?.inputs?.length && layoutOptions?.direction === "TB",
-      "rounded-b-2xl":
+      "rounded-b-3xl":
         !ports?.outputs?.length && layoutOptions?.direction === "TB",
     }
   );
