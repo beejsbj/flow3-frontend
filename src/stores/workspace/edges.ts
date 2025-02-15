@@ -1,4 +1,4 @@
-import { WorkspaceState, type Edge } from "@/components/workspace/types";
+import { WorkspaceState, type Edge } from "@/types/types";
 import { applyEdgeChanges } from "@xyflow/react";
 import { addEdge } from "@xyflow/react";
 
@@ -19,22 +19,22 @@ export type EdgeSlice = Pick<
 export const createEdgeSlice = (set: any, get: any): EdgeSlice => ({
   edges: [],
   onEdgesChange: (changes) => {
-	set({
-	  edges: applyEdgeChanges(changes, get().edges).map((edge) => ({
-		 ...edge,
-		 data: edge.data || {},
-	  })) as Edge[],
-	  lastModified: new Date(),
-	});
- },
+    set({
+      edges: applyEdgeChanges(changes, get().edges).map((edge) => ({
+        ...edge,
+        data: edge.data || {},
+      })) as Edge[],
+      lastModified: new Date(),
+    });
+  },
 
- onConnect: (connection) => {
-	const edgeId = `xy-edge__${connection.source}${
-	  connection.sourceHandle || ""
-	}-${connection.target}${connection.targetHandle || ""}`;
+  onConnect: (connection) => {
+    const edgeId = `xy-edge__${connection.source}${
+      connection.sourceHandle || ""
+    }-${connection.target}${connection.targetHandle || ""}`;
 
-	get().setEdges(addEdge(connection, get().edges));
- },
+    get().setEdges(addEdge(connection, get().edges));
+  },
   setEdges: (edges, saveSnapshot = true) => {
     if (!get().isBatchOperation && saveSnapshot) {
       get().takeSnapshot();

@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NodeData, FieldConfig } from "@/components/workspace/types";
+import { NodeData, FieldConfig } from "@/types/types";
 import { useUpdateNodeValues } from "@/stores/workspace";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 

@@ -1,0 +1,9 @@
+---
+description: this is the style guide
+globs: 
+---
+
+Im using Tailwind v4
+
+my custom variables are in [site.css](mdc:src/styles/site.css)
+

@@ -5,7 +5,7 @@ import {
 } from "@xyflow/react";
 import { Button } from "@/components/ui/button";
 import { getIconByName } from "@/lib/icons";
-import { EdgeProps } from "@/components/workspace/types";
+import { EdgeProps } from "@/types/types";
 import useWorkspaceStore, { useNode } from "@/stores/workspace";
 import { cn } from "@/lib/utils";
 import { useCallback, useRef } from "react";

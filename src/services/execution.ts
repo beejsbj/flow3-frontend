@@ -3,7 +3,7 @@ import {
   Node,
   NodeExecution,
   WorkspaceExecution,
-} from "@/components/workspace/types";
+} from "@/types/types";
 import useWorkspaceStore from "@/stores/workspace";
 
 import { toast } from "sonner";

@@ -1,4 +1,4 @@
-import { WorkspaceState, WorkspaceConfig } from "@/components/workspace/types";
+import { WorkspaceState, WorkspaceConfig } from "@/types/types";
 
 export type ConfigSlice = Pick<WorkspaceState, "config" | "updateConfig">;
 

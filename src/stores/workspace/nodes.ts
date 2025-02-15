@@ -1,9 +1,9 @@
-import { type Node } from "@/components/workspace/types";
+import { type Node } from "@/types/types";
 import {
   type NodeExecution,
   type FieldConfig,
   type WorkspaceState,
-} from "@/components/workspace/types";
+} from "@/types/types";
 import { nodeRegistry } from "@/services/registry";
 import { applyNodeChanges } from "@xyflow/react";
 // Helper Functions
@@ -73,11 +73,11 @@ export const createNodeSlice = (set: any, get: any): NodeSlice => ({
   nodes: [],
 
   onNodesChange: (changes) => {
-	set({
-	  nodes: applyNodeChanges(changes, get().nodes) as Node[],
-	  lastModified: new Date(),
-	});
- },
+    set({
+      nodes: applyNodeChanges(changes, get().nodes) as Node[],
+      lastModified: new Date(),
+    });
+  },
 
   // Actions
   getNode: (id: string) => get().nodes.find((node: Node) => node.id === id),

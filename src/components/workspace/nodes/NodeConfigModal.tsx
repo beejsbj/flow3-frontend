@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { NodeData } from "@/components/workspace/types";
+import { NodeData } from "@/types/types";
 import { NodeConfigForm } from "./NodeConfigForm";
 import { NodeActions } from "./NodeActions";
 import { useToggleNodeExpansion } from "@/stores/workspace";

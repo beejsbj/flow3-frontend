@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Workspace } from "@/components/workspace/types";
+import { Workspace } from "@/types/types";
 import { nodeRegistry } from "@/services/registry";
 import * as workspaceService from "@/services/workspaces";
 

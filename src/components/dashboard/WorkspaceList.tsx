@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import { useEffect } from "react";
-import { Workspace } from "@/components/workspace/types";
+import { Workspace } from "@/types/types";
 import Link from "next/link";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 

@@ -4,7 +4,7 @@ import {
   type Node,
   type LayoutOptions,
   type Direction,
-} from "@/components/workspace/types";
+} from "@/types/types";
 import { type HierarchyPointNode, stratify, tree } from "d3-hierarchy";
 import { timer } from "d3-timer";
 

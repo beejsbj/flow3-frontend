@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { Position } from "@xyflow/react";
-import { type Direction } from "@/components/workspace/types";
+import { type Direction } from "@/types/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

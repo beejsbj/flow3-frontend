@@ -7,7 +7,7 @@ import {
   useNode,
 } from "@/stores/workspace";
 import { useReactFlow } from "@xyflow/react";
-import { NodeData } from "../types";
+import { NodeData } from "../../../types/types";
 import {
   DropdownMenu,
   DropdownMenuContent,

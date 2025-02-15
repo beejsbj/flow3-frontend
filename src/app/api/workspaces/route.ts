@@ -4,7 +4,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
-import { Workspace } from "@/components/workspace/types";
+import { Workspace } from "@/types/types";
 
 const DUMMY_DATA_PATH = path.join(
   process.cwd(),

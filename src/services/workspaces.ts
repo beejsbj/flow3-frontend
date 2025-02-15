@@ -1,4 +1,4 @@
-import { Workspace } from "@/components/workspace/types";
+import { Workspace } from "@/types/types";
 
 //#todo Replace these endpoints with actual backend API URLs
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ""; // e.g. "https://api.yourbackend.com"

@@ -3,7 +3,7 @@ import {
   type WorkspaceState,
   type Workspace,
   type WorkspaceConfig,
-} from "@/components/workspace/types";
+} from "@/types/types";
 import { subscribeWithSelector } from "zustand/middleware";
 import { executeWorkspace } from "@/services/execution";
 import { useCallback } from "react";

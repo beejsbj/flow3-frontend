@@ -1,5 +1,5 @@
 import { getIconByName } from "@/lib/icons";
-import { NodeData } from "../../types";
+import { NodeData } from "../../../../types/types";
 import {
   Tooltip,
   TooltipContent,

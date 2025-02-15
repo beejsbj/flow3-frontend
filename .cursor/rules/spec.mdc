@@ -1,0 +1,23 @@
+---
+description: Technical specification
+globs: 
+---
+
+# Flo8 Frontend Specification
+
+## Project Overview
+Flo8 is a frontend application that provides a workspace environment for creating and managing flow-based interfaces.
+
+
+
+
+## Core Architecture
+
+### NextJS
+- im using Next 15
+- im using Pages router
+- 
+
+### Reactflow
+- im using reactflow
+- 

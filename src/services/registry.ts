@@ -4,7 +4,7 @@ import {
   Port,
   NodeData,
   Node as NodeType,
-} from "@/components/workspace/types";
+} from "@/types/types";
 import { ComponentType } from "react";
 import BaseNode from "@/components/workspace/nodes/core/BaseNode";
 import { PositionLoggerNode } from "@/components/workspace/nodes/types/PositionLoggerNode";

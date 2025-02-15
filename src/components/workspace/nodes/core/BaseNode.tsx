@@ -19,12 +19,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Handle, Position } from "@xyflow/react";
 
 // Types
-import {
-  NodeProps,
-  Port,
-  LayoutOptions,
-  NodeData,
-} from "@/components/workspace/types";
+import { NodeProps, Port, LayoutOptions, NodeData } from "@/types/types";
 
 // Hooks and Utils
 import { useLayoutOptions } from "@/stores/workspace";

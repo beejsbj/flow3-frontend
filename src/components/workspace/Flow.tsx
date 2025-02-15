@@ -15,7 +15,7 @@ import useWorkspaceStore, { useLayoutOptions } from "@/stores/workspace";
 import { nodeTypes } from "./nodes";
 import { edgeTypes, defaultEdgeOptions } from "./edges";
 import useAutoLayout from "@/hooks/useAutoLayout";
-import { Node, Edge, WorkspaceState } from "./types";
+import { Node, Edge, WorkspaceState } from "../../types/types";
 import { Button } from "@/components/ui/button";
 import { Undo2, Redo2 } from "lucide-react";
 import { isFeatureEnabled } from "@/config/features";

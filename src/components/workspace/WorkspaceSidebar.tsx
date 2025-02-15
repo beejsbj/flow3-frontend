@@ -19,7 +19,7 @@ import useWorkspaceStore, { useWorkspaceMetadata } from "@/stores/workspace";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
 import { useShallow } from "zustand/react/shallow";
-import { WorkspaceState } from "./types";
+import { WorkspaceState } from "../../types/types";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { isFeatureEnabled } from "@/config/features";
 

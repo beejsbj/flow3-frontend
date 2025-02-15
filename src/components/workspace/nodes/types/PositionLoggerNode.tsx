@@ -1,4 +1,4 @@
-import { NodeProps } from "@/components/workspace/types";
+import { NodeProps } from "@/types/types";
 import BaseNode from "../core/BaseNode";
 
 export function PositionLoggerNode(props: NodeProps) {

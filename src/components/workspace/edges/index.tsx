@@ -1,4 +1,4 @@
-import type { EdgeTypes } from "@/components/workspace/types";
+import type { EdgeTypes } from "@/types/types";
 import BaseEdge from "./BaseEdge";
 import { MarkerType } from "@xyflow/react";
 const defaultEdgeOptions = {

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { type Edge, type Node } from "@/components/workspace/types";
+import { type Edge, type Node } from "@/types/types";
 import { getSourceHandlePosition, getTargetHandlePosition } from "@/lib/utils";
 import { layoutAlgorithm } from "@/lib/layout";
 import { useLayoutOptions } from "@/stores/workspace";

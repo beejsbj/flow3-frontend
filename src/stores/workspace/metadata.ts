@@ -1,4 +1,4 @@
-import { WorkspaceState } from "@/components/workspace/types";
+import { WorkspaceState } from "@/types/types";
 
 export type MetadataSlice = Pick<
   WorkspaceState,

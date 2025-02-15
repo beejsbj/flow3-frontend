@@ -1,5 +1,5 @@
 import React from "react";
-import { NodeData } from "../../types";
+import { NodeData } from "../../../../types/types";
 import { cn } from "@/lib/utils";
 import { NodeActions } from "../NodeActions";
 import { NodeConfigForm } from "../NodeConfigForm";

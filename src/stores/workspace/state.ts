@@ -3,7 +3,7 @@ import {
   WorkspaceState,
   WorkspaceValidation,
   type Node,
-} from "@/components/workspace/types";
+} from "@/types/types";
 
 export type StateSlice = Pick<
   WorkspaceState,
