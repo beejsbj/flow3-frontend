@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Plus } from "lucide-react";
 import { nodeRegistry, type CategoryData } from "@/services/registry";
 import { useAddNode } from "@/stores/workspace";
-import { getIconByName } from "@/lib/icons";
+import { getIconByName } from "@/utils/icons";
 
 interface NodesSheetListProps {
   open?: boolean;

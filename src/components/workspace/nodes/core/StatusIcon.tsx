@@ -1,4 +1,4 @@
-import { getIconByName } from "@/lib/icons";
+import { getIconByName } from "@/utils/icons";
 import { NodeData } from "../../../../types/types";
 import {
   Tooltip,
@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 interface StatusIconProps {
   data: NodeData;
   size?: number;

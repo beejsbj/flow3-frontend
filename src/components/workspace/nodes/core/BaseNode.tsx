@@ -27,8 +27,8 @@ import {
   cn,
   getSourceHandlePosition,
   getTargetHandlePosition,
-} from "@/lib/utils";
-import { getIconByName } from "@/lib/icons";
+} from "@/utils/utils";
+import { getIconByName } from "@/utils/icons";
 import { isFeatureEnabled } from "@/config/features";
 
 // Components

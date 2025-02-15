@@ -13,6 +13,23 @@ Flo8 is a frontend application that provides a workspace environment for creatin
 
 ## Core Architecture
 
+src/
+  ├── components/      # Reusable UI components
+  │   ├── ui/         # Shadcn components
+  │   └── workspace/  # Flow workspace components
+  │   └── dashboard/  # dashboard components
+  │   └── user/  		 # User components
+  ├── stores/         # State management
+  ├── styles/         # Global styles and Tailwind config
+  ├── types/          # TypeScript type definitions
+  ├── pages/          # Pages
+  ├── utils/          # Utility functions
+  ├── config/          # App config, where features can be enabled or disabled
+  ├── hooks/          # custom Hooks
+  └── services/       # API and service layer
+
+
+
 ### NextJS
 - im using Next 15
 - im using Pages router

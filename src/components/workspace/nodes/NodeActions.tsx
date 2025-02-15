@@ -1,4 +1,4 @@
-import { getIconByName } from "@/lib/icons";
+import { getIconByName } from "@/utils/icons";
 import {
   useDeleteNode,
   useSetNodeExecutionState,

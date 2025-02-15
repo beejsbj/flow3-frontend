@@ -1,6 +1,6 @@
 import { Handle, Position } from "@xyflow/react";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Port } from "@/types/types";
 import React from "react";
 import useWorkspaceStore, { useNode } from "@/stores/workspace";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NodeData } from "../../../../types/types";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { NodeActionsDropdown } from "../NodeActions";
 import StatusIcon from "./StatusIcon";
 

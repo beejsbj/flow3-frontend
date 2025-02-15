@@ -4,10 +4,10 @@ import {
   EdgeLabelRenderer,
 } from "@xyflow/react";
 import { Button } from "@/components/ui/button";
-import { getIconByName } from "@/lib/icons";
+import { getIconByName } from "@/utils/icons";
 import { EdgeProps } from "@/types/types";
 import useWorkspaceStore, { useNode } from "@/stores/workspace";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { useCallback, useRef } from "react";
 
 // Add CSS custom property type

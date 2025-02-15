@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 import { type Edge, type Node } from "@/types/types";
-import { getSourceHandlePosition, getTargetHandlePosition } from "@/lib/utils";
-import { layoutAlgorithm } from "@/lib/layout";
+import {
+  getSourceHandlePosition,
+  getTargetHandlePosition,
+} from "@/utils/utils";
+import { layoutAlgorithm } from "@/utils/layout";
 import { useLayoutOptions } from "@/stores/workspace";
 
 type StoreSelectors = {

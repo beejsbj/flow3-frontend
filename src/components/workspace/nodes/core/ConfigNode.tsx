@@ -1,6 +1,6 @@
 import React from "react";
 import { NodeData } from "../../../../types/types";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { NodeActions } from "../NodeActions";
 import { NodeConfigForm } from "../NodeConfigForm";
 import StatusIcon from "./StatusIcon";
