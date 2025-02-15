@@ -1,6 +1,10 @@
 import useWorkspaceStore from "./index";
 import { useWorkspacesStore } from "@/stores/workspaces";
-
+declare global {
+  interface Window {
+    _saveTimeout?: ReturnType<typeof setTimeout>;
+  }
+}
 useWorkspaceStore.subscribe(
   (state) => ({
     nodes: state.nodes.map((node) => ({

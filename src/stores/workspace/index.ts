@@ -14,15 +14,6 @@ import { createMetadataSlice } from "./metadata";
 import { createConfigSlice } from "./config";
 import { toast } from "sonner";
 
-// ============= Types =============
-declare global {
-  interface Window {
-    _saveTimeout?: ReturnType<typeof setTimeout>;
-  }
-}
-
-// ============= Helper Functions =============
-
 // ============= Store Definition =============
 const useWorkspaceStore = create(
   subscribeWithSelector<WorkspaceState>((set, get) => {
