@@ -11,7 +11,10 @@ import {
 import { useShallow } from "zustand/react/shallow";
 import { useCallback, useEffect } from "react";
 
-import useWorkspaceStore, { useLayoutOptions } from "@/stores/workspace";
+import useWorkspaceStore, {
+  useLayoutOptions,
+  useWorkspaceValidation,
+} from "@/stores/workspace";
 import { nodeTypes } from "./nodes";
 import { edgeTypes, defaultEdgeOptions } from "./edges";
 import useAutoLayout from "@/hooks/useAutoLayout";
@@ -21,7 +24,7 @@ import { Undo2, Redo2 } from "lucide-react";
 import { isFeatureEnabled } from "@/config/features";
 
 function FlowContent() {
-  const validation = useWorkspaceStore((state) => state.validation);
+  const validation = useWorkspaceValidation();
   const { undo, redo, canUndo, canRedo } = useWorkspaceStore(
     useShallow((state) => ({
       undo: state.undo,
@@ -30,8 +33,19 @@ function FlowContent() {
       canRedo: state.canRedo,
     }))
   );
-  // Determine background color based on validation state
-  const bgColor = validation.isValid ? "#ccc" : "rgba(239, 68, 68, 0.2)"; // red-500 with opacity
+
+  const backgroundStyle = {
+    backgroundColor: validation.isValid
+      ? "hsla(220, 11%, 16%, 1.00)"
+      : "hsla(38, 100%, 47%, 1.00)	",
+
+    backgroundVariant: validation.isValid
+      ? BackgroundVariant.Dots
+      : BackgroundVariant.Cross,
+
+    backgroundSize: validation.isValid ? 2 : 6,
+    backgroundGap: validation.isValid ? 28 : 50,
+  };
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -60,7 +74,13 @@ function FlowContent() {
 
   return (
     <>
-      <Background color={bgColor} variant={BackgroundVariant.Dots} />
+      <Background
+        color={backgroundStyle.backgroundColor}
+        variant={backgroundStyle.backgroundVariant}
+        size={backgroundStyle.backgroundSize}
+        gap={backgroundStyle.backgroundGap}
+        patternClassName="rotate-45 translate-x-1"
+      />
       <Controls />
       <div className="absolute z-50 top-4 left-4 flex gap-2">
         <Button

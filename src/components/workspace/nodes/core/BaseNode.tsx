@@ -148,10 +148,15 @@ function BaseNode({
         data?.state?.validation && !data?.state?.validation?.isValid,
       "border-success":
         !data?.state?.validation || data?.state?.validation?.isValid,
-      "running animate-node-border": data?.state?.execution?.isRunning === true,
+      "running animate-node-border":
+        data?.state?.execution?.isRunning === true &&
+        data?.state?.validation?.isValid,
       "completed animate-node-border":
-        data?.state?.execution?.isCompleted === true,
-      "failed animate-node-border": data?.state?.execution?.isFailed === true,
+        data?.state?.execution?.isCompleted === true &&
+        data?.state?.validation?.isValid,
+      "failed animate-node-border":
+        data?.state?.execution?.isFailed === true &&
+        data?.state?.validation?.isValid,
       // Add rounded corners based on ports
       "rounded-l-3xl":
         !ports?.inputs?.length && layoutOptions?.direction === "LR",

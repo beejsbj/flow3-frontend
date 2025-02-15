@@ -187,8 +187,6 @@ export const createNodeSlice = (set: any, get: any): NodeSlice => ({
       ),
       false
     );
-
-    get().validate();
   },
 
   toggleNodeExpansion: (nodeId: string) => {
@@ -268,5 +266,7 @@ export const createNodeSlice = (set: any, get: any): NodeSlice => ({
       get().takeSnapshot();
     }
     set({ nodes, lastModified: new Date() });
+
+    get().validate();
   },
 });

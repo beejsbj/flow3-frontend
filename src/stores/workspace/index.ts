@@ -102,7 +102,7 @@ export const useWorkspaceMetadata = () =>
   }));
 
 export const useWorkspaceValidation = () =>
-  useWorkspaceStore((state) => state.validation);
+  useWorkspaceStore(useCallback((state) => state.validation, []));
 
 export const useLayoutOptions = () =>
   useWorkspaceStore((state) => state.config?.layout);

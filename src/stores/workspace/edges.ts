@@ -40,6 +40,8 @@ export const createEdgeSlice = (set: any, get: any): EdgeSlice => ({
       get().takeSnapshot();
     }
     set({ edges, lastModified: new Date() });
+
+    get().validate();
   },
 
   // ----- Edge Actions -----
