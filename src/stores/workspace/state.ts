@@ -39,7 +39,6 @@ export const createStateSlice = (set: any, get: any): StateSlice => ({
     get().nodes.forEach((node: Node) => {
       if (node.data?.state?.validation?.isValid === false) {
         errors.push({
-          node: node,
           nodeId: node.id,
           errors: node.data.state.validation.errors || [],
         });
